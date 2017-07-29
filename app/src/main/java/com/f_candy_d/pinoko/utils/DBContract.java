@@ -35,6 +35,7 @@ public class DBContract {
 
     public static class CourseEntry implements BaseColumns {
         public static final String TABLE_NAME = "course";
+        // This includes the column of '_id'
         public static final int NUM_COLUMNS = 9;
 
         public static final String COL_NAME = "couName";
@@ -62,6 +63,7 @@ public class DBContract {
 
     public static class LocationEntry implements BaseColumns {
         public static final String TABLE_NAME = "location";
+        // This includes the column of '_id'
         public static final int NUM_COLUMNS = 3;
 
         public static final String COL_NAME = "locName";
@@ -77,6 +79,7 @@ public class DBContract {
 
     public static class InstructorEntry implements BaseColumns {
         public static final String TABLE_NAME = "instructor";
+        // This includes the column of '_id'
         public static final int NUM_COLUMNS = 6;
 
         public static final String COL_NAME = "insName";
@@ -98,6 +101,7 @@ public class DBContract {
 
     public static class TimeBlockEntry implements BaseColumns {
         public static final String TABLE_NAME = "timeBlock";
+        // This includes the column of '_id'
         public static final int NUM_COLUMNS = 7;
 
         public static final String COL_TYPE = "tbType";
@@ -121,6 +125,7 @@ public class DBContract {
 
     public static class AssignmentEntry implements BaseColumns {
         public static final String TABLE_NAME = "assignment";
+        // This includes the column of '_id'
         public static final int NUM_COLUMNS = 5;
 
         public static final String COL_NAME = "assName";
@@ -140,6 +145,7 @@ public class DBContract {
 
     public static class EventEntry implements BaseColumns {
         public static final String TABLE_NAME = "event";
+        // This includes the column of '_id'
         public static final int NUM_COLUMNS = 4;
 
         public static final String COL_NAME = "eveName";
@@ -157,6 +163,7 @@ public class DBContract {
 
     public static class NotificationEntry implements BaseColumns {
         public static final String TABLE_NAME = "notification";
+        // This includes the column of '_id'
         public static final int NUM_COLUMNS = 9;
 
         public static final String COL_NAME = "notName";
@@ -184,6 +191,7 @@ public class DBContract {
 
     public static class AttendanceEntry implements BaseColumns {
         public static final String TABLE_NAME = "attendance";
+        // This includes the column of '_id'
         public static final int NUM_COLUMNS = 6;
 
         public static final String COL_TIME_BLOCK_ID = "attTbId";
