@@ -23,6 +23,10 @@ public class DBDataManager {
 
     @NonNull private Context mContext;
 
+    public DBDataManager(@NonNull final Context context) {
+        this(context, Mode.APPEND);
+    }
+
     public DBDataManager(@NonNull final Context context, @NonNull final Mode mode) {
         mContext = context;
 
