@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Assignment;
+import com.f_candy_d.pinoko.model.Attendance;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.Entry;
 import com.f_candy_d.pinoko.model.Event;
@@ -165,15 +166,6 @@ public class MainActivity extends AppCompatActivity
                 .setLocationID(1)
                 .setNote("event note");
 
-//        Entry entry6 = new Entry(DBContract.NotificationEntry.TABLE_NAME);
-//        entry6.set(DBContract.NotificationEntry.COL_NAME, "notification")
-//                .set(DBContract.NotificationEntry.COL_NOTE, "notificationNote")
-//                .set(DBContract.NotificationEntry.COL_CATEGORY, 1)
-//                .set(DBContract.NotificationEntry.COL_TARGET_ID, 2)
-//                .set(DBContract.NotificationEntry.COL_TYPE, 3)
-//                .set(DBContract.NotificationEntry.COL_IS_DONE, true)
-//                .set(DBContract.NotificationEntry.COL_DATETIME_BEGIN, 1000)
-//                .set(DBContract.NotificationEntry.COL_DATETIME_END, 2000);
         Notification notification = new Notification();
         notification.setName("notification")
                 .setNote("notification note")
@@ -184,12 +176,12 @@ public class MainActivity extends AppCompatActivity
                 .setDatetimeBegin(2000)
                 .setDatetimeEnd(3000);
 
-        Entry entry7 = new Entry(DBContract.AttendanceEntry.TABLE_NAME);
-        entry7.set(DBContract.AttendanceEntry.COL_TIME_BLOCK_ID, 1)
-                .set(DBContract.AttendanceEntry.COL_PRESENT, 2)
-                .set(DBContract.AttendanceEntry.COL_LATE, 3)
-                .set(DBContract.AttendanceEntry.COL_ABSENT, 4)
-                .set(DBContract.AttendanceEntry.COL_NOTE, "attendanceNote");
+        Attendance attendance = new Attendance();
+        attendance.setTimeBlockID(1)
+                .setPresent(2)
+                .setLate(3)
+                .setAbsent(4)
+                .setNote("attendance note");
 
         entries.add(course);
         entries.add(location);
@@ -198,7 +190,7 @@ public class MainActivity extends AppCompatActivity
         entries.add(assignment);
         entries.add(event);
         entries.add(notification);
-        entries.add(entry7);
+        entries.add(attendance);
 
         DBDataManager dbDataManager = new DBDataManager(this, DBDataManager.Mode.TRUNCATE);
         long[] longs = dbDataManager.insert(entries);

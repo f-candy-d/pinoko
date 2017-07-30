@@ -58,8 +58,8 @@ public class Course extends RestrictedEntry<Course> implements Savable {
     @Override
     public boolean isSavable() {
         return (getName() != null &&
-                getLocationIDA() != DBContract.NULL_ID &&
-                getInstructorIDA() != DBContract.NULL_ID &&
+                DBContract.MIN_AVAILABLE_ID <= getLocationIDA() &&
+                DBContract.MIN_AVAILABLE_ID <= getInstructorIDA() &&
                 0 <= getLength());
     }
 

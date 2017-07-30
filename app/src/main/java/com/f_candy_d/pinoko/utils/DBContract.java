@@ -272,10 +272,10 @@ public class DBContract {
         // This includes the column of '_id'
         public static final int NUM_COLUMNS = 6;
 
-        public static final String COL_TIME_BLOCK_ID = "attTbId";
-        public static final String COL_PRESENT = "present";
-        public static final String COL_LATE = "late";
-        public static final String COL_ABSENT = "absent";
+        public static final String COL_TIME_BLOCK_ID = "attTbId"; // Not null
+        public static final String COL_PRESENT = "present"; // Not null
+        public static final String COL_LATE = "late"; // Not null
+        public static final String COL_ABSENT = "absent"; // Not null
         public static final String COL_NOTE = "attNote";
 
         public static final String SQL_CREATE_TABLE =
