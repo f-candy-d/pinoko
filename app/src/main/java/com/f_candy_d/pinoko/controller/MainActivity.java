@@ -16,6 +16,7 @@ import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.Entry;
 import com.f_candy_d.pinoko.model.Instructor;
 import com.f_candy_d.pinoko.model.Location;
+import com.f_candy_d.pinoko.model.TimeBlock;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.DBDataManager;
 import com.f_candy_d.pinoko.utils.Savable;
@@ -142,13 +143,13 @@ public class MainActivity extends AppCompatActivity
                 .setPhoneNumber("phoneNumber")
                 .setNote("instructor note");
 
-        Entry entry3 = new Entry(DBContract.TimeBlockEntry.TABLE_NAME);
-        entry3.set(DBContract.TimeBlockEntry.COL_TYPE, 1)
-                .set(DBContract.TimeBlockEntry.COL_CATEGORY, 2)
-                .set(DBContract.TimeBlockEntry.COL_TARGET_ID, 3)
-                .set(DBContract.TimeBlockEntry.COL_DATETIME_BEGIN, 4000)
-                .set(DBContract.TimeBlockEntry.COL_DATETIME_END, 5000)
-                .set(DBContract.TimeBlockEntry.COL_TIME_TABLE_ID, 6);
+        TimeBlock timeBlock = new TimeBlock();
+        timeBlock.setType(TimeBlock.Type.COURSE)
+                .setCategory(TimeBlock.Category.ONE_DAY)
+                .setTargetID(1)
+                .setDatetimeBegin(2000)
+                .setDatetimeEnd(3000)
+                .setTimeTableID(4);
 
         Entry entry4 = new Entry(DBContract.AssignmentEntry.TABLE_NAME);
         entry4.set(DBContract.AssignmentEntry.COL_NAME, "assignment")
@@ -181,7 +182,7 @@ public class MainActivity extends AppCompatActivity
         entries.add(course);
         entries.add(location);
         entries.add(instructor);
-        entries.add(entry3);
+        entries.add(timeBlock);
         entries.add(entry4);
         entries.add(entry5);
         entries.add(entry6);

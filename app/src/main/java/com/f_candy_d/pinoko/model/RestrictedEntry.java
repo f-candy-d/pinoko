@@ -21,6 +21,7 @@ abstract public class RestrictedEntry<T extends RestrictedEntry<T>> {
     private String mDefaultStringValue = null;
     private int mDefaultIntValue = 0;
     private boolean mDefaultBoolValue = false;
+    private long mDefaultLongValue = 0L;
 
     /**
      * Abstract methods
@@ -92,6 +93,14 @@ abstract public class RestrictedEntry<T extends RestrictedEntry<T>> {
         mDefaultBoolValue = defaultBoolValue;
     }
 
+    public long getDefaultLongValue() {
+        return mDefaultLongValue;
+    }
+
+    public void setDefaultLongValue(long defaultLongValue) {
+        mDefaultLongValue = defaultLongValue;
+    }
+
     final protected Bundle getAttributes() {
         return mAttributes;
     }
@@ -111,6 +120,11 @@ abstract public class RestrictedEntry<T extends RestrictedEntry<T>> {
         return (T) this;
     }
 
+    protected T set(final String attr, final long value) {
+        mAttributes.putLong(attr, value);
+        return (T) this;
+    }
+
     protected String getString(final String attr) {
         return mAttributes.getString(attr, mDefaultStringValue);
     }
@@ -121,5 +135,9 @@ abstract public class RestrictedEntry<T extends RestrictedEntry<T>> {
 
     protected boolean getBool(final String attr) {
         return mAttributes.getBoolean(attr, mDefaultBoolValue);
+    }
+
+    protected long getLong(final String attr) {
+        return mAttributes.getLong(attr, mDefaultLongValue);
     }
 }

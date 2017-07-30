@@ -137,12 +137,12 @@ public class DBContract {
         // This includes the column of '_id'
         public static final int NUM_COLUMNS = 7;
 
-        public static final String COL_TYPE = "tbType";
-        public static final String COL_CATEGORY = "tbCategory";
+        public static final String COL_TYPE = "tbType"; // Not null
+        public static final String COL_CATEGORY = "tbCategory"; // Not null
         public static final String COL_TARGET_ID = "tbTargetId";
-        public static final String COL_DATETIME_BEGIN = "tbDatetimeBegin";
-        public static final String COL_DATETIME_END = "tbDatetimeEnd";
-        public static final String COL_TIME_TABLE_ID = "tbTimeTableId";
+        public static final String COL_DATETIME_BEGIN = "tbDatetimeBegin"; // Not null
+        public static final String COL_DATETIME_END = "tbDatetimeEnd"; // Not null
+        public static final String COL_TIME_TABLE_ID = "tbTimeTableId"; // Not null
 
         public static final String SQL_CREATE_TABLE =
                 SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
