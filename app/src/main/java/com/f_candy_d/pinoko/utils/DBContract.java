@@ -230,14 +230,14 @@ public class DBContract {
         // This includes the column of '_id'
         public static final int NUM_COLUMNS = 9;
 
-        public static final String COL_NAME = "notName";
+        public static final String COL_NAME = "notName"; // Not null
         public static final String COL_NOTE = "notNote";
-        public static final String COL_CATEGORY = "notCategory";
+        public static final String COL_CATEGORY = "notCategory"; // Not null
         public static final String COL_TARGET_ID = "notTargetId";
-        public static final String COL_TYPE = "notType";
-        public static final String COL_IS_DONE = "notIsDone";
-        public static final String COL_DATETIME_BEGIN = "notDatetimeBegin";
-        public static final String COL_DATETIME_END = "notDatetimeEnd";
+        public static final String COL_TYPE = "notType"; // Not null
+        public static final String COL_IS_DONE = "notIsDone"; // Not null
+        public static final String COL_DATETIME_BEGIN = "notDatetimeBegin"; // Not null
+        public static final String COL_DATETIME_END = "notDatetimeEnd"; // Not null
 
         public static final String SQL_CREATE_TABLE =
                 SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("

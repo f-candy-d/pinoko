@@ -20,8 +20,9 @@ public class TimeBlock extends RestrictedEntry<TimeBlock> implements Savable {
 
     public enum Type {
         NULL_TYPE(0),
-        COURSE(1),
-        EVENT(2);
+        ONE_DAY(1),
+        WEEKLY(2),
+        EVERYDAY(3);
 
         private final int mId;
 
@@ -46,9 +47,9 @@ public class TimeBlock extends RestrictedEntry<TimeBlock> implements Savable {
 
     public enum Category {
         NULL_CATEGORY(0),
-        ONE_DAY(1),
-        WEEKLY(2),
-        EVERYDAY(3);
+        COURSE(1),
+        EVENT(2);
+
 
         private  final int mId;
 

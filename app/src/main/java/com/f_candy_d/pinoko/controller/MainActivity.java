@@ -18,6 +18,7 @@ import com.f_candy_d.pinoko.model.Entry;
 import com.f_candy_d.pinoko.model.Event;
 import com.f_candy_d.pinoko.model.Instructor;
 import com.f_candy_d.pinoko.model.Location;
+import com.f_candy_d.pinoko.model.Notification;
 import com.f_candy_d.pinoko.model.TimeBlock;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.DBDataManager;
@@ -146,8 +147,8 @@ public class MainActivity extends AppCompatActivity
                 .setNote("instructor note");
 
         TimeBlock timeBlock = new TimeBlock();
-        timeBlock.setType(TimeBlock.Type.COURSE)
-                .setCategory(TimeBlock.Category.ONE_DAY)
+        timeBlock.setType(TimeBlock.Type.EVERYDAY)
+                .setCategory(TimeBlock.Category.COURSE)
                 .setTargetID(1)
                 .setDatetimeBegin(2000)
                 .setDatetimeEnd(3000)
@@ -164,15 +165,24 @@ public class MainActivity extends AppCompatActivity
                 .setLocationID(1)
                 .setNote("event note");
 
-        Entry entry6 = new Entry(DBContract.NotificationEntry.TABLE_NAME);
-        entry6.set(DBContract.NotificationEntry.COL_NAME, "notification")
-                .set(DBContract.NotificationEntry.COL_NOTE, "notificationNote")
-                .set(DBContract.NotificationEntry.COL_CATEGORY, 1)
-                .set(DBContract.NotificationEntry.COL_TARGET_ID, 2)
-                .set(DBContract.NotificationEntry.COL_TYPE, 3)
-                .set(DBContract.NotificationEntry.COL_IS_DONE, true)
-                .set(DBContract.NotificationEntry.COL_DATETIME_BEGIN, 1000)
-                .set(DBContract.NotificationEntry.COL_DATETIME_END, 2000);
+//        Entry entry6 = new Entry(DBContract.NotificationEntry.TABLE_NAME);
+//        entry6.set(DBContract.NotificationEntry.COL_NAME, "notification")
+//                .set(DBContract.NotificationEntry.COL_NOTE, "notificationNote")
+//                .set(DBContract.NotificationEntry.COL_CATEGORY, 1)
+//                .set(DBContract.NotificationEntry.COL_TARGET_ID, 2)
+//                .set(DBContract.NotificationEntry.COL_TYPE, 3)
+//                .set(DBContract.NotificationEntry.COL_IS_DONE, true)
+//                .set(DBContract.NotificationEntry.COL_DATETIME_BEGIN, 1000)
+//                .set(DBContract.NotificationEntry.COL_DATETIME_END, 2000);
+        Notification notification = new Notification();
+        notification.setName("notification")
+                .setNote("notification note")
+                .setCategory(Notification.Category.ATTENDANCE)
+                .setTargetID(1)
+                .setType(Notification.Type.CANCELLATION)
+                .setIsDone(true)
+                .setDatetimeBegin(2000)
+                .setDatetimeEnd(3000);
 
         Entry entry7 = new Entry(DBContract.AttendanceEntry.TABLE_NAME);
         entry7.set(DBContract.AttendanceEntry.COL_TIME_BLOCK_ID, 1)
@@ -187,7 +197,7 @@ public class MainActivity extends AppCompatActivity
         entries.add(timeBlock);
         entries.add(assignment);
         entries.add(event);
-        entries.add(entry6);
+        entries.add(notification);
         entries.add(entry7);
 
         DBDataManager dbDataManager = new DBDataManager(this, DBDataManager.Mode.TRUNCATE);
