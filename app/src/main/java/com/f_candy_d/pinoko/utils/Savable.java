@@ -12,4 +12,5 @@ import android.content.ContentValues;
 public interface Savable {
     boolean isSavable();
     ContentValues toContentValues(final boolean withId);
+    String getTableName();
 }

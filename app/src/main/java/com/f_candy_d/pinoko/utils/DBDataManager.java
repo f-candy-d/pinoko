@@ -2,6 +2,7 @@ package com.f_candy_d.pinoko.utils;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteAbortException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
@@ -35,11 +36,11 @@ public class DBDataManager {
         }
     }
 
-    public long insert(final Entry entry) {
-        if (isValidAsBeingInserted(entry)) {
+    public long insert(final Savable entry) {
+        if (entry.isSavable()) {
             final DBOpenHelper helper = new DBOpenHelper(mContext);
             final SQLiteDatabase database = helper.getWritableDatabase();
-            final long id = database.insert(entry.getAffiliation(), null, entry.toContentValues(false));
+            final long id = database.insert(entry.getTableName(), null, entry.toContentValues(false));
             database.close();
             return id;
         }
@@ -47,16 +48,16 @@ public class DBDataManager {
         return DBContract.NULL_ID;
     }
 
-    public long[] insert(final ArrayList<Entry> entries) {
+    public long[] insert(final ArrayList<Savable> entries) {
         final DBOpenHelper helper = new DBOpenHelper(mContext);
         final SQLiteDatabase database = helper.getWritableDatabase();
         final long[] ids = new long[entries.size()];
 
-        Entry entry;
+        Savable entry;
         for (int i = 0; i < entries.size(); ++i) {
             entry = entries.get(i);
-            if (isValidAsBeingInserted(entry)) {
-                ids[i] = database.insert(entry.getAffiliation(), null, entry.toContentValues(false));
+            if (entry.isSavable()) {
+                ids[i] = database.insert(entry.getTableName(), null, entry.toContentValues(false));
             } else {
                 ids[i] = DBContract.NULL_ID;
             }

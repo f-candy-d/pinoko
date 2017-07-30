@@ -12,9 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.f_candy_d.pinoko.R;
+import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.Entry;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.DBDataManager;
+import com.f_candy_d.pinoko.utils.Savable;
 
 import java.util.ArrayList;
 
@@ -116,16 +118,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void saveTest() {
-        ArrayList<Entry> entries = new ArrayList<>();
-        Entry entry = new Entry(DBContract.CourseEntry.TABLE_NAME);
-        entry.set(DBContract.CourseEntry.COL_NAME, "course")
-                .set(DBContract.CourseEntry.COL_LOCATION_ID_A, 1)
-                .set(DBContract.CourseEntry.COL_LOCATION_ID_B, 2)
-                .set(DBContract.CourseEntry.COL_INSTRUCTOR_ID_A, 1)
-                .set(DBContract.CourseEntry.COL_INSTRUCTOR_ID_B, 2)
-                .set(DBContract.CourseEntry.COL_INSTRUCTOR_ID_C, 3)
-                .set(DBContract.CourseEntry.COL_LENGTH, 10)
-                .set(DBContract.CourseEntry.COL_NOTE, "courseNote");
+        ArrayList<Savable> entries = new ArrayList<>();
+        Course course = new Course();
+        course.setName("course")
+                .setLocationIDA(1)
+                .setLocationIDB(2)
+                .setInstructorIDA(3)
+                .setInstructorIDB(4)
+                .setInstructorIDC(5)
+                .setLength(6)
+                .setNote("course note");
 
         Entry entry1 = new Entry(DBContract.LocationEntry.TABLE_NAME);
         entry1.set(DBContract.LocationEntry.COL_NAME, "location")
@@ -174,7 +176,7 @@ public class MainActivity extends AppCompatActivity
                 .set(DBContract.AttendanceEntry.COL_ABSENT, 4)
                 .set(DBContract.AttendanceEntry.COL_NOTE, "attendanceNote");
 
-        entries.add(entry);
+        entries.add(course);
         entries.add(entry1);
         entries.add(entry2);
         entries.add(entry3);

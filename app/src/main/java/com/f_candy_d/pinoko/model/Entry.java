@@ -59,6 +59,11 @@ public class Entry extends RestrictedEntry<Entry> implements Savable {
     }
 
     @Override
+    public String getTableName() {
+        return null;
+    }
+
+    @Override
     public Set<String> getAttributeNames() {
         return getAttributes().keySet();
     }

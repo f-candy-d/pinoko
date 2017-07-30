@@ -80,6 +80,11 @@ public class Course extends RestrictedEntry<Course> implements Savable {
     }
 
     @Override
+    public String getTableName() {
+        return DBContract.CourseEntry.TABLE_NAME;
+    }
+
+    @Override
     public Set<String> getAttributeNames() {
         return null;
     }
