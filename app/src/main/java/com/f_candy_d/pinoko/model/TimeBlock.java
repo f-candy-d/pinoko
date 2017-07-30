@@ -86,7 +86,7 @@ public class TimeBlock extends RestrictedEntry<TimeBlock> implements Savable {
                 getCategory() != null &&
                 0 < getDatetimeBegin() &&
                 getDatetimeBegin() <= getDatetimeEnd() &&
-                getTimeTableID() != DBContract.NULL_ID);
+                DBContract.MIN_AVAILABLE_ID <= getTimeTableID());
     }
 
     @Override
