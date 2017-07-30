@@ -44,11 +44,11 @@ abstract public class RestrictedEntry<T extends RestrictedEntry<T>> {
         shapeAttributes();
     }
 
-    public String getAffiliation() {
+    final public String getAffiliation() {
         return mAffiliation;
     }
 
-    public Bundle toBundle() {
+    final public Bundle toBundle() {
         return new Bundle(mAttributes);
     }
 
@@ -63,36 +63,36 @@ abstract public class RestrictedEntry<T extends RestrictedEntry<T>> {
         return string + TextUtils.join("\n", values);
     }
 
-    public boolean has(@NonNull final String attr) {
+    final public boolean has(@NonNull final String attr) {
         return mAttributes.containsKey(attr);
     }
 
 
-    public String getDefaultStringValue() {
+    final public String getDefaultStringValue() {
         return mDefaultStringValue;
     }
 
-    public void setDefaultStringValue(String defaultStringValue) {
+    final public void setDefaultStringValue(String defaultStringValue) {
         mDefaultStringValue = defaultStringValue;
     }
 
-    public int getDefaultIntValue() {
+    final public int getDefaultIntValue() {
         return mDefaultIntValue;
     }
 
-    public void setDefaultIntValue(int defaultIntValue) {
+    final public void setDefaultIntValue(int defaultIntValue) {
         mDefaultIntValue = defaultIntValue;
     }
 
-    public boolean isDefaultBoolValue() {
+    final public boolean getDefaultBoolValue() {
         return mDefaultBoolValue;
     }
 
-    public void setDefaultBoolValue(boolean defaultBoolValue) {
+    final public void setDefaultBoolValue(boolean defaultBoolValue) {
         mDefaultBoolValue = defaultBoolValue;
     }
 
-    protected Bundle getAttributes() {
+    final protected Bundle getAttributes() {
         return mAttributes;
     }
 

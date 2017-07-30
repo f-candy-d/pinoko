@@ -59,6 +59,20 @@ public class DBContract {
                 + COL_LENGTH          + " INTEGER NOT NULL,"
                 + COL_NOTE            + " TEXT"
                 + ");";
+
+        public static String[] getColumnNames() {
+            return new String[] {
+                    _ID,
+                    COL_NAME,
+                    COL_LOCATION_ID_A,
+                    COL_LOCATION_ID_B,
+                    COL_INSTRUCTOR_ID_A,
+                    COL_INSTRUCTOR_ID_B,
+                    COL_INSTRUCTOR_ID_C,
+                    COL_LENGTH,
+                    COL_NOTE
+            };
+        }
     }
 
     public static class LocationEntry implements BaseColumns {
@@ -75,6 +89,14 @@ public class DBContract {
                         + COL_NAME + " TEXT NOT NULL,"
                         + COL_NOTE + " TEXT"
                         + ");";
+
+        public static String[] getColumnNames() {
+            return new String[] {
+                    _ID,
+                    COL_NAME,
+                    COL_NOTE
+            };
+        }
     }
 
     public static class InstructorEntry implements BaseColumns {
@@ -82,7 +104,7 @@ public class DBContract {
         // This includes the column of '_id'
         public static final int NUM_COLUMNS = 6;
 
-        public static final String COL_NAME = "insName";
+        public static final String COL_NAME = "insName"; // Not null
         public static final String COL_LAB = "lab";
         public static final String COL_MAIL = "mail";
         public static final String COL_PHONE_NUMBER = "phoneNumber";
@@ -97,6 +119,17 @@ public class DBContract {
                         + COL_PHONE_NUMBER + " TEXT,"
                         + COL_NOTE         + " TEXT"
                         + ");";
+
+        public static String[] getColumnNames() {
+            return new String[] {
+                    _ID,
+                    COL_NAME,
+                    COL_LAB,
+                    COL_MAIL,
+                    COL_PHONE_NUMBER,
+                    COL_NOTE
+            };
+        }
     }
 
     public static class TimeBlockEntry implements BaseColumns {
@@ -121,6 +154,18 @@ public class DBContract {
                         + COL_DATETIME_END   + " INTEGER NOT NULL,"
                         + COL_TIME_TABLE_ID  + " INTEGER NOT NULL"
                         + ");";
+
+        public static String[] getColumnNames() {
+            return new String[] {
+                    _ID,
+                    COL_TYPE,
+                    COL_CATEGORY,
+                    COL_TARGET_ID,
+                    COL_DATETIME_BEGIN,
+                    COL_DATETIME_END,
+                    COL_TIME_TABLE_ID
+            };
+        }
     }
 
     public static class AssignmentEntry implements BaseColumns {
@@ -141,6 +186,16 @@ public class DBContract {
                         + COL_NOTE          + " TEXT,"
                         + COL_IS_DONE       + " INTEGER NOT NULL DEFAULT 0"
                         + ");";
+
+        public static String[] getColumnNames() {
+            return new String[] {
+                    _ID,
+                    COL_NAME,
+                    COL_TIME_BLOCK_ID,
+                    COL_NOTE,
+                    COL_IS_DONE
+            };
+        }
     }
 
     public static class EventEntry implements BaseColumns {
@@ -159,6 +214,15 @@ public class DBContract {
                         + COL_LOCATION_ID + " INTEGER,"
                         + COL_NOTE        + " TEXT"
                         + ");";
+
+        public static String[] getColumnNames() {
+            return new String[] {
+                    _ID,
+                    COL_NAME,
+                    COL_LOCATION_ID,
+                    COL_NOTE
+            };
+        }
     }
 
     public static class NotificationEntry implements BaseColumns {
@@ -187,6 +251,20 @@ public class DBContract {
                         + COL_DATETIME_BEGIN + " INTEGER NOT NULL,"
                         + COL_DATETIME_END   + " INTEGER NOT NULL"
                         + ");";
+
+        public static String[] getColumnNames() {
+            return new String[] {
+                    _ID,
+                    COL_NAME,
+                    COL_NOTE,
+                    COL_CATEGORY,
+                    COL_TARGET_ID,
+                    COL_TYPE,
+                    COL_IS_DONE,
+                    COL_DATETIME_BEGIN,
+                    COL_DATETIME_END
+            };
+        }
     }
 
     public static class AttendanceEntry implements BaseColumns {
@@ -209,5 +287,16 @@ public class DBContract {
                         + COL_ABSENT        + " INTEGER NOT NULL,"
                         + COL_NOTE          + " TEXT"
                         + ");";
+
+        public static String[] getColumnNames() {
+            return new String[] {
+                    _ID,
+                    COL_TIME_BLOCK_ID,
+                    COL_PRESENT,
+                    COL_LATE,
+                    COL_ABSENT,
+                    COL_NOTE
+            };
+        }
     }
 }

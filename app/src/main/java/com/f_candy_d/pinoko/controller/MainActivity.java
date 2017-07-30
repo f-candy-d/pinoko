@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.Entry;
+import com.f_candy_d.pinoko.model.Instructor;
 import com.f_candy_d.pinoko.model.Location;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.DBDataManager;
@@ -130,20 +131,23 @@ public class MainActivity extends AppCompatActivity
                 .setLength(6)
                 .setNote("course note");
 
-//        Entry entry1 = new Entry(DBContract.LocationEntry.TABLE_NAME);
-//        entry1.set(DBContract.LocationEntry.COL_NAME, "location")
-//                .set(DBContract.LocationEntry.COL_NOTE, "locationNote");
-
-        Location entry1 = new Location();
-        entry1.setName("location")
+        Location location = new Location();
+        location.setName("location")
                 .setNote("location note");
 
-        Entry entry2 = new Entry(DBContract.InstructorEntry.TABLE_NAME);
-        entry2.set(DBContract.InstructorEntry.COL_NAME, "instructor")
-                .set(DBContract.InstructorEntry.COL_LAB, "lab")
-                .set(DBContract.InstructorEntry.COL_MAIL, "mail")
-                .set(DBContract.InstructorEntry.COL_PHONE_NUMBER, "phoneNumber")
-                .set(DBContract.InstructorEntry.COL_NOTE, "instructorNote");
+//        Entry instructor = new Entry(DBContract.InstructorEntry.TABLE_NAME);
+//        instructor.set(DBContract.InstructorEntry.COL_NAME, "instructor")
+//                .set(DBContract.InstructorEntry.COL_LAB, "lab")
+//                .set(DBContract.InstructorEntry.COL_MAIL, "mail")
+//                .set(DBContract.InstructorEntry.COL_PHONE_NUMBER, "phoneNumber")
+//                .set(DBContract.InstructorEntry.COL_NOTE, "instructorNote");
+
+        Instructor instructor = new Instructor();
+        instructor.setName("instructor")
+                .setLab("lab")
+                .setMail("mail")
+                .setPhoneNumber("phoneNumber")
+                .setNote("instructor note");
 
         Entry entry3 = new Entry(DBContract.TimeBlockEntry.TABLE_NAME);
         entry3.set(DBContract.TimeBlockEntry.COL_TYPE, 1)
@@ -182,8 +186,8 @@ public class MainActivity extends AppCompatActivity
                 .set(DBContract.AttendanceEntry.COL_NOTE, "attendanceNote");
 
         entries.add(course);
-        entries.add(entry1);
-        entries.add(entry2);
+        entries.add(location);
+        entries.add(instructor);
         entries.add(entry3);
         entries.add(entry4);
         entries.add(entry5);
