@@ -17,8 +17,7 @@ import java.util.Set;
  * Created by daichi on 7/30/17.
  */
 
-// TODO; remove 'implements Savable'
-public class Entry extends RestrictedEntry<Entry> implements Savable {
+public class Entry extends RestrictedEntry<Entry> {
 
     public Entry(@NonNull final String affiliation) {
         this(affiliation, null);
@@ -29,38 +28,8 @@ public class Entry extends RestrictedEntry<Entry> implements Savable {
     }
 
     @Override
-    public ContentValues toContentValues(boolean withId) {
-        ContentValues contentValues = new ContentValues();
-        Object value;
-
-        for (String attr : getAttributeNames()) {
-            value = getAttributes().get(attr);
-
-            if (value instanceof Integer) {
-                contentValues.put(attr, (Integer) value);
-            } else if (value instanceof String) {
-                contentValues.put(attr, (String) value);
-            } else if (value instanceof Boolean) {
-                contentValues.put(attr, (Boolean) value);
-            }
-        }
-
-        return contentValues;
-    }
-
-    @Override
     protected void shapeAttributes() {
         // Nothing to do in this method
-    }
-
-    @Override
-    public boolean isSavable() {
-        return false;
-    }
-
-    @Override
-    public String getTableName() {
-        return null;
     }
 
     @Override
