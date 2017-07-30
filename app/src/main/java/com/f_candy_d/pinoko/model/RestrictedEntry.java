@@ -5,16 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import java.sql.Struct;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
  * Created by daichi on 7/30/17.
  */
 
-public class Entry {
+abstract public class RestrictedEntry<T extends RestrictedEntry<T>> {
 
     private final String mAffiliation;
     private Bundle mAttributes;
@@ -22,11 +20,18 @@ public class Entry {
     private int mDefaultIntValue = 0;
     private boolean mDefaultBoolValue = false;
 
-    public Entry(@NonNull final String affiliation) {
+    /**
+     * Abstract methods
+     */
+    abstract public Bundle toBundle();
+    abstract public ContentValues toContentValues();
+    abstract public Set<String> getAttributeNames();
+
+    public RestrictedEntry(@NonNull final String affiliation) {
         this(affiliation, null);
     }
 
-    public Entry(@NonNull final String affiliation, final Bundle bundle) {
+    public RestrictedEntry(@NonNull final String affiliation, final Bundle bundle) {
         mAffiliation = affiliation;
         if (bundle != null) {
             mAttributes = new Bundle(bundle);
@@ -39,34 +44,11 @@ public class Entry {
         return mAffiliation;
     }
 
-    public ContentValues toContentValues() {
-        ContentValues contentValues = new ContentValues();
-        Object value;
-
-        for (String attr : mAttributes.keySet()) {
-            value = mAttributes.get(attr);
-
-            if (value instanceof Integer) {
-                contentValues.put(attr, (Integer) value);
-            } else if (value instanceof String) {
-                contentValues.put(attr, (String) value);
-            } else if (value instanceof Boolean) {
-                contentValues.put(attr, (Boolean) value);
-            }
-        }
-
-        return contentValues;
-    }
-
-    public Bundle toBundle() {
-        return new Bundle(mAttributes);
-    }
-
     @Override
     public String toString() {
         String string = super.toString() + "\n";
         ArrayList<String> values = new ArrayList<>();
-        for (String attr : getAttributes()) {
+        for (String attr : getAttributeNames()) {
             values.add("#" + attr + " :: " + mAttributes.get(attr).toString());
         }
 
@@ -75,10 +57,6 @@ public class Entry {
 
     public boolean has(@NonNull final String attr) {
         return mAttributes.containsKey(attr);
-    }
-
-    public Set<String> getAttributes() {
-        return mAttributes.keySet();
     }
 
     public String getDefaultStringValue() {
@@ -97,7 +75,7 @@ public class Entry {
         mDefaultIntValue = defaultIntValue;
     }
 
-    public boolean getDefaultBoolValue() {
+    public boolean isDefaultBoolValue() {
         return mDefaultBoolValue;
     }
 
@@ -105,30 +83,34 @@ public class Entry {
         mDefaultBoolValue = defaultBoolValue;
     }
 
-    public Entry set(final String attr, final int value) {
+    protected Bundle getAttributes() {
+        return mAttributes;
+    }
+
+    protected T set(final String attr, final int value) {
         mAttributes.putInt(attr, value);
-        return this;
+        return (T) this;
     }
 
-    public Entry set(final String attr, final String value) {
+    protected T set(final String attr, final String value) {
         mAttributes.putString(attr, value);
-        return this;
+        return (T) this;
     }
 
-    public Entry set(final String attr, final boolean value) {
+    protected T set(final String attr, final boolean value) {
         mAttributes.putBoolean(attr, value);
-        return this;
+        return (T) this;
     }
 
-    public String getString(final String attr) {
+    protected String getString(final String attr) {
         return mAttributes.getString(attr, mDefaultStringValue);
     }
 
-    public int getInt(final String attr) {
+    protected int getInt(final String attr) {
         return mAttributes.getInt(attr, mDefaultIntValue);
     }
 
-    public boolean getBool(final String attr) {
+    protected boolean getBool(final String attr) {
         return mAttributes.getBoolean(attr, mDefaultBoolValue);
     }
 }
