@@ -88,19 +88,7 @@ public class Course extends RestrictedEntry<Course> implements Savable {
 
     @Override
     public Set<String> getAttributeNames() {
-        final String[] attrs = {
-                DBContract.CourseEntry._ID,
-                DBContract.CourseEntry.COL_NAME,
-                DBContract.CourseEntry.COL_LOCATION_ID_A,
-                DBContract.CourseEntry.COL_LOCATION_ID_B,
-                DBContract.CourseEntry.COL_INSTRUCTOR_ID_A,
-                DBContract.CourseEntry.COL_INSTRUCTOR_ID_B,
-                DBContract.CourseEntry.COL_INSTRUCTOR_ID_C,
-                DBContract.CourseEntry.COL_LENGTH,
-                DBContract.CourseEntry.COL_NOTE
-        };
-
-        return new HashSet<>(Arrays.asList(attrs));
+        return new HashSet<>(Arrays.asList(DBContract.CourseEntry.getColumnNames()));
     }
 
     public Course setID(final int id) {

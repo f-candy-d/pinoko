@@ -44,13 +44,7 @@ public class Location extends RestrictedEntry<Location> implements Savable {
 
     @Override
     public Set<String> getAttributeNames() {
-        final String[] attrs = {
-                DBContract.LocationEntry._ID,
-                DBContract.LocationEntry.COL_NAME,
-                DBContract.LocationEntry.COL_NOTE
-        };
-
-        return new HashSet<>(Arrays.asList(attrs));
+        return new HashSet<>(Arrays.asList(DBContract.LocationEntry.getColumnNames()));
     }
 
     @Override

@@ -135,13 +135,6 @@ public class MainActivity extends AppCompatActivity
         location.setName("location")
                 .setNote("location note");
 
-//        Entry instructor = new Entry(DBContract.InstructorEntry.TABLE_NAME);
-//        instructor.set(DBContract.InstructorEntry.COL_NAME, "instructor")
-//                .set(DBContract.InstructorEntry.COL_LAB, "lab")
-//                .set(DBContract.InstructorEntry.COL_MAIL, "mail")
-//                .set(DBContract.InstructorEntry.COL_PHONE_NUMBER, "phoneNumber")
-//                .set(DBContract.InstructorEntry.COL_NOTE, "instructorNote");
-
         Instructor instructor = new Instructor();
         instructor.setName("instructor")
                 .setLab("lab")
