@@ -203,7 +203,7 @@ public class DBContract {
         // This includes the column of '_id'
         public static final int NUM_COLUMNS = 4;
 
-        public static final String COL_NAME = "eveName";
+        public static final String COL_NAME = "eveName"; // Not null
         public static final String COL_LOCATION_ID = "eveLocId";
         public static final String COL_NOTE = "eveNote";
 

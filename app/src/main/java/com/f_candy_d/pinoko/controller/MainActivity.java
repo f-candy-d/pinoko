@@ -15,6 +15,7 @@ import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Assignment;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.Entry;
+import com.f_candy_d.pinoko.model.Event;
 import com.f_candy_d.pinoko.model.Instructor;
 import com.f_candy_d.pinoko.model.Location;
 import com.f_candy_d.pinoko.model.TimeBlock;
@@ -158,10 +159,10 @@ public class MainActivity extends AppCompatActivity
                 .setNote("assignment note")
                 .setIsDone(true);
 
-        Entry entry5 = new Entry(DBContract.EventEntry.TABLE_NAME);
-        entry5.set(DBContract.EventEntry.COL_NAME, "event")
-                .set(DBContract.EventEntry.COL_LOCATION_ID, 1)
-                .set(DBContract.EventEntry.COL_NOTE, "eventNote");
+        Event event = new Event();
+        event.setName("event")
+                .setLocationID(1)
+                .setNote("event note");
 
         Entry entry6 = new Entry(DBContract.NotificationEntry.TABLE_NAME);
         entry6.set(DBContract.NotificationEntry.COL_NAME, "notification")
@@ -185,7 +186,7 @@ public class MainActivity extends AppCompatActivity
         entries.add(instructor);
         entries.add(timeBlock);
         entries.add(assignment);
-        entries.add(entry5);
+        entries.add(event);
         entries.add(entry6);
         entries.add(entry7);
 
