@@ -6,6 +6,8 @@ import android.os.Bundle;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.Savable;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -86,7 +88,19 @@ public class Course extends RestrictedEntry<Course> implements Savable {
 
     @Override
     public Set<String> getAttributeNames() {
-        return null;
+        final String[] attrs = {
+                DBContract.CourseEntry._ID,
+                DBContract.CourseEntry.COL_NAME,
+                DBContract.CourseEntry.COL_LOCATION_ID_A,
+                DBContract.CourseEntry.COL_LOCATION_ID_B,
+                DBContract.CourseEntry.COL_INSTRUCTOR_ID_A,
+                DBContract.CourseEntry.COL_INSTRUCTOR_ID_B,
+                DBContract.CourseEntry.COL_INSTRUCTOR_ID_C,
+                DBContract.CourseEntry.COL_LENGTH,
+                DBContract.CourseEntry.COL_NOTE
+        };
+
+        return new HashSet<>(Arrays.asList(attrs));
     }
 
     public Course setID(final int id) {

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.f_candy_d.pinoko.utils.DBContract;
-
 /**
  * Created by daichi on 7/30/17.
  */

@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.Entry;
+import com.f_candy_d.pinoko.model.Location;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.DBDataManager;
 import com.f_candy_d.pinoko.utils.Savable;
@@ -129,9 +130,13 @@ public class MainActivity extends AppCompatActivity
                 .setLength(6)
                 .setNote("course note");
 
-        Entry entry1 = new Entry(DBContract.LocationEntry.TABLE_NAME);
-        entry1.set(DBContract.LocationEntry.COL_NAME, "location")
-                .set(DBContract.LocationEntry.COL_NOTE, "locationNote");
+//        Entry entry1 = new Entry(DBContract.LocationEntry.TABLE_NAME);
+//        entry1.set(DBContract.LocationEntry.COL_NAME, "location")
+//                .set(DBContract.LocationEntry.COL_NOTE, "locationNote");
+
+        Location entry1 = new Location();
+        entry1.setName("location")
+                .setNote("location note");
 
         Entry entry2 = new Entry(DBContract.InstructorEntry.TABLE_NAME);
         entry2.set(DBContract.InstructorEntry.COL_NAME, "instructor")

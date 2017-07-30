@@ -66,7 +66,7 @@ public class DBContract {
         // This includes the column of '_id'
         public static final int NUM_COLUMNS = 3;
 
-        public static final String COL_NAME = "locName";
+        public static final String COL_NAME = "locName"; // Not null
         public static final String COL_NOTE = "locNote";
 
         public static final String SQL_CREATE_TABLE =
