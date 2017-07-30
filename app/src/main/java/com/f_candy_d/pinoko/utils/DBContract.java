@@ -173,10 +173,10 @@ public class DBContract {
         // This includes the column of '_id'
         public static final int NUM_COLUMNS = 5;
 
-        public static final String COL_NAME = "assName";
+        public static final String COL_NAME = "assName"; // Not null
         public static final String COL_TIME_BLOCK_ID = "assTbId";
         public static final String COL_NOTE = "assNote";
-        public static final String COL_IS_DONE = "assIsDone";
+        public static final String COL_IS_DONE = "assIsDone"; // Not null
 
         public static final String SQL_CREATE_TABLE =
                 SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("

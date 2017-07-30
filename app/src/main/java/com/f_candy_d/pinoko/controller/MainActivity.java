@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.f_candy_d.pinoko.R;
+import com.f_candy_d.pinoko.model.Assignment;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.Entry;
 import com.f_candy_d.pinoko.model.Instructor;
@@ -151,11 +152,11 @@ public class MainActivity extends AppCompatActivity
                 .setDatetimeEnd(3000)
                 .setTimeTableID(4);
 
-        Entry entry4 = new Entry(DBContract.AssignmentEntry.TABLE_NAME);
-        entry4.set(DBContract.AssignmentEntry.COL_NAME, "assignment")
-                .set(DBContract.AssignmentEntry.COL_TIME_BLOCK_ID, 1)
-                .set(DBContract.AssignmentEntry.COL_NOTE, "assignmentNote")
-                .set(DBContract.AssignmentEntry.COL_IS_DONE, true);
+        Assignment assignment = new Assignment();
+        assignment.setName("assignment")
+                .setTimeBlockID(1)
+                .setNote("assignment note")
+                .setIsDone(true);
 
         Entry entry5 = new Entry(DBContract.EventEntry.TABLE_NAME);
         entry5.set(DBContract.EventEntry.COL_NAME, "event")
@@ -183,7 +184,7 @@ public class MainActivity extends AppCompatActivity
         entries.add(location);
         entries.add(instructor);
         entries.add(timeBlock);
-        entries.add(entry4);
+        entries.add(assignment);
         entries.add(entry5);
         entries.add(entry6);
         entries.add(entry7);
