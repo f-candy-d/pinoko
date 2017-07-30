@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity
 
         initUI();
         // TODO; Test code for DB
-//        saveTest();
-//        loadTest();
+        saveTest();
+        loadTest();
     }
 
     @Override

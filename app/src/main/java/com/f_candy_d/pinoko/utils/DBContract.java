@@ -38,13 +38,13 @@ public class DBContract {
         // This includes the column of '_id'
         public static final int NUM_COLUMNS = 9;
 
-        public static final String COL_NAME = "couName";
-        public static final String COL_LOCATION_ID_A = "couLocIdA";
+        public static final String COL_NAME = "couName"; // Not null
+        public static final String COL_LOCATION_ID_A = "couLocIdA"; // Not null
         public static final String COL_LOCATION_ID_B = "couLocIdB";
-        public static final String COL_INSTRUCTOR_ID_A = "couInsIdA";
+        public static final String COL_INSTRUCTOR_ID_A = "couInsIdA"; // Not null
         public static final String COL_INSTRUCTOR_ID_B = "couInsIdB";
         public static final String COL_INSTRUCTOR_ID_C = "couInsIdC";
-        public static final String COL_LENGTH = "length";
+        public static final String COL_LENGTH = "length"; // Not null
         public static final String COL_NOTE = "couNote";
 
         public static final String SQL_CREATE_TABLE =

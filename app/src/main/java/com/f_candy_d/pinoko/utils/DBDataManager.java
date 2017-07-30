@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
-import com.f_candy_d.pinoko.model.DBOpenHelper;
 import com.f_candy_d.pinoko.model.Entry;
 
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class DBDataManager {
         if (isValidAsBeingInserted(entry)) {
             final DBOpenHelper helper = new DBOpenHelper(mContext);
             final SQLiteDatabase database = helper.getWritableDatabase();
-            final long id = database.insert(entry.getAffiliation(), null, entry.toContentValues());
+            final long id = database.insert(entry.getAffiliation(), null, entry.toContentValues(false));
             database.close();
             return id;
         }
@@ -57,7 +56,7 @@ public class DBDataManager {
         for (int i = 0; i < entries.size(); ++i) {
             entry = entries.get(i);
             if (isValidAsBeingInserted(entry)) {
-                ids[i] = database.insert(entry.getAffiliation(), null, entry.toContentValues());
+                ids[i] = database.insert(entry.getAffiliation(), null, entry.toContentValues(false));
             } else {
                 ids[i] = DBContract.NULL_ID;
             }
@@ -93,7 +92,7 @@ public class DBDataManager {
     private boolean isValidAsBeingInserted(final Entry entry) {
         switch (entry.getAffiliation()) {
             case DBContract.CourseEntry.TABLE_NAME: {
-                return (entry.getAttributes().size() + 1 == DBContract.CourseEntry.NUM_COLUMNS &&
+                return (entry.getAttributeNames().size() + 1 == DBContract.CourseEntry.NUM_COLUMNS &&
                         entry.has(DBContract.CourseEntry.COL_NAME) &&
                         entry.has(DBContract.CourseEntry.COL_LOCATION_ID_A) &&
                         entry.has(DBContract.CourseEntry.COL_LOCATION_ID_B) &&
@@ -105,13 +104,13 @@ public class DBDataManager {
             }
 
             case DBContract.LocationEntry.TABLE_NAME: {
-                return (entry.getAttributes().size() + 1 == DBContract.LocationEntry.NUM_COLUMNS &&
+                return (entry.getAttributeNames().size() + 1 == DBContract.LocationEntry.NUM_COLUMNS &&
                         entry.has(DBContract.LocationEntry.COL_NAME) &&
                         entry.has(DBContract.LocationEntry.COL_NOTE));
             }
 
             case DBContract.InstructorEntry.TABLE_NAME: {
-                return (entry.getAttributes().size() + 1 == DBContract.InstructorEntry.NUM_COLUMNS &&
+                return (entry.getAttributeNames().size() + 1 == DBContract.InstructorEntry.NUM_COLUMNS &&
                         entry.has(DBContract.InstructorEntry.COL_NAME) &&
                         entry.has(DBContract.InstructorEntry.COL_LAB) &&
                         entry.has(DBContract.InstructorEntry.COL_MAIL) &&
@@ -119,7 +118,7 @@ public class DBDataManager {
                         entry.has(DBContract.InstructorEntry.COL_NOTE));
             }
             case DBContract.TimeBlockEntry.TABLE_NAME: {
-                return (entry.getAttributes().size() + 1 == DBContract.TimeBlockEntry.NUM_COLUMNS &&
+                return (entry.getAttributeNames().size() + 1 == DBContract.TimeBlockEntry.NUM_COLUMNS &&
                         entry.has(DBContract.TimeBlockEntry.COL_TYPE) &&
                         entry.has(DBContract.TimeBlockEntry.COL_CATEGORY) &&
                         entry.has(DBContract.TimeBlockEntry.COL_TARGET_ID) &&
@@ -129,7 +128,7 @@ public class DBDataManager {
             }
 
             case DBContract.AssignmentEntry.TABLE_NAME: {
-                return (entry.getAttributes().size() + 1 == DBContract.AssignmentEntry.NUM_COLUMNS &&
+                return (entry.getAttributeNames().size() + 1 == DBContract.AssignmentEntry.NUM_COLUMNS &&
                         entry.has(DBContract.AssignmentEntry.COL_NAME) &&
                         entry.has(DBContract.AssignmentEntry.COL_TIME_BLOCK_ID) &&
                         entry.has(DBContract.AssignmentEntry.COL_NOTE) &&
@@ -137,14 +136,14 @@ public class DBDataManager {
             }
 
             case DBContract.EventEntry.TABLE_NAME: {
-                return (entry.getAttributes().size() + 1 == DBContract.EventEntry.NUM_COLUMNS &&
+                return (entry.getAttributeNames().size() + 1 == DBContract.EventEntry.NUM_COLUMNS &&
                         entry.has(DBContract.EventEntry.COL_NAME) &&
                         entry.has(DBContract.EventEntry.COL_LOCATION_ID) &&
                         entry.has(DBContract.EventEntry.COL_NOTE));
             }
 
             case DBContract.NotificationEntry.TABLE_NAME: {
-                return (entry.getAttributes().size() + 1 == DBContract.NotificationEntry.NUM_COLUMNS &&
+                return (entry.getAttributeNames().size() + 1 == DBContract.NotificationEntry.NUM_COLUMNS &&
                         entry.has(DBContract.NotificationEntry.COL_NAME) &&
                         entry.has(DBContract.NotificationEntry.COL_NOTE) &&
                         entry.has(DBContract.NotificationEntry.COL_CATEGORY) &&
@@ -155,7 +154,7 @@ public class DBDataManager {
                         entry.has(DBContract.NotificationEntry.COL_DATETIME_END));
             }
             case DBContract.AttendanceEntry.TABLE_NAME: {
-                return (entry.getAttributes().size() + 1 == DBContract.AttendanceEntry.NUM_COLUMNS &&
+                return (entry.getAttributeNames().size() + 1 == DBContract.AttendanceEntry.NUM_COLUMNS &&
                         entry.has(DBContract.AttendanceEntry.COL_TIME_BLOCK_ID) &&
                         entry.has(DBContract.AttendanceEntry.COL_PRESENT) &&
                         entry.has(DBContract.AttendanceEntry.COL_LATE) &&

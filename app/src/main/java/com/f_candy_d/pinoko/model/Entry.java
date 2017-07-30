@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.f_candy_d.pinoko.utils.DBContract;
+import com.f_candy_d.pinoko.utils.Savable;
+
 import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,37 +17,24 @@ import java.util.Set;
  * Created by daichi on 7/30/17.
  */
 
-public class Entry {
-
-    private final String mAffiliation;
-    private Bundle mAttributes;
-    private String mDefaultStringValue = null;
-    private int mDefaultIntValue = 0;
-    private boolean mDefaultBoolValue = false;
+// TODO; remove 'implements Savable'
+public class Entry extends RestrictedEntry<Entry> implements Savable {
 
     public Entry(@NonNull final String affiliation) {
         this(affiliation, null);
     }
 
     public Entry(@NonNull final String affiliation, final Bundle bundle) {
-        mAffiliation = affiliation;
-        if (bundle != null) {
-            mAttributes = new Bundle(bundle);
-        } else {
-            mAttributes = new Bundle();
-        }
+        super(affiliation, bundle);
     }
 
-    public String getAffiliation() {
-        return mAffiliation;
-    }
-
-    public ContentValues toContentValues() {
+    @Override
+    public ContentValues toContentValues(boolean withId) {
         ContentValues contentValues = new ContentValues();
         Object value;
 
-        for (String attr : mAttributes.keySet()) {
-            value = mAttributes.get(attr);
+        for (String attr : getAttributeNames()) {
+            value = getAttributes().get(attr);
 
             if (value instanceof Integer) {
                 contentValues.put(attr, (Integer) value);
@@ -58,77 +48,66 @@ public class Entry {
         return contentValues;
     }
 
-    public Bundle toBundle() {
-        return new Bundle(mAttributes);
+    @Override
+    protected void shapeAttributes() {
+        // Nothing to do in this method
     }
 
     @Override
-    public String toString() {
-        String string = super.toString() + "\n";
-        ArrayList<String> values = new ArrayList<>();
-        for (String attr : getAttributes()) {
-            values.add("#" + attr + " :: " + mAttributes.get(attr).toString());
-        }
-
-        return string + TextUtils.join("\n", values);
+    public boolean isSavable() {
+        return false;
     }
 
-    public boolean has(@NonNull final String attr) {
-        return mAttributes.containsKey(attr);
+    @Override
+    public Set<String> getAttributeNames() {
+        return getAttributes().keySet();
     }
 
-    public Set<String> getAttributes() {
-        return mAttributes.keySet();
+    /**
+     * Scope changed : protected -> public
+     */
+    @Override
+    public Entry set(String attr, int value) {
+        return super.set(attr, value);
     }
 
-    public String getDefaultStringValue() {
-        return mDefaultStringValue;
+    /**
+     * Scope changed : protected -> public
+     */
+    @Override
+    public Entry set(String attr, String value) {
+        return super.set(attr, value);
     }
 
-    public void setDefaultStringValue(String defaultStringValue) {
-        mDefaultStringValue = defaultStringValue;
+    /**
+     * Scope changed : protected -> public
+     */
+    @Override
+    public Entry set(String attr, boolean value) {
+        return super.set(attr, value);
     }
 
-    public int getDefaultIntValue() {
-        return mDefaultIntValue;
+    /**
+     * Scope changed : protected -> public
+     */
+    @Override
+    public int getInt(String attr) {
+        return super.getInt(attr);
     }
 
-    public void setDefaultIntValue(int defaultIntValue) {
-        mDefaultIntValue = defaultIntValue;
+    /**
+     * Scope changed : protected -> public
+     */
+    @Override
+    public String getString(String attr) {
+        return super.getString(attr);
     }
 
-    public boolean getDefaultBoolValue() {
-        return mDefaultBoolValue;
-    }
-
-    public void setDefaultBoolValue(boolean defaultBoolValue) {
-        mDefaultBoolValue = defaultBoolValue;
-    }
-
-    public Entry set(final String attr, final int value) {
-        mAttributes.putInt(attr, value);
-        return this;
-    }
-
-    public Entry set(final String attr, final String value) {
-        mAttributes.putString(attr, value);
-        return this;
-    }
-
-    public Entry set(final String attr, final boolean value) {
-        mAttributes.putBoolean(attr, value);
-        return this;
-    }
-
-    public String getString(final String attr) {
-        return mAttributes.getString(attr, mDefaultStringValue);
-    }
-
-    public int getInt(final String attr) {
-        return mAttributes.getInt(attr, mDefaultIntValue);
-    }
-
-    public boolean getBool(final String attr) {
-        return mAttributes.getBoolean(attr, mDefaultBoolValue);
+    /**
+     * Scope changed : protected -> public
+     */
+    @Override
+    public boolean getBool(String attr) {
+        return super.getBool(attr);
     }
 }

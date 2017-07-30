@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.f_candy_d.pinoko.utils.DBContract;
+
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -23,9 +25,10 @@ abstract public class RestrictedEntry<T extends RestrictedEntry<T>> {
     /**
      * Abstract methods
      */
-    abstract public Bundle toBundle();
-    abstract public ContentValues toContentValues();
+//    abstract public ContentValues toContentValues(final boolean withIdIfExists);
     abstract public Set<String> getAttributeNames();
+    abstract protected void shapeAttributes();
+//    abstract public boolean isSavable();
 
     public RestrictedEntry(@NonNull final String affiliation) {
         this(affiliation, null);
@@ -38,17 +41,22 @@ abstract public class RestrictedEntry<T extends RestrictedEntry<T>> {
         } else {
             mAttributes = new Bundle();
         }
+        shapeAttributes();
     }
 
     public String getAffiliation() {
         return mAffiliation;
     }
 
+    public Bundle toBundle() {
+        return new Bundle(mAttributes);
+    }
+
     @Override
     public String toString() {
         String string = super.toString() + "\n";
         ArrayList<String> values = new ArrayList<>();
-        for (String attr : getAttributeNames()) {
+        for (String attr : mAttributes.keySet()) {
             values.add("#" + attr + " :: " + mAttributes.get(attr).toString());
         }
 
@@ -58,6 +66,7 @@ abstract public class RestrictedEntry<T extends RestrictedEntry<T>> {
     public boolean has(@NonNull final String attr) {
         return mAttributes.containsKey(attr);
     }
+
 
     public String getDefaultStringValue() {
         return mDefaultStringValue;

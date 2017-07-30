@@ -1,4 +1,4 @@
-package com.f_candy_d.pinoko.model;
+package com.f_candy_d.pinoko.utils;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
