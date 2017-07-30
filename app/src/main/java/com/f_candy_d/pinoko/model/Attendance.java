@@ -14,7 +14,7 @@ import java.util.Set;
  * Created by daichi on 7/30/17.
  */
 
-public class Attendance extends RestrictedEntry<Attendance> implements Savable {
+public class Attendance extends Entry<Attendance> implements Savable {
 
     public Attendance() {
         this(null);

@@ -16,6 +16,7 @@ import com.f_candy_d.pinoko.model.Assignment;
 import com.f_candy_d.pinoko.model.Attendance;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.Entry;
+import com.f_candy_d.pinoko.model.FlexibleEntry;
 import com.f_candy_d.pinoko.model.Event;
 import com.f_candy_d.pinoko.model.Instructor;
 import com.f_candy_d.pinoko.model.Location;

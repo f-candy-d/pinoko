@@ -6,17 +6,15 @@ import android.os.Bundle;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.Savable;
 
-import java.sql.Time;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TimerTask;
 
 /**
  * Created by daichi on 7/30/17.
  */
 
-public class TimeBlock extends RestrictedEntry<TimeBlock> implements Savable {
+public class TimeBlock extends Entry<TimeBlock> implements Savable {
 
     public enum Type {
         NULL_TYPE(0),

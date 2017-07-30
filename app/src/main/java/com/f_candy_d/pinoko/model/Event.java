@@ -14,7 +14,7 @@ import java.util.Set;
  * Created by daichi on 7/30/17.
  */
 
-public class Event extends RestrictedEntry<Event> implements Savable {
+public class Event extends Entry<Event> implements Savable {
 
     public Event() {
         this(null);

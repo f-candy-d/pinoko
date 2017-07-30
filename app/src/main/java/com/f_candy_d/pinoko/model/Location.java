@@ -14,7 +14,7 @@ import java.util.Set;
  * Created by daichi on 7/30/17.
  */
 
-public class Location extends RestrictedEntry<Location> implements Savable {
+public class Location extends Entry<Location> implements Savable {
 
     public Location() {
         this(null);

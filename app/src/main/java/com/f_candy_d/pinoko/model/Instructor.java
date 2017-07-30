@@ -14,7 +14,7 @@ import java.util.Set;
  * Created by daichi on 7/30/17.
  */
 
-public class Instructor extends RestrictedEntry<Instructor> implements Savable {
+public class Instructor extends Entry<Instructor> implements Savable {
 
     public Instructor() {
         this(null);

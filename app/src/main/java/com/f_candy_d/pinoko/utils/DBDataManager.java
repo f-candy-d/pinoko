@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
 import com.f_candy_d.pinoko.model.Entry;
+import com.f_candy_d.pinoko.model.FlexibleEntry;
 
 import java.util.ArrayList;
 

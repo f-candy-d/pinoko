@@ -14,7 +14,7 @@ import java.util.Set;
  * Created by daichi on 7/30/17.
  */
 
-public class Notification extends RestrictedEntry<Notification> implements Savable {
+public class Notification extends Entry<Notification> implements Savable {
 
     public enum Category {
         NULL_CATEGORY(0),

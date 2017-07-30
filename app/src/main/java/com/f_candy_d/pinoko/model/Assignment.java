@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.f_candy_d.pinoko.utils.DBContract;
-import com.f_candy_d.pinoko.utils.DBOpenHelper;
 import com.f_candy_d.pinoko.utils.Savable;
 
 import java.util.Arrays;
@@ -15,7 +14,7 @@ import java.util.Set;
  * Created by daichi on 7/30/17.
  */
 
-public class Assignment extends RestrictedEntry<Assignment> implements Savable {
+public class Assignment extends Entry<Assignment> implements Savable {
 
     public Assignment() {
         this(null);
