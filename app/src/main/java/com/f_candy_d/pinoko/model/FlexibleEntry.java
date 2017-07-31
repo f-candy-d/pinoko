@@ -61,6 +61,14 @@ public class FlexibleEntry extends Entry<FlexibleEntry> {
      * Scope changed : protected -> public
      */
     @Override
+    public FlexibleEntry set(String attr, long value) {
+        return super.set(attr, value);
+    }
+
+    /**
+     * Scope changed : protected -> public
+     */
+    @Override
     public int getInt(String attr) {
         return super.getInt(attr);
     }
@@ -79,5 +87,13 @@ public class FlexibleEntry extends Entry<FlexibleEntry> {
     @Override
     public boolean getBool(String attr) {
         return super.getBool(attr);
+    }
+
+    /**
+     * Scope changed : protected -> public
+     */
+    @Override
+    public long getLong(String attr) {
+        return super.getLong(attr);
     }
 }

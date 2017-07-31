@@ -13,7 +13,7 @@ import java.util.Set;
 
 abstract public class Entry<T extends Entry<T>> {
 
-    private final String mAffiliation;
+    private String mAffiliation;
     private Bundle mAttributes;
     private String mDefaultStringValue = null;
     private int mDefaultIntValue = 0;
@@ -23,10 +23,8 @@ abstract public class Entry<T extends Entry<T>> {
     /**
      * Abstract methods
      */
-//    abstract public ContentValues toContentValues(final boolean withIdIfExists);
     abstract public Set<String> getAttributeNames();
     abstract protected void shapeAttributes();
-//    abstract public boolean isSavable();
 
     public Entry(@NonNull final String affiliation) {
         this(affiliation, null, true);
@@ -56,6 +54,10 @@ abstract public class Entry<T extends Entry<T>> {
 
     final public String getAffiliation() {
         return mAffiliation;
+    }
+
+    final public void setAffiliation(final String affiliation) {
+        mAffiliation = affiliation;
     }
 
     final public Bundle toBundle() {
