@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
 import com.f_candy_d.pinoko.model.Entry;
-import com.f_candy_d.pinoko.model.FlexibleEntry;
 
 import java.util.ArrayList;
 
@@ -17,31 +16,75 @@ import java.util.ArrayList;
 public class DBDataManager {
 
     public enum Mode {
-        APPEND,
-        TRUNCATE
+        READ,
+        WRITE_APPEND,
+        WRITE_TRUNCATE
     }
 
     @NonNull private Context mContext;
+    private SQLiteDatabase mDatabase = null;
+    private Mode mMode = null;
 
     public DBDataManager(@NonNull final Context context) {
-        this(context, Mode.APPEND);
+        mContext = context;
     }
 
     public DBDataManager(@NonNull final Context context, @NonNull final Mode mode) {
         mContext = context;
+        open(mode);
+    }
 
-        if (mode == Mode.TRUNCATE) {
-            DBOpenHelper helper = new DBOpenHelper(mContext);
-            helper.initTables();
+    public void open(@NonNull final Mode mode) {
+        if (!isOpen()) {
+            final DBOpenHelper helper = new DBOpenHelper(mContext);
+            switch (mode) {
+                case READ: {
+                    mDatabase = helper.getReadableDatabase();
+                    break;
+                }
+
+                case WRITE_APPEND: {
+                    mDatabase = helper.getWritableDatabase();
+                    break;
+                }
+
+                case WRITE_TRUNCATE: {
+                    mDatabase = helper.getWritableDatabase();
+                    helper.initTables();
+                    break;
+                }
+            }
+
+            if (mDatabase != null) {
+                mMode = mode;
+            } else {
+                mMode = null;
+            }
         }
     }
 
+    public void close() {
+        if (isOpen()) {
+            mDatabase.close();
+            mMode = null;
+        }
+    }
+
+    public boolean isOpen() {
+        return (mDatabase != null && mDatabase.isOpen());
+    }
+
+    public boolean isReadOnly() {
+        return (mDatabase != null && mDatabase.isReadOnly());
+    }
+
     public long insert(final Savable entry) {
+        if (!isOpen() || (mMode != Mode.WRITE_APPEND && mMode != Mode.WRITE_TRUNCATE)) {
+            throw new IllegalStateException("DB is not open or its mode is not a write-mode");
+        }
+
         if (entry.isSavable()) {
-            final DBOpenHelper helper = new DBOpenHelper(mContext);
-            final SQLiteDatabase database = helper.getWritableDatabase();
-            final long id = database.insert(entry.getTableName(), null, entry.toContentValues(false));
-            database.close();
+            final long id = mDatabase.insert(entry.getTableName(), null, entry.toContentValues(false));
             return id;
         }
 
@@ -49,31 +92,34 @@ public class DBDataManager {
     }
 
     public long[] insert(final ArrayList<Savable> entries) {
-        final DBOpenHelper helper = new DBOpenHelper(mContext);
-        final SQLiteDatabase database = helper.getWritableDatabase();
+        if (!isOpen() || (mMode != Mode.WRITE_APPEND && mMode != Mode.WRITE_TRUNCATE)) {
+            throw new IllegalStateException("DB is not open or its mode is not a write-mode");
+        }
+
         final long[] ids = new long[entries.size()];
 
         Savable entry;
         for (int i = 0; i < entries.size(); ++i) {
             entry = entries.get(i);
             if (entry.isSavable()) {
-                ids[i] = database.insert(entry.getTableName(), null, entry.toContentValues(false));
+                ids[i] = mDatabase.insert(entry.getTableName(), null, entry.toContentValues(false));
             } else {
                 ids[i] = DBContract.NULL_ID;
             }
         }
 
-        database.close();
         return ids;
     }
 
     public ArrayList<Entry> getAllOf(final String tableName) {
+        if (!isOpen()) {
+            throw new IllegalStateException("DB is not open");
+        }
+
         final ArrayList<Entry> entries = new ArrayList<>();
         // Select all rows in the database
         final String select = "SELECT * FROM " + tableName + ";";
-        final DBOpenHelper helper = new DBOpenHelper(mContext);
-        final SQLiteDatabase database = helper.getReadableDatabase();
-        final Cursor cursor = database.rawQuery(select, null);
+        final Cursor cursor = mDatabase.rawQuery(select, null);
         boolean isEOF = cursor.moveToFirst();
         Entry entry;
 
@@ -86,7 +132,6 @@ public class DBDataManager {
         }
 
         cursor.close();
-        database.close();
         return entries;
     }
 }

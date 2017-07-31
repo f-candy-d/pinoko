@@ -2,6 +2,7 @@ package com.f_candy_d.pinoko.model;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.Savable;
@@ -21,7 +22,11 @@ public class Assignment extends Entry<Assignment> implements Savable {
     }
 
     public Assignment(final Bundle bundle) {
-        super(DBContract.AssignmentEntry.TABLE_NAME, bundle);
+        this(bundle, false);
+    }
+
+    public Assignment(final Bundle bundle, final boolean copyOnlyReference) {
+        super(DBContract.AssignmentEntry.TABLE_NAME, bundle, copyOnlyReference);
     }
 
     @Override
@@ -70,6 +75,14 @@ public class Assignment extends Entry<Assignment> implements Savable {
         if (!has(DBContract.AssignmentEntry.COL_IS_DONE)) {
             setIsDone(getDefaultBoolValue());
         }
+    }
+
+    public FlexibleEntry castTo() {
+        return new FlexibleEntry(getAffiliation(), getAttributes(), true);
+    }
+
+    static public Assignment castFrom(@NonNull FlexibleEntry flexibleEntry) {
+        return new Assignment(flexibleEntry.getAttributes(), true);
     }
 
     public Assignment setID(final int id) {

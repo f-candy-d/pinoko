@@ -12,11 +12,15 @@ import java.util.Set;
 public class FlexibleEntry extends Entry<FlexibleEntry> {
 
     public FlexibleEntry(@NonNull final String affiliation) {
-        this(affiliation, null);
+        this(affiliation, null, true);
     }
 
     public FlexibleEntry(@NonNull final String affiliation, final Bundle bundle) {
-        super(affiliation, bundle);
+        this(affiliation, bundle, false);
+    }
+
+    public FlexibleEntry(@NonNull final String affiliation, final Bundle bundle, final boolean copyReference) {
+        super(affiliation, bundle, copyReference);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.f_candy_d.pinoko.model;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.Savable;
@@ -71,11 +72,15 @@ public class TimeBlock extends Entry<TimeBlock> implements Savable {
     }
 
     public TimeBlock() {
-        this(null);
+        this(null, false);
     }
 
     public TimeBlock(final Bundle bundle) {
-        super(DBContract.TimeBlockEntry.TABLE_NAME, bundle);
+        this(bundle, false);
+    }
+
+    public TimeBlock(final Bundle bundle, final boolean copyOnlyReference) {
+        super(DBContract.TimeBlockEntry.TABLE_NAME, bundle, copyOnlyReference);
     }
 
     @Override
@@ -136,6 +141,14 @@ public class TimeBlock extends Entry<TimeBlock> implements Savable {
         if (!has(DBContract.TimeBlockEntry.COL_TIME_TABLE_ID)) {
             setTimeTableID(DBContract.NULL_ID);
         }
+    }
+
+    public FlexibleEntry castTo() {
+        return new FlexibleEntry(getAffiliation(), getAttributes(), true);
+    }
+
+    static public TimeBlock castFrom(@NonNull FlexibleEntry flexibleEntry) {
+        return new TimeBlock(flexibleEntry.getAttributes(), true);
     }
 
     public TimeBlock setID(final int id) {

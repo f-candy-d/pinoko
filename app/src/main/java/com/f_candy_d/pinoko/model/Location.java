@@ -2,6 +2,7 @@ package com.f_candy_d.pinoko.model;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.Savable;
@@ -17,11 +18,15 @@ import java.util.Set;
 public class Location extends Entry<Location> implements Savable {
 
     public Location() {
-        this(null);
+        this(null, false);
     }
 
     public Location(final Bundle bundle) {
-        super(DBContract.LocationEntry.TABLE_NAME, bundle);
+        this(bundle, false);
+    }
+
+    public Location(final Bundle bundle, final boolean copyOnlyReference) {
+        super(DBContract.LocationEntry.TABLE_NAME, bundle, copyOnlyReference);
     }
 
     @Override
@@ -86,5 +91,13 @@ public class Location extends Entry<Location> implements Savable {
 
     public String getNote() {
         return getString(DBContract.LocationEntry.COL_NOTE);
+    }
+
+    public FlexibleEntry castTo() {
+        return new FlexibleEntry(getAffiliation(), getAttributes(), true);
+    }
+
+    static public Location castFrom(@NonNull FlexibleEntry flexibleEntry) {
+        return new Location(flexibleEntry.getAttributes(), true);
     }
 }

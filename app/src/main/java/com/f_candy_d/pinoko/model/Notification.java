@@ -2,6 +2,7 @@ package com.f_candy_d.pinoko.model;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.Savable;
@@ -77,11 +78,15 @@ public class Notification extends Entry<Notification> implements Savable {
     }
 
     public Notification() {
-        this(null);
+        this(null, false);
     }
 
     public Notification(final Bundle bundle) {
-        super(DBContract.NotificationEntry.TABLE_NAME, bundle);
+        this(bundle, false);
+    }
+
+    public Notification(final Bundle bundle, final boolean copyOnlyReference) {
+        super(DBContract.NotificationEntry.TABLE_NAME, bundle, copyOnlyReference);
     }
 
     @Override
@@ -147,6 +152,14 @@ public class Notification extends Entry<Notification> implements Savable {
         if (!has(DBContract.NotificationEntry.COL_DATETIME_END)) {
             setDatetimeEnd(getDefaultLongValue());
         }
+    }
+
+    public FlexibleEntry castTo() {
+        return new FlexibleEntry(getAffiliation(), getAttributes(), true);
+    }
+
+    static public Notification castFrom(@NonNull FlexibleEntry flexibleEntry) {
+        return new Notification(flexibleEntry.getAttributes(), true);
     }
 
     public Notification setID(final int id) {

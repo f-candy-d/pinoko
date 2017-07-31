@@ -16,7 +16,6 @@ import com.f_candy_d.pinoko.model.Assignment;
 import com.f_candy_d.pinoko.model.Attendance;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.Entry;
-import com.f_candy_d.pinoko.model.FlexibleEntry;
 import com.f_candy_d.pinoko.model.Event;
 import com.f_candy_d.pinoko.model.Instructor;
 import com.f_candy_d.pinoko.model.Location;
@@ -193,7 +192,7 @@ public class MainActivity extends AppCompatActivity
         entries.add(notification);
         entries.add(attendance);
 
-        DBDataManager dbDataManager = new DBDataManager(this, DBDataManager.Mode.TRUNCATE);
+        DBDataManager dbDataManager = new DBDataManager(this, DBDataManager.Mode.WRITE_TRUNCATE);
         long[] longs = dbDataManager.insert(entries);
         Log.d("mylog", "--------------------------------------------------------");
         Log.d("mylog", "#### Save Results");
@@ -201,10 +200,11 @@ public class MainActivity extends AppCompatActivity
             Log.d("mylog", "saved -> " + String.valueOf(id));
         }
         Log.d("mylog", "--------------------------------------------------------");
+        dbDataManager.close();
     }
 
     private void loadTest() {
-        DBDataManager dataManager = new DBDataManager(this, DBDataManager.Mode.APPEND);
+        DBDataManager dataManager = new DBDataManager(this, DBDataManager.Mode.READ);
         for (String name : DBContract.getTableNames()) {
             ArrayList<Entry> list = dataManager.getAllOf(name);
             for (Entry entry : list) {
@@ -214,5 +214,6 @@ public class MainActivity extends AppCompatActivity
                 Log.d("mylog", "--------------------------------------------------------");
             }
         }
+        dataManager.close();
     }
 }

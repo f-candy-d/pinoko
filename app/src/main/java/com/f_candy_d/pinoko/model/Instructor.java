@@ -2,6 +2,7 @@ package com.f_candy_d.pinoko.model;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.Savable;
@@ -17,11 +18,15 @@ import java.util.Set;
 public class Instructor extends Entry<Instructor> implements Savable {
 
     public Instructor() {
-        this(null);
+        this(null, false);
     }
 
     public Instructor(final Bundle bundle) {
-        super(DBContract.InstructorEntry.TABLE_NAME, bundle);
+        this(bundle, false);
+    }
+
+    public Instructor(final Bundle bundle, final boolean copyOnlyReference) {
+        super(DBContract.InstructorEntry.TABLE_NAME, bundle, copyOnlyReference);
     }
 
     public Instructor setID(final int id) {
@@ -122,5 +127,13 @@ public class Instructor extends Entry<Instructor> implements Savable {
         if (!has(DBContract.InstructorEntry.COL_NOTE)) {
             setNote(getDefaultStringValue());
         }
+    }
+
+    public FlexibleEntry castTo() {
+        return new FlexibleEntry(getAffiliation(), getAttributes(), true);
+    }
+
+    static public Instructor castFrom(@NonNull FlexibleEntry flexibleEntry) {
+        return new Instructor(flexibleEntry.getAttributes(), true);
     }
 }

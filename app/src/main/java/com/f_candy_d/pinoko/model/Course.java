@@ -2,6 +2,7 @@ package com.f_candy_d.pinoko.model;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.Savable;
@@ -17,11 +18,15 @@ import java.util.Set;
 public class Course extends Entry<Course> implements Savable {
 
     public Course() {
-        this(null);
+        this(null, false);
     }
 
     public Course(final Bundle bundle) {
-        super(DBContract.CourseEntry.TABLE_NAME, bundle);
+        this(bundle, false);
+    }
+
+    public Course(final Bundle bundle, final boolean copyOnlyReference) {
+        super(DBContract.CourseEntry.TABLE_NAME, bundle, copyOnlyReference);
     }
 
     @Override
@@ -90,6 +95,15 @@ public class Course extends Entry<Course> implements Savable {
     public Set<String> getAttributeNames() {
         return new HashSet<>(Arrays.asList(DBContract.CourseEntry.getColumnNames()));
     }
+
+    public FlexibleEntry castTo() {
+        return new FlexibleEntry(getAffiliation(), getAttributes(), true);
+    }
+
+    static public Course castFrom(@NonNull FlexibleEntry flexibleEntry) {
+        return new Course(flexibleEntry.getAttributes(), true);
+    }
+
 
     public Course setID(final int id) {
         return set(DBContract.CourseEntry._ID, id);

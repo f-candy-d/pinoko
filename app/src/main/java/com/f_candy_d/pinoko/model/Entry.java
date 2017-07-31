@@ -29,13 +29,25 @@ abstract public class Entry<T extends Entry<T>> {
 //    abstract public boolean isSavable();
 
     public Entry(@NonNull final String affiliation) {
-        this(affiliation, null);
+        this(affiliation, null, true);
     }
 
     public Entry(@NonNull final String affiliation, final Bundle bundle) {
+        this(affiliation, bundle, false);
+    }
+
+    public Entry(@NonNull final String affiliation,
+                 final Bundle bundle,
+                 final boolean copyOnlyReference) {
+
         mAffiliation = affiliation;
         if (bundle != null) {
-            mAttributes = new Bundle(bundle);
+            if (copyOnlyReference) {
+                mAttributes = bundle;
+            } else {
+                mAttributes = new Bundle(bundle);
+            }
+
         } else {
             mAttributes = new Bundle();
         }
