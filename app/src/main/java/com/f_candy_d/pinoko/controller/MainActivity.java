@@ -13,14 +13,23 @@ import android.view.MenuItem;
 
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Assignment;
+import com.f_candy_d.pinoko.model.AssignmentFormer;
 import com.f_candy_d.pinoko.model.Attendance;
+import com.f_candy_d.pinoko.model.AttendanceFormer;
 import com.f_candy_d.pinoko.model.Course;
+import com.f_candy_d.pinoko.model.CourseFormer;
 import com.f_candy_d.pinoko.model.Entry;
 import com.f_candy_d.pinoko.model.Event;
+import com.f_candy_d.pinoko.model.EventFormer;
+import com.f_candy_d.pinoko.model.FlexibleEntry;
 import com.f_candy_d.pinoko.model.Instructor;
+import com.f_candy_d.pinoko.model.InstructorFormer;
 import com.f_candy_d.pinoko.model.Location;
+import com.f_candy_d.pinoko.model.LocationFormer;
 import com.f_candy_d.pinoko.model.Notification;
+import com.f_candy_d.pinoko.model.NotificationFormer;
 import com.f_candy_d.pinoko.model.TimeBlock;
+import com.f_candy_d.pinoko.model.TimeBlockFormer;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.DBDataManager;
 import com.f_candy_d.pinoko.utils.Savable;
@@ -126,7 +135,8 @@ public class MainActivity extends AppCompatActivity
 
     private void saveTest() {
         ArrayList<Savable> entries = new ArrayList<>();
-        Course course = new Course();
+//        Course course = new Course();
+        CourseFormer course = new CourseFormer(new FlexibleEntry(""));
         course.setName("course")
                 .setLocationIDA(1)
                 .setLocationIDB(2)
@@ -136,18 +146,21 @@ public class MainActivity extends AppCompatActivity
                 .setLength(6)
                 .setNote("course note");
 
-        Location location = new Location();
+        LocationFormer location = new LocationFormer(new FlexibleEntry(""));
+//        Location location = new Location();
         location.setName("location")
                 .setNote("location note");
 
-        Instructor instructor = new Instructor();
+        InstructorFormer instructor = new InstructorFormer(new FlexibleEntry(""));
+//        Instructor instructor = new Instructor();
         instructor.setName("instructor")
                 .setLab("lab")
                 .setMail("mail")
                 .setPhoneNumber("phoneNumber")
                 .setNote("instructor note");
 
-        TimeBlock timeBlock = new TimeBlock();
+        TimeBlockFormer timeBlock = new TimeBlockFormer(new FlexibleEntry(""));
+//        TimeBlock timeBlock = new TimeBlock();
         timeBlock.setType(TimeBlock.Type.EVERYDAY)
                 .setCategory(TimeBlock.Category.COURSE)
                 .setTargetID(1)
@@ -155,18 +168,22 @@ public class MainActivity extends AppCompatActivity
                 .setDatetimeEnd(3000)
                 .setTimeTableID(4);
 
-        Assignment assignment = new Assignment();
+
+        AssignmentFormer assignment = new AssignmentFormer(new FlexibleEntry(""));
+//        Assignment assignment = new Assignment();
         assignment.setName("assignment")
                 .setTimeBlockID(1)
                 .setNote("assignment note")
                 .setIsDone(true);
 
-        Event event = new Event();
+        EventFormer event = new EventFormer(new FlexibleEntry(""));
+//        Event event = new Event();
         event.setName("event")
                 .setLocationID(1)
                 .setNote("event note");
 
-        Notification notification = new Notification();
+        NotificationFormer notification = new NotificationFormer(new FlexibleEntry(""));
+//        Notification notification = new Notification();
         notification.setName("notification")
                 .setNote("notification note")
                 .setCategory(Notification.Category.ATTENDANCE)
@@ -176,7 +193,9 @@ public class MainActivity extends AppCompatActivity
                 .setDatetimeBegin(2000)
                 .setDatetimeEnd(3000);
 
-        Attendance attendance = new Attendance();
+
+        AttendanceFormer attendance = new AttendanceFormer(new FlexibleEntry(""));
+//        Attendance attendance = new Attendance();
         attendance.setTimeBlockID(1)
                 .setPresent(2)
                 .setLate(3)
