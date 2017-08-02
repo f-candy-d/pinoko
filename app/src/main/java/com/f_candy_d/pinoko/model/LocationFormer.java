@@ -15,6 +15,10 @@ import java.util.Set;
 
 public class LocationFormer extends EntryFormer {
 
+    public static LocationFormer createWithEntry() {
+        return new LocationFormer(new Entry(DBContract.LocationEntry.TABLE_NAME));
+    }
+
     public LocationFormer() {}
 
     public LocationFormer(final Entry entry) {
@@ -66,7 +70,7 @@ public class LocationFormer extends EntryFormer {
         return new HashSet<>(Arrays.asList(DBContract.LocationEntry.getColumnNames()));
     }
 
-    public LocationFormer setID(final int id) {
+    public LocationFormer setID(final long id) {
         getEntry().set(DBContract.LocationEntry._ID, id);
         return this;
     }
@@ -81,8 +85,8 @@ public class LocationFormer extends EntryFormer {
         return this;
     }
 
-    public int getID() {
-        return getEntry().getInt(DBContract.LocationEntry._ID);
+    public long getID() {
+        return getEntry().getLong(DBContract.LocationEntry._ID);
     }
 
     public String getName() {

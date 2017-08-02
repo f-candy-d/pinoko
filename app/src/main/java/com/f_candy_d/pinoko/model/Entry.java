@@ -11,7 +11,7 @@ import java.util.Set;
  * Created by daichi on 7/30/17.
  */
 
-abstract public class Entry<T extends Entry<T>> {
+public class Entry {
 
     private String mAffiliation;
     private Bundle mAttributes;
@@ -20,36 +20,21 @@ abstract public class Entry<T extends Entry<T>> {
     private boolean mDefaultBoolValue = false;
     private long mDefaultLongValue = 0L;
 
-    /**
-     * Abstract methods
-     */
-    abstract public Set<String> getAttributeNames();
-    abstract protected void shapeAttributes();
-
     public Entry(@NonNull final String affiliation) {
-        this(affiliation, null, true);
+        this(affiliation, null);
     }
 
     public Entry(@NonNull final String affiliation, final Bundle bundle) {
-        this(affiliation, bundle, false);
-    }
-
-    public Entry(@NonNull final String affiliation,
-                 final Bundle bundle,
-                 final boolean copyOnlyReference) {
-
         mAffiliation = affiliation;
         if (bundle != null) {
-            if (copyOnlyReference) {
-                mAttributes = bundle;
-            } else {
-                mAttributes = new Bundle(bundle);
-            }
-
+            mAttributes = new Bundle(bundle);
         } else {
             mAttributes = new Bundle();
         }
-        shapeAttributes();
+    }
+
+    public Set<String> getAttributeNames() {
+        return getAttributes().keySet();
     }
 
     final public String getAffiliation() {
@@ -116,39 +101,39 @@ abstract public class Entry<T extends Entry<T>> {
         return mAttributes;
     }
 
-    protected T set(final String attr, final int value) {
+    public Entry set(final String attr, final int value) {
         mAttributes.putInt(attr, value);
-        return (T) this;
+        return this;
     }
 
-    protected T set(final String attr, final String value) {
+    public Entry set(final String attr, final String value) {
         mAttributes.putString(attr, value);
-        return (T) this;
+        return this;
     }
 
-    protected T set(final String attr, final boolean value) {
+    public Entry set(final String attr, final boolean value) {
         mAttributes.putBoolean(attr, value);
-        return (T) this;
+        return this;
     }
 
-    protected T set(final String attr, final long value) {
+    public Entry set(final String attr, final long value) {
         mAttributes.putLong(attr, value);
-        return (T) this;
+        return this;
     }
 
-    protected String getString(final String attr) {
+    public String getString(final String attr) {
         return mAttributes.getString(attr, mDefaultStringValue);
     }
 
-    protected int getInt(final String attr) {
+    public int getInt(final String attr) {
         return mAttributes.getInt(attr, mDefaultIntValue);
     }
 
-    protected boolean getBool(final String attr) {
+    public boolean getBool(final String attr) {
         return mAttributes.getBoolean(attr, mDefaultBoolValue);
     }
 
-    protected long getLong(final String attr) {
+    public long getLong(final String attr) {
         return mAttributes.getLong(attr, mDefaultLongValue);
     }
 }

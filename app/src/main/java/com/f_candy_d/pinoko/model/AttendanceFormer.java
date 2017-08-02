@@ -14,6 +14,10 @@ import java.util.Set;
 
 public class AttendanceFormer extends EntryFormer {
 
+    public static AttendanceFormer createWithEntry() {
+        return new AttendanceFormer(new Entry(DBContract.AttendanceEntry.TABLE_NAME));
+    }
+
     public AttendanceFormer() {
         this(null);
     }
@@ -82,12 +86,12 @@ public class AttendanceFormer extends EntryFormer {
         return new HashSet<>(Arrays.asList(DBContract.AttendanceEntry.getColumnNames()));
     }
 
-    public AttendanceFormer setID(final int id) {
+    public AttendanceFormer setID(final long id) {
         getEntry().set(DBContract.AttendanceEntry._ID, id);
         return this;
     }
 
-    public AttendanceFormer setTimeBlockID(final int timeBlockID) {
+    public AttendanceFormer setTimeBlockID(final long timeBlockID) {
         getEntry().set(DBContract.AttendanceEntry.COL_TIME_BLOCK_ID, timeBlockID);
         return this;
     }
@@ -112,12 +116,12 @@ public class AttendanceFormer extends EntryFormer {
         return this;
     }
 
-    public int getID() {
-        return getEntry().getInt(DBContract.AttendanceEntry._ID);
+    public long getID() {
+        return getEntry().getLong(DBContract.AttendanceEntry._ID);
     }
 
-    public int getTimeBlockID() {
-        return getEntry().getInt(DBContract.AttendanceEntry.COL_TIME_BLOCK_ID);
+    public long getTimeBlockID() {
+        return getEntry().getLong(DBContract.AttendanceEntry.COL_TIME_BLOCK_ID);
     }
 
     public int getPresent() {

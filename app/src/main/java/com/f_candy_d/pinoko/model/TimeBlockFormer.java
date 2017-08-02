@@ -68,6 +68,10 @@ public class TimeBlockFormer extends EntryFormer {
         }
     }
 
+    public static TimeBlockFormer createWithEntry() {
+        return new TimeBlockFormer(new Entry(DBContract.TimeBlockEntry.TABLE_NAME));
+    }
+
     public TimeBlockFormer() {}
 
     public TimeBlockFormer(final Entry entry) {
@@ -115,10 +119,10 @@ public class TimeBlockFormer extends EntryFormer {
             setID(DBContract.NULL_ID);
         }
         if (!has(DBContract.TimeBlockEntry.COL_TYPE)) {
-            setType(TimeBlock.Type.NULL_TYPE);
+            setType(Type.NULL_TYPE);
         }
         if (!has(DBContract.TimeBlockEntry.COL_CATEGORY)) {
-            setCategory(TimeBlock.Category.NULL_CATEGORY);
+            setCategory(Category.NULL_CATEGORY);
         }
         if (!has(DBContract.TimeBlockEntry.COL_TARGET_ID)) {
             setTargetID(DBContract.NULL_ID);
@@ -139,22 +143,22 @@ public class TimeBlockFormer extends EntryFormer {
         return new HashSet<>(Arrays.asList(DBContract.TimeBlockEntry.getColumnNames()));
     }
 
-    public TimeBlockFormer setID(final int id) {
+    public TimeBlockFormer setID(final long id) {
         getEntry().set(DBContract.TimeBlockEntry._ID, id);
         return this;
     }
 
-    public TimeBlockFormer setType(final TimeBlock.Type type) {
+    public TimeBlockFormer setType(final Type type) {
         getEntry().set(DBContract.TimeBlockEntry.COL_TYPE, type.toInt());
         return this;
     }
 
-    public TimeBlockFormer setCategory(final TimeBlock.Category category) {
+    public TimeBlockFormer setCategory(final Category category) {
         getEntry().set(DBContract.TimeBlockEntry.COL_CATEGORY, category.toInt());
         return this;
     }
 
-    public TimeBlockFormer setTargetID(final int targetID) {
+    public TimeBlockFormer setTargetID(final long targetID) {
         getEntry().set(DBContract.TimeBlockEntry.COL_TARGET_ID, targetID);
         return this;
     }
@@ -169,13 +173,13 @@ public class TimeBlockFormer extends EntryFormer {
         return this;
     }
 
-    public TimeBlockFormer setTimeTableID(final int timeTableID) {
+    public TimeBlockFormer setTimeTableID(final long timeTableID) {
         getEntry().set(DBContract.TimeBlockEntry.COL_TIME_TABLE_ID, timeTableID);
         return this;
     }
 
-    public int getID() {
-        return getEntry().getInt(DBContract.TimeBlockEntry._ID);
+    public long getID() {
+        return getEntry().getLong(DBContract.TimeBlockEntry._ID);
     }
 
     public Type getType() {
@@ -186,8 +190,8 @@ public class TimeBlockFormer extends EntryFormer {
         return Category.from(getEntry().getInt(DBContract.TimeBlockEntry.COL_CATEGORY));
     }
 
-    public int getTargetID() {
-        return getEntry().getInt(DBContract.TimeBlockEntry.COL_TARGET_ID);
+    public long getTargetID() {
+        return getEntry().getLong(DBContract.TimeBlockEntry.COL_TARGET_ID);
     }
 
     public long getDatetimeBegin() {
@@ -198,7 +202,7 @@ public class TimeBlockFormer extends EntryFormer {
         return getEntry().getLong(DBContract.TimeBlockEntry.COL_DATETIME_END);
     }
 
-    public int getTimeTableID() {
-        return getEntry().getInt(DBContract.TimeBlockEntry.COL_TIME_TABLE_ID);
+    public long getTimeTableID() {
+        return getEntry().getLong(DBContract.TimeBlockEntry.COL_TIME_TABLE_ID);
     }
 }

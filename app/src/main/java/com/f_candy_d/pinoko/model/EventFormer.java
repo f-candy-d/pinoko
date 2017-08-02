@@ -15,6 +15,10 @@ import java.util.Set;
 
 public class EventFormer extends EntryFormer {
 
+    public static EventFormer createWithEntry() {
+        return new EventFormer(new Entry(DBContract.EventEntry.TABLE_NAME));
+    }
+
     public EventFormer() {}
 
     public EventFormer(final Entry entry) {
@@ -70,7 +74,7 @@ public class EventFormer extends EntryFormer {
         return new HashSet<>(Arrays.asList(DBContract.EventEntry.getColumnNames()));
     }
 
-    public EventFormer setID(final int id) {
+    public EventFormer setID(final long id) {
         getEntry().set(DBContract.EventEntry._ID, id);
         return this;
     }
@@ -80,7 +84,7 @@ public class EventFormer extends EntryFormer {
         return this;
     }
 
-    public EventFormer setLocationID(final int locationID) {
+    public EventFormer setLocationID(final long locationID) {
         getEntry().set(DBContract.EventEntry.COL_LOCATION_ID, locationID);
         return this;
     }
@@ -90,16 +94,16 @@ public class EventFormer extends EntryFormer {
         return this;
     }
 
-    public int getID() {
-        return getEntry().getInt(DBContract.EventEntry._ID);
+    public long getID() {
+        return getEntry().getLong(DBContract.EventEntry._ID);
     }
 
     public String getName() {
         return getEntry().getString(DBContract.EventEntry.COL_NAME);
     }
 
-    public int getLocationID() {
-        return getEntry().getInt(DBContract.EventEntry.COL_LOCATION_ID);
+    public long getLocationID() {
+        return getEntry().getLong(DBContract.EventEntry.COL_LOCATION_ID);
     }
 
     public String getNote() {

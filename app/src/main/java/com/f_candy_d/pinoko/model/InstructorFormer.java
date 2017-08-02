@@ -14,6 +14,10 @@ import java.util.Set;
 
 public class InstructorFormer extends EntryFormer {
 
+    public static InstructorFormer createWithEntry() {
+        return new InstructorFormer(new Entry(DBContract.InstructorEntry.TABLE_NAME));
+    }
+
     public InstructorFormer() {}
 
     public InstructorFormer(final Entry entry) {
@@ -77,7 +81,7 @@ public class InstructorFormer extends EntryFormer {
         return new HashSet<>(Arrays.asList(DBContract.InstructorEntry.getColumnNames()));
     }
 
-    public InstructorFormer setID(final int id) {
+    public InstructorFormer setID(final long id) {
         getEntry().set(DBContract.InstructorEntry._ID, id);
         return this;
     }
@@ -107,8 +111,8 @@ public class InstructorFormer extends EntryFormer {
         return this;
     }
 
-    public int getID() {
-        return getEntry().getInt(DBContract.InstructorEntry._ID);
+    public long getID() {
+        return getEntry().getLong(DBContract.InstructorEntry._ID);
     }
 
     public String getName() {

@@ -14,6 +14,10 @@ import java.util.Set;
 
 public class CourseFormer extends EntryFormer {
 
+    public static CourseFormer createWithEntry() {
+        return new CourseFormer(new Entry(DBContract.CourseEntry.TABLE_NAME));
+    }
+
     public CourseFormer() {
         this(null);
     }
@@ -94,7 +98,7 @@ public class CourseFormer extends EntryFormer {
         return new HashSet<>(Arrays.asList(DBContract.CourseEntry.getColumnNames()));
     }
 
-    public CourseFormer setID(final int id) {
+    public CourseFormer setID(final long id) {
         getEntry().set(DBContract.CourseEntry._ID, id);
         return this;
     }
@@ -104,27 +108,27 @@ public class CourseFormer extends EntryFormer {
         return this;
     }
 
-    public CourseFormer setLocationIDA(final int id) {
+    public CourseFormer setLocationIDA(final long id) {
         getEntry().set(DBContract.CourseEntry.COL_LOCATION_ID_A, id);
         return this;
     }
 
-    public CourseFormer setLocationIDB(final int id) {
+    public CourseFormer setLocationIDB(final long id) {
         getEntry().set(DBContract.CourseEntry.COL_LOCATION_ID_B, id);
         return this;
     }
 
-    public CourseFormer setInstructorIDA(final int id) {
+    public CourseFormer setInstructorIDA(final long  id) {
         getEntry().set(DBContract.CourseEntry.COL_INSTRUCTOR_ID_A, id);
         return this;
     }
 
-    public CourseFormer setInstructorIDB(final int id) {
+    public CourseFormer setInstructorIDB(final long id) {
         getEntry().set(DBContract.CourseEntry.COL_INSTRUCTOR_ID_B, id);
         return this;
     }
 
-    public CourseFormer setInstructorIDC(final int id) {
+    public CourseFormer setInstructorIDC(final long id) {
         getEntry().set(DBContract.CourseEntry.COL_INSTRUCTOR_ID_C, id);
         return this;
     }
@@ -139,32 +143,32 @@ public class CourseFormer extends EntryFormer {
         return this;
     }
 
-    public int getID() {
-        return getEntry().getInt(DBContract.CourseEntry._ID);
+    public long getID() {
+        return getEntry().getLong(DBContract.CourseEntry._ID);
     }
 
     public String getName() {
         return getEntry().getString(DBContract.CourseEntry.COL_NAME);
     }
 
-    public int getLocationIDA() {
-        return getEntry().getInt(DBContract.CourseEntry.COL_LOCATION_ID_A);
+    public long getLocationIDA() {
+        return getEntry().getLong(DBContract.CourseEntry.COL_LOCATION_ID_A);
     }
 
-    public int getLocationIDB() {
-        return getEntry().getInt(DBContract.CourseEntry.COL_LOCATION_ID_B);
+    public long getLocationIDB() {
+        return getEntry().getLong(DBContract.CourseEntry.COL_LOCATION_ID_B);
     }
 
-    public int getInstructorIDA() {
-        return getEntry().getInt(DBContract.CourseEntry.COL_INSTRUCTOR_ID_A);
+    public long getInstructorIDA() {
+        return getEntry().getLong(DBContract.CourseEntry.COL_INSTRUCTOR_ID_A);
     }
 
-    public int getInstructorIDB() {
-        return getEntry().getInt(DBContract.CourseEntry.COL_INSTRUCTOR_ID_B);
+    public long getInstructorIDB() {
+        return getEntry().getLong(DBContract.CourseEntry.COL_INSTRUCTOR_ID_B);
     }
 
-    public int getInstructorIDC() {
-        return getEntry().getInt(DBContract.CourseEntry.COL_INSTRUCTOR_ID_C);
+    public long getInstructorIDC() {
+        return getEntry().getLong(DBContract.CourseEntry.COL_INSTRUCTOR_ID_C);
     }
 
     public int getLength() {

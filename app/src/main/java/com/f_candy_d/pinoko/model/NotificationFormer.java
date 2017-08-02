@@ -74,6 +74,10 @@ public class NotificationFormer extends EntryFormer {
         }
     }
 
+    public static NotificationFormer createWithEntry() {
+        return new NotificationFormer(new Entry(DBContract.NotificationEntry.TABLE_NAME));
+    }
+
     public NotificationFormer() {}
 
     public NotificationFormer(final Entry entry) {
@@ -126,13 +130,13 @@ public class NotificationFormer extends EntryFormer {
             setName(getEntry().getDefaultStringValue());
         }
         if (!has(DBContract.NotificationEntry.COL_CATEGORY)) {
-            setCategory(Notification.Category.NULL_CATEGORY);
+            setCategory(Category.NULL_CATEGORY);
         }
         if (!has(DBContract.NotificationEntry.COL_TARGET_ID)) {
             setTargetID(DBContract.NULL_ID);
         }
         if (!has(DBContract.NotificationEntry.COL_TYPE)) {
-            setType(Notification.Type.NULL_TYPE);
+            setType(Type.NULL_TYPE);
         }
         if (!has(DBContract.NotificationEntry.COL_IS_DONE)) {
             setIsDone(getEntry().getDefaultBoolValue());
@@ -150,7 +154,7 @@ public class NotificationFormer extends EntryFormer {
         return new HashSet<>(Arrays.asList(DBContract.NotificationEntry.getColumnNames()));
     }
 
-    public NotificationFormer setID(final int id) {
+    public NotificationFormer setID(final long id) {
         getEntry().set(DBContract.NotificationEntry._ID, id);
         return this;
     }
@@ -165,17 +169,17 @@ public class NotificationFormer extends EntryFormer {
         return this;
     }
 
-    public NotificationFormer setCategory(final Notification.Category category) {
+    public NotificationFormer setCategory(final Category category) {
         getEntry().set(DBContract.NotificationEntry.COL_CATEGORY, category.toInt());
         return this;
     }
 
-    public NotificationFormer setTargetID(final int targetID) {
+    public NotificationFormer setTargetID(final long targetID) {
         getEntry().set(DBContract.NotificationEntry.COL_TARGET_ID, targetID);
         return this;
     }
 
-    public NotificationFormer setType(final Notification.Type type) {
+    public NotificationFormer setType(final Type type) {
         getEntry().set(DBContract.NotificationEntry.COL_TYPE, type.toInt());
         return this;
     }
@@ -195,8 +199,8 @@ public class NotificationFormer extends EntryFormer {
         return this;
     }
 
-    public int getID() {
-        return getEntry().getInt(DBContract.NotificationEntry._ID);
+    public long getID() {
+        return getEntry().getLong(DBContract.NotificationEntry._ID);
     }
 
     public String getName() {
@@ -211,8 +215,8 @@ public class NotificationFormer extends EntryFormer {
         return Category.from(getEntry().getInt(DBContract.NotificationEntry.COL_CATEGORY));
     }
 
-    public int getTargetID() {
-        return getEntry().getInt(DBContract.NotificationEntry.COL_TARGET_ID);
+    public long getTargetID() {
+        return getEntry().getLong(DBContract.NotificationEntry.COL_TARGET_ID);
     }
 
     public Type getType() {

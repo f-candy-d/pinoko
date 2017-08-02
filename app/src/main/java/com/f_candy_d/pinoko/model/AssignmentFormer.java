@@ -14,6 +14,10 @@ import java.util.Set;
 
 public class AssignmentFormer extends EntryFormer {
 
+    public static AssignmentFormer createWithEntry() {
+        return new AssignmentFormer(new Entry(DBContract.CourseEntry.TABLE_NAME));
+    }
+
     public AssignmentFormer() {
         this(null);
     }
@@ -78,7 +82,7 @@ public class AssignmentFormer extends EntryFormer {
     /**
      * Getters & Setters of Entry's attributes
      */
-    public AssignmentFormer setID(final int id) {
+    public AssignmentFormer setID(final long id) {
         getEntry().set(DBContract.AssignmentEntry._ID, id);
         return this;
     }
@@ -88,7 +92,7 @@ public class AssignmentFormer extends EntryFormer {
         return this;
     }
 
-    public AssignmentFormer setTimeBlockID(final int id) {
+    public AssignmentFormer setTimeBlockID(final long id) {
         getEntry().set(DBContract.AssignmentEntry.COL_TIME_BLOCK_ID, id);
         return this;
     }
@@ -103,16 +107,16 @@ public class AssignmentFormer extends EntryFormer {
         return this;
     }
 
-    public int getID() {
-        return getEntry().getInt(DBContract.AssignmentEntry._ID);
+    public long getID() {
+        return getEntry().getLong(DBContract.AssignmentEntry._ID);
     }
 
     public String getName() {
         return getEntry().getString(DBContract.AssignmentEntry.COL_NAME);
     }
 
-    public int getTimeBlockID() {
-        return getEntry().getInt(DBContract.AssignmentEntry.COL_TIME_BLOCK_ID);
+    public long getTimeBlockID() {
+        return getEntry().getLong(DBContract.AssignmentEntry.COL_TIME_BLOCK_ID);
     }
 
     public String getNote() {

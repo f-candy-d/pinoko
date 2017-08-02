@@ -12,23 +12,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.f_candy_d.pinoko.R;
-import com.f_candy_d.pinoko.model.Assignment;
 import com.f_candy_d.pinoko.model.AssignmentFormer;
-import com.f_candy_d.pinoko.model.Attendance;
 import com.f_candy_d.pinoko.model.AttendanceFormer;
-import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.CourseFormer;
 import com.f_candy_d.pinoko.model.Entry;
-import com.f_candy_d.pinoko.model.Event;
 import com.f_candy_d.pinoko.model.EventFormer;
-import com.f_candy_d.pinoko.model.FlexibleEntry;
-import com.f_candy_d.pinoko.model.Instructor;
 import com.f_candy_d.pinoko.model.InstructorFormer;
-import com.f_candy_d.pinoko.model.Location;
 import com.f_candy_d.pinoko.model.LocationFormer;
-import com.f_candy_d.pinoko.model.Notification;
 import com.f_candy_d.pinoko.model.NotificationFormer;
-import com.f_candy_d.pinoko.model.TimeBlock;
 import com.f_candy_d.pinoko.model.TimeBlockFormer;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.DBDataManager;
@@ -135,8 +126,7 @@ public class MainActivity extends AppCompatActivity
 
     private void saveTest() {
         ArrayList<Savable> entries = new ArrayList<>();
-//        Course course = new Course();
-        CourseFormer course = new CourseFormer(new FlexibleEntry(""));
+        CourseFormer course = CourseFormer.createWithEntry();
         course.setName("course")
                 .setLocationIDA(1)
                 .setLocationIDB(2)
@@ -146,56 +136,49 @@ public class MainActivity extends AppCompatActivity
                 .setLength(6)
                 .setNote("course note");
 
-        LocationFormer location = new LocationFormer(new FlexibleEntry(""));
-//        Location location = new Location();
+        LocationFormer location = LocationFormer.createWithEntry();
         location.setName("location")
                 .setNote("location note");
 
-        InstructorFormer instructor = new InstructorFormer(new FlexibleEntry(""));
-//        Instructor instructor = new Instructor();
+        InstructorFormer instructor = InstructorFormer.createWithEntry();
         instructor.setName("instructor")
                 .setLab("lab")
                 .setMail("mail")
                 .setPhoneNumber("phoneNumber")
                 .setNote("instructor note");
 
-        TimeBlockFormer timeBlock = new TimeBlockFormer(new FlexibleEntry(""));
-//        TimeBlock timeBlock = new TimeBlock();
-        timeBlock.setType(TimeBlock.Type.EVERYDAY)
-                .setCategory(TimeBlock.Category.COURSE)
+        TimeBlockFormer timeBlock = TimeBlockFormer.createWithEntry();
+        timeBlock.setType(TimeBlockFormer.Type.EVERYDAY)
+                .setCategory(TimeBlockFormer.Category.COURSE)
                 .setTargetID(1)
                 .setDatetimeBegin(2000)
                 .setDatetimeEnd(3000)
                 .setTimeTableID(4);
 
 
-        AssignmentFormer assignment = new AssignmentFormer(new FlexibleEntry(""));
-//        Assignment assignment = new Assignment();
+        AssignmentFormer assignment = AssignmentFormer.createWithEntry();
         assignment.setName("assignment")
                 .setTimeBlockID(1)
                 .setNote("assignment note")
                 .setIsDone(true);
 
-        EventFormer event = new EventFormer(new FlexibleEntry(""));
-//        Event event = new Event();
+        EventFormer event = EventFormer.createWithEntry();
         event.setName("event")
                 .setLocationID(1)
                 .setNote("event note");
 
-        NotificationFormer notification = new NotificationFormer(new FlexibleEntry(""));
-//        Notification notification = new Notification();
+        NotificationFormer notification = NotificationFormer.createWithEntry();
         notification.setName("notification")
                 .setNote("notification note")
-                .setCategory(Notification.Category.ATTENDANCE)
+                .setCategory(NotificationFormer.Category.ATTENDANCE)
                 .setTargetID(1)
-                .setType(Notification.Type.CANCELLATION)
+                .setType(NotificationFormer.Type.CANCELLATION)
                 .setIsDone(true)
                 .setDatetimeBegin(2000)
                 .setDatetimeEnd(3000);
 
 
-        AttendanceFormer attendance = new AttendanceFormer(new FlexibleEntry(""));
-//        Attendance attendance = new Attendance();
+        AttendanceFormer attendance = AttendanceFormer.createWithEntry();
         attendance.setTimeBlockID(1)
                 .setPresent(2)
                 .setLate(3)
