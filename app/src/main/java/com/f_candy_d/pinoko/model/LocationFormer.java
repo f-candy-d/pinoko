@@ -1,7 +1,6 @@
 package com.f_candy_d.pinoko.model;
 
 import android.content.ContentValues;
-import android.support.annotation.NonNull;
 
 import com.f_candy_d.pinoko.utils.DBContract;
 
@@ -34,10 +33,10 @@ public class LocationFormer extends EntryFormer {
     public ContentValues toContentValues(boolean withId) {
         ContentValues contentValues = new ContentValues();
         if (withId) {
-            contentValues.put(DBContract.LocationEntry._ID, getID());
+            contentValues.put(DBContract.LocationEntry.ATTR_ID, getID());
         }
-        contentValues.put(DBContract.LocationEntry.COL_NAME, getName());
-        contentValues.put(DBContract.LocationEntry.COL_NOTE, getNote());
+        contentValues.put(DBContract.LocationEntry.ATTR_NAME, getName());
+        contentValues.put(DBContract.LocationEntry.ATTR_NOTE, getNote());
 
         return contentValues;
     }
@@ -54,13 +53,13 @@ public class LocationFormer extends EntryFormer {
 
     @Override
     void formatAttributes() {
-        if (!has(DBContract.LocationEntry._ID)) {
+        if (!has(DBContract.LocationEntry.ATTR_ID)) {
             setID(DBContract.NULL_ID);
         }
-        if (!has(DBContract.LocationEntry.COL_NAME)) {
+        if (!has(DBContract.LocationEntry.ATTR_NAME)) {
             setName(getEntry().getDefaultStringValue());
         }
-        if (!has(DBContract.LocationEntry.COL_NOTE)) {
+        if (!has(DBContract.LocationEntry.ATTR_NOTE)) {
             setNote(getEntry().getDefaultStringValue());
         }
     }
@@ -71,29 +70,29 @@ public class LocationFormer extends EntryFormer {
     }
 
     public LocationFormer setID(final long id) {
-        getEntry().set(DBContract.LocationEntry._ID, id);
+        getEntry().set(DBContract.LocationEntry.ATTR_ID, id);
         return this;
     }
 
     public LocationFormer setName(final String name) {
-        getEntry().set(DBContract.LocationEntry.COL_NAME, name);
+        getEntry().set(DBContract.LocationEntry.ATTR_NAME, name);
         return this;
     }
 
     public LocationFormer setNote(final String note) {
-        getEntry().set(DBContract.LocationEntry.COL_NOTE, note);
+        getEntry().set(DBContract.LocationEntry.ATTR_NOTE, note);
         return this;
     }
 
     public long getID() {
-        return getEntry().getLong(DBContract.LocationEntry._ID);
+        return getEntry().getLong(DBContract.LocationEntry.ATTR_ID);
     }
 
     public String getName() {
-        return getEntry().getString(DBContract.LocationEntry.COL_NAME);
+        return getEntry().getString(DBContract.LocationEntry.ATTR_NAME);
     }
 
     public String getNote() {
-        return getEntry().getString(DBContract.LocationEntry.COL_NOTE);
+        return getEntry().getString(DBContract.LocationEntry.ATTR_NOTE);
     }
 }

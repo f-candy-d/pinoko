@@ -38,13 +38,13 @@ public class AttendanceFormer extends EntryFormer {
     public ContentValues toContentValues(boolean withId) {
         ContentValues contentValues = new ContentValues();
         if (withId) {
-            contentValues.put(DBContract.AttendanceEntry._ID, getID());
+            contentValues.put(DBContract.AttendanceEntry.ATTR_ID, getID());
         }
-        contentValues.put(DBContract.AttendanceEntry.COL_TIME_BLOCK_ID, getTimeBlockID());
-        contentValues.put(DBContract.AttendanceEntry.COL_PRESENT, getPresent());
-        contentValues.put(DBContract.AttendanceEntry.COL_LATE, getLate());
-        contentValues.put(DBContract.AttendanceEntry.COL_ABSENT, getAbsent());
-        contentValues.put(DBContract.AttendanceEntry.COL_NOTE, getNote());
+        contentValues.put(DBContract.AttendanceEntry.ATTR_TIME_BLOCK_ID, getTimeBlockID());
+        contentValues.put(DBContract.AttendanceEntry.ATTR_PRESENT, getPresent());
+        contentValues.put(DBContract.AttendanceEntry.ATTR_LATE, getLate());
+        contentValues.put(DBContract.AttendanceEntry.ATTR_ABSENT, getAbsent());
+        contentValues.put(DBContract.AttendanceEntry.ATTR_NOTE, getNote());
 
         return contentValues;
     }
@@ -56,22 +56,22 @@ public class AttendanceFormer extends EntryFormer {
 
     @Override
     void formatAttributes() {
-        if (!has(DBContract.AttendanceEntry._ID)) {
+        if (!has(DBContract.AttendanceEntry.ATTR_ID)) {
             setID(DBContract.NULL_ID);
         }
-        if (!has(DBContract.AttendanceEntry.COL_TIME_BLOCK_ID)) {
+        if (!has(DBContract.AttendanceEntry.ATTR_TIME_BLOCK_ID)) {
             setTimeBlockID(DBContract.NULL_ID);
         }
-        if (!has(DBContract.AttendanceEntry.COL_PRESENT)) {
+        if (!has(DBContract.AttendanceEntry.ATTR_PRESENT)) {
             setPresent(getEntry().getDefaultIntValue());
         }
-        if (!has(DBContract.AttendanceEntry.COL_LATE)) {
+        if (!has(DBContract.AttendanceEntry.ATTR_LATE)) {
             setLate(getEntry().getDefaultIntValue());
         }
-        if (!has(DBContract.AttendanceEntry.COL_ABSENT)) {
+        if (!has(DBContract.AttendanceEntry.ATTR_ABSENT)) {
             setAbsent(getEntry().getDefaultIntValue());
         }
-        if (!has(DBContract.AttendanceEntry.COL_NOTE)) {
+        if (!has(DBContract.AttendanceEntry.ATTR_NOTE)) {
             setNote(getEntry().getDefaultStringValue());
         }
     }
@@ -87,56 +87,56 @@ public class AttendanceFormer extends EntryFormer {
     }
 
     public AttendanceFormer setID(final long id) {
-        getEntry().set(DBContract.AttendanceEntry._ID, id);
+        getEntry().set(DBContract.AttendanceEntry.ATTR_ID, id);
         return this;
     }
 
     public AttendanceFormer setTimeBlockID(final long timeBlockID) {
-        getEntry().set(DBContract.AttendanceEntry.COL_TIME_BLOCK_ID, timeBlockID);
+        getEntry().set(DBContract.AttendanceEntry.ATTR_TIME_BLOCK_ID, timeBlockID);
         return this;
     }
 
     public AttendanceFormer setPresent(final int present) {
-        getEntry().set(DBContract.AttendanceEntry.COL_PRESENT, present);
+        getEntry().set(DBContract.AttendanceEntry.ATTR_PRESENT, present);
         return this;
     }
 
     public AttendanceFormer setLate(final int late) {
-        getEntry().set(DBContract.AttendanceEntry.COL_LATE, late);
+        getEntry().set(DBContract.AttendanceEntry.ATTR_LATE, late);
         return this;
     }
 
     public AttendanceFormer setAbsent(final int absent) {
-        getEntry().set(DBContract.AttendanceEntry.COL_ABSENT, absent);
+        getEntry().set(DBContract.AttendanceEntry.ATTR_ABSENT, absent);
         return this;
     }
 
     public AttendanceFormer setNote(final String note) {
-        getEntry().set(DBContract.AttendanceEntry.COL_NOTE, note);
+        getEntry().set(DBContract.AttendanceEntry.ATTR_NOTE, note);
         return this;
     }
 
     public long getID() {
-        return getEntry().getLong(DBContract.AttendanceEntry._ID);
+        return getEntry().getLong(DBContract.AttendanceEntry.ATTR_ID);
     }
 
     public long getTimeBlockID() {
-        return getEntry().getLong(DBContract.AttendanceEntry.COL_TIME_BLOCK_ID);
+        return getEntry().getLong(DBContract.AttendanceEntry.ATTR_TIME_BLOCK_ID);
     }
 
     public int getPresent() {
-        return getEntry().getInt(DBContract.AttendanceEntry.COL_PRESENT);
+        return getEntry().getInt(DBContract.AttendanceEntry.ATTR_PRESENT);
     }
 
     public int getLate() {
-        return getEntry().getInt(DBContract.AttendanceEntry.COL_LATE);
+        return getEntry().getInt(DBContract.AttendanceEntry.ATTR_LATE);
     }
 
     public int getAbsent() {
-        return getEntry().getInt(DBContract.AttendanceEntry.COL_ABSENT);
+        return getEntry().getInt(DBContract.AttendanceEntry.ATTR_ABSENT);
     }
 
     public String getNote() {
-        return getEntry().getString(DBContract.AttendanceEntry.COL_NOTE);
+        return getEntry().getString(DBContract.AttendanceEntry.ATTR_NOTE);
     }
 }

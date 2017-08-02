@@ -1,6 +1,6 @@
 package com.f_candy_d.pinoko.utils;
 
-import android.provider.BaseColumns;
+import java.net.NoRouteToHostException;
 
 /**
  * Created by daichi on 7/30/17.
@@ -13,6 +13,53 @@ public class DBContract {
     public static final int VERSION = 1;
     public static final String DATABASE_NAME = "pinoko_database.db";
     public static final String SQL_CREATE_TABLE_IF_NOT_EXISTS = "CREATE TABLE IF NOT EXISTS ";
+
+    /**
+     * Column names
+     */
+    public static final String COL_ID = "ID";
+    public static final String COL_TARGET_ID = "TargetID";
+    public static final String COL_TIME_TABLE_ID = "TimeTableID";
+    public static final String COL_NAME = "Name";
+    public static final String COL_LENGTH = "Length";
+    public static final String COL_NOTE = "Note";
+    public static final String COL_LAB = "Lab";
+    public static final String COL_MAIL = "Mail";
+    public static final String COL_PHONE_NUMBER = "PhoneNumber";
+    public static final String COL_TYPE = "Type";
+    public static final String COL_CATEGORY = "Category";
+    public static final String COL_DATETIME_BEGIN = "DatetimeBegin";
+    public static final String COL_DATETIME_END = "DateTimeEnd";
+    public static final String COL_IS_DONE = "IsDone";
+    public static final String COL_PRESENT = "Present";
+    public static final String COL_LATE = "Late";
+    public static final String COL_ABSENT = "Absent";
+
+    /**
+     * Value types of each columns
+     */
+    public static final String TYPE_ID_PK = " INTEGER PRIMARY KEY";
+    public static final String TYPE_ID = " INTEGER";
+    public static final String TYPE_NAME = " TEXT";
+    public static final String TYPE_LENGTH = " INTEGER";
+    public static final String TYPE_NOTE = " TEXT";
+    public static final String TYPE_LAB = " TEXT";
+    public static final String TYPE_MAIL = " TEXT";
+    public static final String TYPE_PHONE_NUMBER = " TEXT";
+    public static final String TYPE_TYPE = " INTEGER";
+    public static final String TYPE_CATEGORY = " INTEGER";
+    public static final String TYPE_DATETIME_BEGIN = " INTEGER";
+    public static final String TYPE_DATETIME_END = " INTEGER";
+    public static final String TYPE_IS_DONE = " INTEGER";
+    public static final String TYPE_PRESENT = " INTEGER";
+    public static final String TYPE_LATE = " INTEGER";
+    public static final String TYPE_ABSENT = " INTEGER";
+
+    /**
+     * SQL grammars
+     */
+    public static final String NOT_NULL = " NOT NULL";
+    public static final String C_S = ",";
 
     private DBContract() {}
 
@@ -33,269 +80,269 @@ public class DBContract {
         return getTableNames().length;
     }
 
-    public static class CourseEntry implements BaseColumns {
+    public static class CourseEntry {
         public static final String TABLE_NAME = "course";
-        // This includes the column of '_id'
-        public static final int NUM_COLUMNS = 9;
+        public static final String PREFIX = "cour";
 
-        public static final String COL_NAME = "couName"; // Not null
-        public static final String COL_LOCATION_ID_A = "couLocIdA"; // Not null
-        public static final String COL_LOCATION_ID_B = "couLocIdB";
-        public static final String COL_INSTRUCTOR_ID_A = "couInsIdA"; // Not null
-        public static final String COL_INSTRUCTOR_ID_B = "couInsIdB";
-        public static final String COL_INSTRUCTOR_ID_C = "couInsIdC";
-        public static final String COL_LENGTH = "length"; // Not null
-        public static final String COL_NOTE = "couNote";
+        public static final String ATTR_ID              = PREFIX + COL_ID;
+        public static final String ATTR_NAME            = PREFIX + COL_NAME;               // Not null
+        public static final String ATTR_LOCATION_ID_A   = LocationEntry.ATTR_ID + "_A";    // Not null
+        public static final String ATTR_LOCATION_ID_B   = LocationEntry.ATTR_ID + "_B";
+        public static final String ATTR_INSTRUCTOR_ID_A = InstructorEntry.ATTR_ID + "_A";  // Not null
+        public static final String ATTR_INSTRUCTOR_ID_B = InstructorEntry.ATTR_ID + "_B";
+        public static final String ATTR_INSTRUCTOR_ID_C = InstructorEntry.ATTR_ID + "_C";
+        public static final String ATTR_LENGTH          = PREFIX + COL_LENGTH;            // Not null
+        public static final String ATTR_NOTE            = PREFIX + COL_NOTE;
 
         public static final String SQL_CREATE_TABLE =
                 SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                + _ID                 + " INTEGER PRIMARY KEY,"
-                + COL_NAME            + " TEXT NOT NULL,"
-                + COL_LOCATION_ID_A   + " INTEGER NOT NULL,"
-                + COL_LOCATION_ID_B   + " INTEGER,"
-                + COL_INSTRUCTOR_ID_A + " INTEGER NOT NULL,"
-                + COL_INSTRUCTOR_ID_B + " INTEGER,"
-                + COL_INSTRUCTOR_ID_C + " INTEGER,"
-                + COL_LENGTH          + " INTEGER NOT NULL,"
-                + COL_NOTE            + " TEXT"
+                + ATTR_ID              + TYPE_ID_PK             + C_S
+                + ATTR_NAME            + TYPE_NAME   + NOT_NULL + C_S
+                + ATTR_LOCATION_ID_A   + TYPE_ID     + NOT_NULL + C_S
+                + ATTR_LOCATION_ID_B   + TYPE_ID                + C_S
+                + ATTR_INSTRUCTOR_ID_A + TYPE_ID     + NOT_NULL + C_S
+                + ATTR_INSTRUCTOR_ID_B + TYPE_ID                + C_S
+                + ATTR_INSTRUCTOR_ID_C + TYPE_ID                + C_S
+                + ATTR_LENGTH          + TYPE_LENGTH            + C_S
+                + ATTR_NOTE            + TYPE_NOTE
                 + ");";
 
         public static String[] getColumnNames() {
             return new String[] {
-                    _ID,
-                    COL_NAME,
-                    COL_LOCATION_ID_A,
-                    COL_LOCATION_ID_B,
-                    COL_INSTRUCTOR_ID_A,
-                    COL_INSTRUCTOR_ID_B,
-                    COL_INSTRUCTOR_ID_C,
-                    COL_LENGTH,
-                    COL_NOTE
+                    ATTR_ID,
+                    ATTR_NAME,
+                    ATTR_LOCATION_ID_A,
+                    ATTR_LOCATION_ID_B,
+                    ATTR_INSTRUCTOR_ID_A,
+                    ATTR_INSTRUCTOR_ID_B,
+                    ATTR_INSTRUCTOR_ID_C,
+                    ATTR_LENGTH,
+                    ATTR_NOTE
             };
         }
     }
 
-    public static class LocationEntry implements BaseColumns {
+    public static class LocationEntry {
         public static final String TABLE_NAME = "location";
-        // This includes the column of '_id'
-        public static final int NUM_COLUMNS = 3;
+        public static final String PREFIX = "loc";
 
-        public static final String COL_NAME = "locName"; // Not null
-        public static final String COL_NOTE = "locNote";
+        public static final String ATTR_ID   = PREFIX + COL_ID;
+        public static final String ATTR_NAME = PREFIX + COL_NAME; // Not null
+        public static final String ATTR_NOTE = PREFIX + COL_NOTE;
 
         public static final String SQL_CREATE_TABLE =
                 SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                        + _ID      + " INTEGER PRIMARY KEY,"
-                        + COL_NAME + " TEXT NOT NULL,"
-                        + COL_NOTE + " TEXT"
+                        + ATTR_ID   + TYPE_ID_PK            + C_S
+                        + ATTR_NAME + TYPE_NAME  + NOT_NULL + C_S
+                        + ATTR_NOTE + TYPE_NOTE
                         + ");";
 
         public static String[] getColumnNames() {
             return new String[] {
-                    _ID,
-                    COL_NAME,
-                    COL_NOTE
+                    ATTR_ID,
+                    ATTR_NAME,
+                    ATTR_NOTE
             };
         }
     }
 
-    public static class InstructorEntry implements BaseColumns {
+    public static class InstructorEntry {
         public static final String TABLE_NAME = "instructor";
-        // This includes the column of '_id'
-        public static final int NUM_COLUMNS = 6;
+        public static final String PREFIX = "inst";
 
-        public static final String COL_NAME = "insName"; // Not null
-        public static final String COL_LAB = "lab";
-        public static final String COL_MAIL = "mail";
-        public static final String COL_PHONE_NUMBER = "phoneNumber";
-        public static final String COL_NOTE = "insNote";
+        public static final String ATTR_ID           = PREFIX + COL_ID;
+        public static final String ATTR_NAME         = PREFIX + COL_NAME;          // Not null
+        public static final String ATTR_LAB          = PREFIX + COL_LAB;
+        public static final String ATTR_MAIL         = PREFIX + COL_MAIL;
+        public static final String ATTR_PHONE_NUMBER = PREFIX + COL_PHONE_NUMBER;
+        public static final String ATTR_NOTE         = PREFIX + COL_NOTE;
 
         public static final String SQL_CREATE_TABLE =
                 SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                        + _ID              + " INTEGER PRIMARY KEY,"
-                        + COL_NAME         + " TEXT NOT NULL,"
-                        + COL_LAB          + " TEXT,"
-                        + COL_MAIL         + " TEXT,"
-                        + COL_PHONE_NUMBER + " TEXT,"
-                        + COL_NOTE         + " TEXT"
+                        + ATTR_ID           + TYPE_ID_PK                   + C_S
+                        + ATTR_NAME         + TYPE_NAME         + NOT_NULL + C_S
+                        + ATTR_LAB          + TYPE_LAB                     + C_S
+                        + ATTR_MAIL         + TYPE_MAIL                    + C_S
+                        + ATTR_PHONE_NUMBER + TYPE_PHONE_NUMBER            + C_S
+                        + ATTR_NOTE         + TYPE_NOTE
                         + ");";
 
         public static String[] getColumnNames() {
             return new String[] {
-                    _ID,
-                    COL_NAME,
-                    COL_LAB,
-                    COL_MAIL,
-                    COL_PHONE_NUMBER,
-                    COL_NOTE
+                    ATTR_ID,
+                    ATTR_NAME,
+                    ATTR_LAB,
+                    ATTR_MAIL,
+                    ATTR_PHONE_NUMBER,
+                    ATTR_NOTE
             };
         }
     }
 
-    public static class TimeBlockEntry implements BaseColumns {
+    public static class TimeBlockEntry {
         public static final String TABLE_NAME = "timeBlock";
-        // This includes the column of '_id'
-        public static final int NUM_COLUMNS = 7;
+        public static final String PREFIX = "tb";
 
-        public static final String COL_TYPE = "tbType"; // Not null
-        public static final String COL_CATEGORY = "tbCategory"; // Not null
-        public static final String COL_TARGET_ID = "tbTargetId";
-        public static final String COL_DATETIME_BEGIN = "tbDatetimeBegin"; // Not null
-        public static final String COL_DATETIME_END = "tbDatetimeEnd"; // Not null
-        public static final String COL_TIME_TABLE_ID = "tbTimeTableId"; // Not null
+        public static final String ATTR_ID             = PREFIX + COL_ID;
+        public static final String ATTR_TYPE           = PREFIX + COL_TYPE;           // Not null
+        public static final String ATTR_CATEGORY       = PREFIX + COL_CATEGORY;       // Not null
+        public static final String ATTR_TARGET_ID      = PREFIX + COL_TARGET_ID;
+        public static final String ATTR_DATETIME_BEGIN = PREFIX + COL_DATETIME_BEGIN; // Not null
+        public static final String ATTR_DATETIME_END   = PREFIX + COL_DATETIME_END;   // Not null
+        public static final String ATTR_TIME_TABLE_ID  = PREFIX + COL_TIME_TABLE_ID;  // Not null
 
         public static final String SQL_CREATE_TABLE =
                 SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                        + _ID                + " INTEGER PRIMARY KEY,"
-                        + COL_TYPE           + " INTEGER NOT NULL,"
-                        + COL_CATEGORY       + " INTEGER NOT NULL,"
-                        + COL_TARGET_ID      + " INTEGER,"
-                        + COL_DATETIME_BEGIN + " INTEGER NOT NULL,"
-                        + COL_DATETIME_END   + " INTEGER NOT NULL,"
-                        + COL_TIME_TABLE_ID  + " INTEGER NOT NULL"
+                        + ATTR_ID             + TYPE_ID_PK                     + C_S
+                        + ATTR_TYPE           + TYPE_TYPE           + NOT_NULL + C_S
+                        + ATTR_CATEGORY       + TYPE_CATEGORY       + NOT_NULL + C_S
+                        + ATTR_TARGET_ID      + TYPE_ID                        + C_S
+                        + ATTR_DATETIME_BEGIN + TYPE_DATETIME_BEGIN + NOT_NULL + C_S
+                        + ATTR_DATETIME_END   + TYPE_DATETIME_END   + NOT_NULL + C_S
+                        + ATTR_TIME_TABLE_ID  + TYPE_ID             + NOT_NULL
                         + ");";
 
         public static String[] getColumnNames() {
             return new String[] {
-                    _ID,
-                    COL_TYPE,
-                    COL_CATEGORY,
-                    COL_TARGET_ID,
-                    COL_DATETIME_BEGIN,
-                    COL_DATETIME_END,
-                    COL_TIME_TABLE_ID
+                    ATTR_ID,
+                    ATTR_TYPE,
+                    ATTR_CATEGORY,
+                    ATTR_TARGET_ID,
+                    ATTR_DATETIME_BEGIN,
+                    ATTR_DATETIME_END,
+                    ATTR_TIME_TABLE_ID
             };
         }
     }
 
-    public static class AssignmentEntry implements BaseColumns {
+    public static class AssignmentEntry {
         public static final String TABLE_NAME = "assignment";
-        // This includes the column of '_id'
-        public static final int NUM_COLUMNS = 5;
+        public static final String PREFIX = "ass";
 
-        public static final String COL_NAME = "assName"; // Not null
-        public static final String COL_TIME_BLOCK_ID = "assTbId";
-        public static final String COL_NOTE = "assNote";
-        public static final String COL_IS_DONE = "assIsDone"; // Not null
+        public static final String ATTR_ID            = PREFIX + COL_ID;
+        public static final String ATTR_NAME          = PREFIX + COL_NAME;      // Not null
+        public static final String ATTR_TIME_BLOCK_ID = TimeBlockEntry.ATTR_ID;
+        public static final String ATTR_NOTE          = PREFIX + COL_NOTE;
+        public static final String ATTR_IS_DONE       = PREFIX + COL_IS_DONE;   // Not null
 
         public static final String SQL_CREATE_TABLE =
                 SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                        + _ID               + " INTEGER PRIMARY KEY,"
-                        + COL_NAME          + " TEXT NOT NULL,"
-                        + COL_TIME_BLOCK_ID + " INTEGER,"
-                        + COL_NOTE          + " TEXT,"
-                        + COL_IS_DONE       + " INTEGER NOT NULL DEFAULT 0"
+                        + ATTR_ID            + TYPE_ID_PK              + C_S
+                        + ATTR_NAME          + TYPE_NAME    + NOT_NULL + C_S
+                        + ATTR_TIME_BLOCK_ID + TYPE_ID                 + C_S
+                        + ATTR_NOTE          + TYPE_NOTE               + C_S
+                        + ATTR_IS_DONE       + TYPE_IS_DONE + NOT_NULL
                         + ");";
 
         public static String[] getColumnNames() {
             return new String[] {
-                    _ID,
-                    COL_NAME,
-                    COL_TIME_BLOCK_ID,
-                    COL_NOTE,
-                    COL_IS_DONE
+                    ATTR_ID,
+                    ATTR_NAME,
+                    ATTR_TIME_BLOCK_ID,
+                    ATTR_NOTE,
+                    ATTR_IS_DONE
             };
         }
     }
 
-    public static class EventEntry implements BaseColumns {
+    public static class EventEntry {
         public static final String TABLE_NAME = "event";
-        // This includes the column of '_id'
-        public static final int NUM_COLUMNS = 4;
+        public static final String PREFIX = "eve";
 
-        public static final String COL_NAME = "eveName"; // Not null
-        public static final String COL_LOCATION_ID = "eveLocId";
-        public static final String COL_NOTE = "eveNote";
+        public static final String ATTR_ID          = PREFIX + COL_ID;
+        public static final String ATTR_NAME        = PREFIX + COL_NAME;     // Not null
+        public static final String ATTR_LOCATION_ID = LocationEntry.ATTR_ID;
+        public static final String ATTR_NOTE        = PREFIX + COL_NOTE;
 
         public static final String SQL_CREATE_TABLE =
                 SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                        + _ID             + " INTEGER PRIMARY KEY,"
-                        + COL_NAME        + " TEXT NOT NULL,"
-                        + COL_LOCATION_ID + " INTEGER,"
-                        + COL_NOTE        + " TEXT"
+                        + ATTR_ID          + TYPE_ID_PK           + C_S
+                        + ATTR_NAME        + TYPE_NAME + NOT_NULL + C_S
+                        + ATTR_LOCATION_ID + TYPE_ID              + C_S
+                        + ATTR_NOTE        + TYPE_NOTE
                         + ");";
 
         public static String[] getColumnNames() {
             return new String[] {
-                    _ID,
-                    COL_NAME,
-                    COL_LOCATION_ID,
-                    COL_NOTE
+                    ATTR_ID,
+                    ATTR_NAME,
+                    ATTR_LOCATION_ID,
+                    ATTR_NOTE
             };
         }
     }
 
-    public static class NotificationEntry implements BaseColumns {
+    public static class NotificationEntry {
         public static final String TABLE_NAME = "notification";
-        // This includes the column of '_id'
-        public static final int NUM_COLUMNS = 9;
+        public static final String PREFIX = "notifi";
 
-        public static final String COL_NAME = "notName"; // Not null
-        public static final String COL_NOTE = "notNote";
-        public static final String COL_CATEGORY = "notCategory"; // Not null
-        public static final String COL_TARGET_ID = "notTargetId";
-        public static final String COL_TYPE = "notType"; // Not null
-        public static final String COL_IS_DONE = "notIsDone"; // Not null
-        public static final String COL_DATETIME_BEGIN = "notDatetimeBegin"; // Not null
-        public static final String COL_DATETIME_END = "notDatetimeEnd"; // Not null
+        public static final String ATTR_ID             = PREFIX + COL_ID;
+        public static final String ATTR_NAME           = PREFIX + COL_NAME;           // Not null
+        public static final String ATTR_NOTE           = PREFIX + COL_NOTE;
+        public static final String ATTR_CATEGORY       = PREFIX + COL_CATEGORY;       // Not null
+        public static final String ATTR_TARGET_ID      = PREFIX + COL_TARGET_ID;
+        public static final String ATTR_TYPE           = PREFIX + COL_TYPE;           // Not null
+        public static final String ATTR_IS_DONE        = PREFIX + COL_IS_DONE;        // Not null
+        public static final String ATTR_DATETIME_BEGIN = PREFIX + COL_DATETIME_BEGIN; // Not null
+        public static final String ATTR_DATETIME_END   = PREFIX + COL_DATETIME_END;   // Not null
 
         public static final String SQL_CREATE_TABLE =
                 SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                        + _ID                + " INTEGER PRIMARY KEY,"
-                        + COL_NAME           + " TEXT NOT NULL,"
-                        + COL_NOTE           + " TEXT,"
-                        + COL_CATEGORY       + " INTEGER NOT NULL,"
-                        + COL_TARGET_ID      + " INTEGER,"
-                        + COL_TYPE           + " INTEGER NOT NULL,"
-                        + COL_IS_DONE        + " INTEGER NOT NULL DEFAULT 0,"
-                        + COL_DATETIME_BEGIN + " INTEGER NOT NULL,"
-                        + COL_DATETIME_END   + " INTEGER NOT NULL"
+                        + ATTR_ID             + TYPE_ID_PK                     + C_S
+                        + ATTR_NAME           + TYPE_NAME           + NOT_NULL + C_S
+                        + ATTR_NOTE           + TYPE_NOTE                      + C_S
+                        + ATTR_CATEGORY       + TYPE_CATEGORY       + NOT_NULL + C_S
+                        + ATTR_TARGET_ID      + TYPE_ID                        + C_S
+                        + ATTR_TYPE           + TYPE_TYPE           + NOT_NULL + C_S
+                        + ATTR_IS_DONE        + TYPE_IS_DONE        + NOT_NULL + C_S
+                        + ATTR_DATETIME_BEGIN + TYPE_DATETIME_BEGIN + NOT_NULL + C_S
+                        + ATTR_DATETIME_END   + TYPE_DATETIME_END   + NOT_NULL
                         + ");";
 
         public static String[] getColumnNames() {
             return new String[] {
-                    _ID,
-                    COL_NAME,
-                    COL_NOTE,
-                    COL_CATEGORY,
-                    COL_TARGET_ID,
-                    COL_TYPE,
-                    COL_IS_DONE,
-                    COL_DATETIME_BEGIN,
-                    COL_DATETIME_END
+                    ATTR_ID,
+                    ATTR_NAME,
+                    ATTR_NOTE,
+                    ATTR_CATEGORY,
+                    ATTR_TARGET_ID,
+                    ATTR_TYPE,
+                    ATTR_IS_DONE,
+                    ATTR_DATETIME_BEGIN,
+                    ATTR_DATETIME_END
             };
         }
     }
 
-    public static class AttendanceEntry implements BaseColumns {
+    public static class AttendanceEntry {
         public static final String TABLE_NAME = "attendance";
-        // This includes the column of '_id'
-        public static final int NUM_COLUMNS = 6;
+        public static final String PREFIX = "att";
 
-        public static final String COL_TIME_BLOCK_ID = "attTbId"; // Not null
-        public static final String COL_PRESENT = "present"; // Not null
-        public static final String COL_LATE = "late"; // Not null
-        public static final String COL_ABSENT = "absent"; // Not null
-        public static final String COL_NOTE = "attNote";
+        public static final String ATTR_ID            = PREFIX + COL_ID;
+        public static final String ATTR_TIME_BLOCK_ID = TimeBlockEntry.ATTR_ID; // Not null
+        public static final String ATTR_PRESENT       = PREFIX + COL_PRESENT;   // Not null
+        public static final String ATTR_LATE          = PREFIX + COL_LATE;      // Not null
+        public static final String ATTR_ABSENT        = PREFIX + COL_ABSENT;    // Not null
+        public static final String ATTR_NOTE          = PREFIX + COL_NOTE;
 
         public static final String SQL_CREATE_TABLE =
                 SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                        + _ID               + " INTEGER PRIMARY KEY,"
-                        + COL_TIME_BLOCK_ID + " INTEGER NOT NULL,"
-                        + COL_PRESENT       + " INTEGER NOT NULL,"
-                        + COL_LATE          + " INTEGER NOT NULL,"
-                        + COL_ABSENT        + " INTEGER NOT NULL,"
-                        + COL_NOTE          + " TEXT"
+                        + ATTR_ID            + TYPE_ID_PK              + C_S
+                        + ATTR_TIME_BLOCK_ID + TYPE_ID      + NOT_NULL + C_S
+                        + ATTR_PRESENT       + TYPE_PRESENT + NOT_NULL + C_S
+                        + ATTR_LATE          + TYPE_LATE    + NOT_NULL + C_S
+                        + ATTR_ABSENT        + TYPE_ABSENT  + NOT_NULL + C_S
+                        + ATTR_NOTE          + TYPE_NOTE
                         + ");";
 
         public static String[] getColumnNames() {
             return new String[] {
-                    _ID,
-                    COL_TIME_BLOCK_ID,
-                    COL_PRESENT,
-                    COL_LATE,
-                    COL_ABSENT,
-                    COL_NOTE
+                    ATTR_ID,
+                    ATTR_TIME_BLOCK_ID,
+                    ATTR_PRESENT,
+                    ATTR_LATE,
+                    ATTR_ABSENT,
+                    ATTR_NOTE
             };
         }
     }

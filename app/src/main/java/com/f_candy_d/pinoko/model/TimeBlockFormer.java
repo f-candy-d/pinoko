@@ -91,14 +91,14 @@ public class TimeBlockFormer extends EntryFormer {
     public ContentValues toContentValues(boolean withId) {
         ContentValues contentValues = new ContentValues();
         if (withId) {
-            contentValues.put(DBContract.TimeBlockEntry._ID, getID());
+            contentValues.put(DBContract.TimeBlockEntry.ATTR_ID, getID());
         }
-        contentValues.put(DBContract.TimeBlockEntry.COL_TYPE, getType().toInt());
-        contentValues.put(DBContract.TimeBlockEntry.COL_CATEGORY, getCategory().toInt());
-        contentValues.put(DBContract.TimeBlockEntry.COL_TARGET_ID, getTargetID());
-        contentValues.put(DBContract.TimeBlockEntry.COL_DATETIME_BEGIN, getDatetimeBegin());
-        contentValues.put(DBContract.TimeBlockEntry.COL_DATETIME_END, getDatetimeEnd());
-        contentValues.put(DBContract.TimeBlockEntry.COL_TIME_TABLE_ID, getTimeTableID());
+        contentValues.put(DBContract.TimeBlockEntry.ATTR_TYPE, getType().toInt());
+        contentValues.put(DBContract.TimeBlockEntry.ATTR_CATEGORY, getCategory().toInt());
+        contentValues.put(DBContract.TimeBlockEntry.ATTR_TARGET_ID, getTargetID());
+        contentValues.put(DBContract.TimeBlockEntry.ATTR_DATETIME_BEGIN, getDatetimeBegin());
+        contentValues.put(DBContract.TimeBlockEntry.ATTR_DATETIME_END, getDatetimeEnd());
+        contentValues.put(DBContract.TimeBlockEntry.ATTR_TIME_TABLE_ID, getTimeTableID());
 
         return contentValues;
     }
@@ -115,25 +115,25 @@ public class TimeBlockFormer extends EntryFormer {
 
     @Override
     void formatAttributes() {
-        if (!has(DBContract.TimeBlockEntry._ID)) {
+        if (!has(DBContract.TimeBlockEntry.ATTR_ID)) {
             setID(DBContract.NULL_ID);
         }
-        if (!has(DBContract.TimeBlockEntry.COL_TYPE)) {
+        if (!has(DBContract.TimeBlockEntry.ATTR_TYPE)) {
             setType(Type.NULL_TYPE);
         }
-        if (!has(DBContract.TimeBlockEntry.COL_CATEGORY)) {
+        if (!has(DBContract.TimeBlockEntry.ATTR_CATEGORY)) {
             setCategory(Category.NULL_CATEGORY);
         }
-        if (!has(DBContract.TimeBlockEntry.COL_TARGET_ID)) {
+        if (!has(DBContract.TimeBlockEntry.ATTR_TARGET_ID)) {
             setTargetID(DBContract.NULL_ID);
         }
-        if (!has(DBContract.TimeBlockEntry.COL_DATETIME_BEGIN)) {
+        if (!has(DBContract.TimeBlockEntry.ATTR_DATETIME_BEGIN)) {
             setDatetimeBegin(getEntry().getDefaultLongValue());
         }
-        if (!has(DBContract.TimeBlockEntry.COL_DATETIME_END)) {
+        if (!has(DBContract.TimeBlockEntry.ATTR_DATETIME_END)) {
             setDatetimeEnd(getEntry().getDefaultLongValue());
         }
-        if (!has(DBContract.TimeBlockEntry.COL_TIME_TABLE_ID)) {
+        if (!has(DBContract.TimeBlockEntry.ATTR_TIME_TABLE_ID)) {
             setTimeTableID(DBContract.NULL_ID);
         }
     }
@@ -144,65 +144,65 @@ public class TimeBlockFormer extends EntryFormer {
     }
 
     public TimeBlockFormer setID(final long id) {
-        getEntry().set(DBContract.TimeBlockEntry._ID, id);
+        getEntry().set(DBContract.TimeBlockEntry.ATTR_ID, id);
         return this;
     }
 
     public TimeBlockFormer setType(final Type type) {
-        getEntry().set(DBContract.TimeBlockEntry.COL_TYPE, type.toInt());
+        getEntry().set(DBContract.TimeBlockEntry.ATTR_TYPE, type.toInt());
         return this;
     }
 
     public TimeBlockFormer setCategory(final Category category) {
-        getEntry().set(DBContract.TimeBlockEntry.COL_CATEGORY, category.toInt());
+        getEntry().set(DBContract.TimeBlockEntry.ATTR_CATEGORY, category.toInt());
         return this;
     }
 
     public TimeBlockFormer setTargetID(final long targetID) {
-        getEntry().set(DBContract.TimeBlockEntry.COL_TARGET_ID, targetID);
+        getEntry().set(DBContract.TimeBlockEntry.ATTR_TARGET_ID, targetID);
         return this;
     }
 
     public TimeBlockFormer setDatetimeBegin(final long datetimeBegin) {
-        getEntry().set(DBContract.TimeBlockEntry.COL_DATETIME_BEGIN, datetimeBegin);
+        getEntry().set(DBContract.TimeBlockEntry.ATTR_DATETIME_BEGIN, datetimeBegin);
         return this;
     }
 
     public TimeBlockFormer setDatetimeEnd(final long datetimeEnd) {
-        getEntry().set(DBContract.TimeBlockEntry.COL_DATETIME_END, datetimeEnd);
+        getEntry().set(DBContract.TimeBlockEntry.ATTR_DATETIME_END, datetimeEnd);
         return this;
     }
 
     public TimeBlockFormer setTimeTableID(final long timeTableID) {
-        getEntry().set(DBContract.TimeBlockEntry.COL_TIME_TABLE_ID, timeTableID);
+        getEntry().set(DBContract.TimeBlockEntry.ATTR_TIME_TABLE_ID, timeTableID);
         return this;
     }
 
     public long getID() {
-        return getEntry().getLong(DBContract.TimeBlockEntry._ID);
+        return getEntry().getLong(DBContract.TimeBlockEntry.ATTR_ID);
     }
 
     public Type getType() {
-        return Type.from(getEntry().getInt(DBContract.TimeBlockEntry.COL_TYPE));
+        return Type.from(getEntry().getInt(DBContract.TimeBlockEntry.ATTR_TYPE));
     }
 
     public Category getCategory() {
-        return Category.from(getEntry().getInt(DBContract.TimeBlockEntry.COL_CATEGORY));
+        return Category.from(getEntry().getInt(DBContract.TimeBlockEntry.ATTR_CATEGORY));
     }
 
     public long getTargetID() {
-        return getEntry().getLong(DBContract.TimeBlockEntry.COL_TARGET_ID);
+        return getEntry().getLong(DBContract.TimeBlockEntry.ATTR_TARGET_ID);
     }
 
     public long getDatetimeBegin() {
-        return getEntry().getLong(DBContract.TimeBlockEntry.COL_DATETIME_BEGIN);
+        return getEntry().getLong(DBContract.TimeBlockEntry.ATTR_DATETIME_BEGIN);
     }
 
     public long getDatetimeEnd() {
-        return getEntry().getLong(DBContract.TimeBlockEntry.COL_DATETIME_END);
+        return getEntry().getLong(DBContract.TimeBlockEntry.ATTR_DATETIME_END);
     }
 
     public long getTimeTableID() {
-        return getEntry().getLong(DBContract.TimeBlockEntry.COL_TIME_TABLE_ID);
+        return getEntry().getLong(DBContract.TimeBlockEntry.ATTR_TIME_TABLE_ID);
     }
 }

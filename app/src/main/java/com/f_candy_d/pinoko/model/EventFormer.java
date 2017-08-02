@@ -34,11 +34,11 @@ public class EventFormer extends EntryFormer {
     public ContentValues toContentValues(boolean withId) {
         ContentValues contentValues = new ContentValues();
         if (withId) {
-            contentValues.put(DBContract.EventEntry._ID, getID());
+            contentValues.put(DBContract.EventEntry.ATTR_ID, getID());
         }
-        contentValues.put(DBContract.EventEntry.COL_NAME, getName());
-        contentValues.put(DBContract.EventEntry.COL_LOCATION_ID, getLocationID());
-        contentValues.put(DBContract.EventEntry.COL_NOTE, getNote());
+        contentValues.put(DBContract.EventEntry.ATTR_NAME, getName());
+        contentValues.put(DBContract.EventEntry.ATTR_LOCATION_ID, getLocationID());
+        contentValues.put(DBContract.EventEntry.ATTR_NOTE, getNote());
 
         return contentValues;
     }
@@ -55,16 +55,16 @@ public class EventFormer extends EntryFormer {
 
     @Override
     void formatAttributes() {
-        if (!has(DBContract.EventEntry._ID)) {
+        if (!has(DBContract.EventEntry.ATTR_ID)) {
             setID(DBContract.NULL_ID);
         }
-        if (!has(DBContract.EventEntry.COL_NAME)) {
+        if (!has(DBContract.EventEntry.ATTR_NAME)) {
             setName(getEntry().getDefaultStringValue());
         }
-        if (!has(DBContract.EventEntry.COL_LOCATION_ID)) {
+        if (!has(DBContract.EventEntry.ATTR_LOCATION_ID)) {
             setLocationID(DBContract.NULL_ID);
         }
-        if (!has(DBContract.EventEntry.COL_NOTE)) {
+        if (!has(DBContract.EventEntry.ATTR_NOTE)) {
             setNote(getEntry().getDefaultStringValue());
         }
     }
@@ -75,38 +75,38 @@ public class EventFormer extends EntryFormer {
     }
 
     public EventFormer setID(final long id) {
-        getEntry().set(DBContract.EventEntry._ID, id);
+        getEntry().set(DBContract.EventEntry.ATTR_ID, id);
         return this;
     }
 
     public EventFormer setName(final String name) {
-        getEntry().set(DBContract.EventEntry.COL_NAME, name);
+        getEntry().set(DBContract.EventEntry.ATTR_NAME, name);
         return this;
     }
 
     public EventFormer setLocationID(final long locationID) {
-        getEntry().set(DBContract.EventEntry.COL_LOCATION_ID, locationID);
+        getEntry().set(DBContract.EventEntry.ATTR_LOCATION_ID, locationID);
         return this;
     }
 
     public EventFormer setNote(final String note) {
-        getEntry().set(DBContract.EventEntry.COL_NOTE, note);
+        getEntry().set(DBContract.EventEntry.ATTR_NOTE, note);
         return this;
     }
 
     public long getID() {
-        return getEntry().getLong(DBContract.EventEntry._ID);
+        return getEntry().getLong(DBContract.EventEntry.ATTR_ID);
     }
 
     public String getName() {
-        return getEntry().getString(DBContract.EventEntry.COL_NAME);
+        return getEntry().getString(DBContract.EventEntry.ATTR_NAME);
     }
 
     public long getLocationID() {
-        return getEntry().getLong(DBContract.EventEntry.COL_LOCATION_ID);
+        return getEntry().getLong(DBContract.EventEntry.ATTR_LOCATION_ID);
     }
 
     public String getNote() {
-        return getEntry().getString(DBContract.EventEntry.COL_NOTE);
+        return getEntry().getString(DBContract.EventEntry.ATTR_NOTE);
     }
 }

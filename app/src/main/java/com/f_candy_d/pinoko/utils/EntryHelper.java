@@ -44,60 +44,60 @@ public class EntryHelper {
 
     public static Entry makeCourseEntry(@NonNull final Cursor cursor) {
         CourseFormer course = CourseFormer.createWithEntry();
-        course.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.COL_NAME)));
-        course.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.COL_NOTE)));
-        course.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry._ID)));
-        course.setLocationIDA(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.COL_LOCATION_ID_A)));
-        course.setLocationIDB(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.COL_LOCATION_ID_B)));
-        course.setInstructorIDA(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.COL_INSTRUCTOR_ID_A)));
-        course.setInstructorIDB(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.COL_INSTRUCTOR_ID_B)));
-        course.setInstructorIDC(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.COL_INSTRUCTOR_ID_C)));
-        course.setLength(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.COL_LENGTH)));
+        course.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_NAME)));
+        course.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_NOTE)));
+        course.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_ID)));
+        course.setLocationIDA(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_LOCATION_ID_A)));
+        course.setLocationIDB(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_LOCATION_ID_B)));
+        course.setInstructorIDA(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A)));
+        course.setInstructorIDB(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_B)));
+        course.setInstructorIDC(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_C)));
+        course.setLength(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_LENGTH)));
 
         return course.getEntry();
     }
 
     public static Entry makeLocationEntry(@NonNull final Cursor cursor) {
         LocationFormer location = LocationFormer.createWithEntry();
-        location.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.LocationEntry.COL_NAME)));
-        location.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.LocationEntry.COL_NOTE)));
-        location.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.LocationEntry._ID)));
+        location.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.LocationEntry.ATTR_NAME)));
+        location.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.LocationEntry.ATTR_NOTE)));
+        location.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.LocationEntry.ATTR_ID)));
 
         return location.getEntry();
     }
 
     public static Entry makeInstructorEntry(@NonNull final Cursor cursor) {
         InstructorFormer instructor = InstructorFormer.createWithEntry();
-        instructor.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.COL_NAME)));
-        instructor.setLab(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.COL_LAB)));
-        instructor.setMail(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.COL_MAIL)));
-        instructor.setPhoneNumber(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.COL_PHONE_NUMBER)));
-        instructor.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.COL_NOTE)));
-        instructor.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry._ID)));
+        instructor.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.ATTR_NAME)));
+        instructor.setLab(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.ATTR_LAB)));
+        instructor.setMail(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.ATTR_MAIL)));
+        instructor.setPhoneNumber(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.ATTR_PHONE_NUMBER)));
+        instructor.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.ATTR_NOTE)));
+        instructor.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.ATTR_ID)));
 
         return instructor.getEntry();
     }
 
     public static Entry makeTimeBlockEntry(@NonNull final Cursor cursor) {
         TimeBlockFormer timeBlock = TimeBlockFormer.createWithEntry();
-        timeBlock.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry._ID)));
-        timeBlock.setType(TimeBlockFormer.Type.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.COL_TYPE))));
-        timeBlock.setCategory(TimeBlockFormer.Category.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.COL_CATEGORY))));
-        timeBlock.setTargetID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.COL_TARGET_ID)));
-        timeBlock.setDatetimeBegin(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.COL_DATETIME_BEGIN)));
-        timeBlock.setDatetimeEnd(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.COL_DATETIME_END)));
-        timeBlock.setTimeTableID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.COL_TIME_TABLE_ID)));
+        timeBlock.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_ID)));
+        timeBlock.setType(TimeBlockFormer.Type.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_TYPE))));
+        timeBlock.setCategory(TimeBlockFormer.Category.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_CATEGORY))));
+        timeBlock.setTargetID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_TARGET_ID)));
+        timeBlock.setDatetimeBegin(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_DATETIME_BEGIN)));
+        timeBlock.setDatetimeEnd(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_DATETIME_END)));
+        timeBlock.setTimeTableID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_TIME_TABLE_ID)));
 
         return timeBlock.getEntry();
     }
 
     public static Entry makeAssignmentEntry(@NonNull final Cursor cursor) {
         AssignmentFormer assignment = AssignmentFormer.createWithEntry();
-        assignment.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.COL_NAME)));
-        assignment.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.COL_NOTE)));
-        assignment.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry._ID)));
-        assignment.setTimeBlockID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.COL_TIME_BLOCK_ID)));
-        final int isDone = cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.COL_IS_DONE));
+        assignment.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.ATTR_NAME)));
+        assignment.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.ATTR_NOTE)));
+        assignment.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.ATTR_ID)));
+        assignment.setTimeBlockID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.ATTR_TIME_BLOCK_ID)));
+        final int isDone = cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.ATTR_IS_DONE));
         assignment.setIsDone(isDone != 0);
 
         return assignment.getEntry();
@@ -105,25 +105,25 @@ public class EntryHelper {
 
     public static Entry makeEventEntry(@NonNull final Cursor cursor) {
         EventFormer event = EventFormer.createWithEntry();
-        event.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.EventEntry.COL_NAME)));
-        event.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.EventEntry.COL_NOTE)));
-        event.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.EventEntry._ID)));
-        event.setLocationID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.EventEntry.COL_LOCATION_ID)));
+        event.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.EventEntry.ATTR_NAME)));
+        event.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.EventEntry.ATTR_NOTE)));
+        event.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.EventEntry.ATTR_ID)));
+        event.setLocationID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.EventEntry.ATTR_LOCATION_ID)));
 
         return event.getEntry();
     }
 
     public static Entry makeNotificationEntry(@NonNull final Cursor cursor) {
         NotificationFormer notification = NotificationFormer.createWithEntry();
-        notification.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.COL_NAME)));
-        notification.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.COL_NOTE)));
-        notification.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry._ID)));
-        notification.setCategory(NotificationFormer.Category.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.COL_CATEGORY))));
-        notification.setTargetID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.COL_TARGET_ID)));
-        notification.setType(NotificationFormer.Type.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.COL_TYPE))));
-        notification.setDatetimeBegin(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.COL_DATETIME_BEGIN)));
-        notification.setDatetimeEnd(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.COL_DATETIME_END)));
-        final int isDone = cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.COL_IS_DONE));
+        notification.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_NAME)));
+        notification.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_NOTE)));
+        notification.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_ID)));
+        notification.setCategory(NotificationFormer.Category.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_CATEGORY))));
+        notification.setTargetID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_TARGET_ID)));
+        notification.setType(NotificationFormer.Type.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_TYPE))));
+        notification.setDatetimeBegin(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_DATETIME_BEGIN)));
+        notification.setDatetimeEnd(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_DATETIME_END)));
+        final int isDone = cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_IS_DONE));
         notification.setIsDone(isDone != 0);
 
         return notification.getEntry();
@@ -131,12 +131,12 @@ public class EntryHelper {
 
     public static Entry makeAttendanceEntry(@NonNull final Cursor cursor) {
         AttendanceFormer attendance = AttendanceFormer.createWithEntry();
-        attendance.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.COL_NOTE)));
-        attendance.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry._ID)));
-        attendance.setTimeBlockID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.COL_TIME_BLOCK_ID)));
-        attendance.setPresent(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.COL_PRESENT)));
-        attendance.setLate(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.COL_LATE)));
-        attendance.setAbsent(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.COL_ABSENT)));
+        attendance.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.ATTR_NOTE)));
+        attendance.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.ATTR_ID)));
+        attendance.setTimeBlockID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.ATTR_TIME_BLOCK_ID)));
+        attendance.setPresent(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.ATTR_PRESENT)));
+        attendance.setLate(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.ATTR_LATE)));
+        attendance.setAbsent(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.ATTR_ABSENT)));
 
         return attendance.getEntry();
     }
