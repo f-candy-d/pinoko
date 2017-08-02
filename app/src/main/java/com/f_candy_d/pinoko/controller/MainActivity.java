@@ -23,6 +23,7 @@ import com.f_candy_d.pinoko.model.NotificationFormer;
 import com.f_candy_d.pinoko.model.TimeBlockFormer;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.DBDataManager;
+import com.f_candy_d.pinoko.utils.SQLQuery;
 import com.f_candy_d.pinoko.utils.Savable;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity
         // TODO; Test code for DB
         saveTest();
         loadTest();
+        exprTest();
     }
 
     @Override
@@ -208,7 +210,7 @@ public class MainActivity extends AppCompatActivity
     private void loadTest() {
         DBDataManager dataManager = new DBDataManager(this, DBDataManager.Mode.READ);
         for (String name : DBContract.getTableNames()) {
-            ArrayList<Entry> list = dataManager.getAllOf(name);
+            ArrayList<Entry> list = dataManager.selectAllOf(name);
             for (Entry entry : list) {
                 Log.d("mylog", "--------------------------------------------------------");
                 Log.d("mylog", "#### " + name);
@@ -217,5 +219,39 @@ public class MainActivity extends AppCompatActivity
             }
         }
         dataManager.close();
+    }
+
+    private void exprTest() {
+        SQLQuery.CondExpr condExprL = new SQLQuery.CondExpr();
+        SQLQuery.CondExpr condExprR = new SQLQuery.CondExpr();
+        SQLQuery.LogicExpr logicExpr = new SQLQuery.LogicExpr();
+
+
+        condExprL.l("id_g").graterThanOrEqualTo().r(10);
+        condExprR.l("name").equalTo().r("smith");
+        logicExpr.l(condExprL).and().r(condExprR);
+
+        Log.d("mylog", "Left operand  ::::::::: " + condExprL.toString());
+        Log.d("mylog", "Right operand ::::::::: " + condExprR.toString());
+        Log.d("mylog", "L && R        ::::::::: " + logicExpr.toString());
+
+        logicExpr.left = null;
+        Log.d("mylog", "R ONLY        ::::::::: " + logicExpr.toString());
+        logicExpr.left = condExprL;
+        logicExpr.right = null;
+        Log.d("mylog", "L ONLY        ::::::::: " + logicExpr.toString());
+
+        SQLQuery.CondExpr condExprL2 = new SQLQuery.CondExpr();
+        SQLQuery.CondExpr condExprR2 = new SQLQuery.CondExpr();
+        SQLQuery.LogicExpr logicExpr2 = new SQLQuery.LogicExpr();
+
+        condExprL2.l("id_p").notEqualTo().r("id_q");
+        condExprR2.l("sabori").lessThan().r(19);
+        logicExpr2.l(condExprL2).or().r(condExprR2);
+
+        Log.d("mylog", "Left2  operand         ::::::::: " + condExprL2.toString());
+        Log.d("mylog", "Right2 operand         ::::::::: " + condExprR2.toString());
+        logicExpr.l(condExprL).and().r(logicExpr2, true);
+        Log.d("mylog", "L && (L2 || R2)        ::::::::: " + logicExpr.toString());
     }
 }

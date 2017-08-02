@@ -111,7 +111,7 @@ public class DBDataManager {
         return ids;
     }
 
-    public ArrayList<Entry> getAllOf(final String tableName) {
+    public ArrayList<Entry> selectAllOf(final String tableName) {
         if (!isOpen()) {
             throw new IllegalStateException("DB is not open");
         }
@@ -133,5 +133,9 @@ public class DBDataManager {
 
         cursor.close();
         return entries;
+    }
+
+    public ArrayList<Entry> select() {
+        return null;
     }
 }
