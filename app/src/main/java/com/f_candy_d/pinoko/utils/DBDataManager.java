@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
 import com.f_candy_d.pinoko.model.Entry;
+import com.f_candy_d.pinoko.model.TimeBlockFormer;
 
 import java.util.ArrayList;
 
@@ -135,7 +136,50 @@ public class DBDataManager {
         return entries;
     }
 
-    public ArrayList<Entry> select() {
-        return null;
+    public ArrayList<Entry> select(@NonNull final SQLQuery query, @NonNull final String entryAffiliation) {
+        if (!isOpen()) {
+            throw new IllegalStateException("DB is not open");
+        }
+
+        ArrayList<Entry> results = new ArrayList<>();
+        Cursor cursor = mDatabase.rawQuery(query.toString(), null);
+        boolean isEOF = cursor.moveToFirst();
+        String[] requests = cursor.getColumnNames();
+        Entry entry;
+        DBContract.ValueType type;
+
+        while (isEOF) {
+            entry = new Entry(entryAffiliation);
+            for (String request : requests) {
+                type = DBContract.ATTR_VALUE_TYPE_MAP.get(request);
+                switch (type) {
+                    case STRING: {
+                        entry.set(request, cursor.getString(cursor.getColumnIndexOrThrow(request)));
+                        break;
+                    }
+
+                    case INT: {
+                        entry.set(request, cursor.getInt(cursor.getColumnIndexOrThrow(request)));
+                        break;
+                    }
+
+                    case LONG: {
+                        entry.set(request, cursor.getLong(cursor.getColumnIndexOrThrow(request)));
+                        break;
+                    }
+
+                    case BOOLEAN: {
+                        final boolean bool = (0 != cursor.getInt(cursor.getColumnIndexOrThrow(request)));
+                        entry.set(request, bool);
+                        break;
+                    }
+                }
+            }
+            results.add(entry);
+            isEOF = cursor.moveToNext();
+        }
+
+        cursor.close();
+        return results;
     }
 }

@@ -40,8 +40,9 @@ public class MainActivity extends AppCompatActivity
         // TODO; Test code for DB
         saveTest();
         loadTest();
-        exprTest();
-        queryTest();
+//        exprTest();
+//        queryTest();
+        selectTest();
     }
 
     @Override
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity
         course.setName("course")
                 .setLocationIDA(1)
                 .setLocationIDB(2)
-                .setInstructorIDA(3)
+                .setInstructorIDA(1)
                 .setInstructorIDB(4)
                 .setInstructorIDC(5)
                 .setLength(6)
@@ -302,5 +303,23 @@ public class MainActivity extends AppCompatActivity
 
 
         Log.d("mylog", "QUERY =======> " + query.toString());
+    }
+
+    private void selectTest() {
+        DBDataManager dataManager = new DBDataManager(this, DBDataManager.Mode.WRITE_APPEND);
+        SQLQuery.CondExpr locIdCond = new SQLQuery.CondExpr().l(DBContract.CourseEntry.ATTR_LOCATION_ID_A).equalTo().r(DBContract.LocationEntry.ATTR_ID);
+        SQLQuery.CondExpr instIdCond = new SQLQuery.CondExpr().l(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A).equalTo().r(DBContract.InstructorEntry.ATTR_ID);
+        SQLQuery.LogicExpr where = new SQLQuery.LogicExpr().l(locIdCond).and().r(instIdCond);
+        SQLQuery query = new SQLQuery(null, new String[] {DBContract.CourseEntry.TABLE_NAME, DBContract.LocationEntry.TABLE_NAME, DBContract.InstructorEntry.TABLE_NAME}, where);
+        ArrayList<Entry> results = dataManager.select(query, "testEntry");
+
+        Log.d("mylog", "Query ==> " + query.toString());
+
+        for (Entry entry : results) {
+            Log.d("mylog", "--------------------------------------------------------");
+            Log.d("mylog", "#### " + entry.getAffiliation());
+            Log.d("mylog", entry.toString());
+            Log.d("mylog", "--------------------------------------------------------");
+        }
     }
 }

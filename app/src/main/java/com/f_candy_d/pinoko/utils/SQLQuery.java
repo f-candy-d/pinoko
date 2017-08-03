@@ -386,6 +386,10 @@ public class SQLQuery {
         mRequests = requests;
     }
 
+    public ArrayList<String> getRequests() {
+        return mRequests;
+    }
+
     public void addRequest(final String request) {
         mRequests.add(request);
     }

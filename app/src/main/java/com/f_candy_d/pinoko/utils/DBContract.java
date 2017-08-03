@@ -1,6 +1,12 @@
 package com.f_candy_d.pinoko.utils;
 
+import com.f_candy_d.pinoko.model.AttendanceFormer;
+import com.f_candy_d.pinoko.model.NotificationFormer;
+
 import java.net.NoRouteToHostException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by daichi on 7/30/17.
@@ -60,6 +66,73 @@ public class DBContract {
      */
     public static final String NOT_NULL = " NOT NULL";
     public static final String C_S = ",";
+
+    /**
+     * Value types
+     */
+    public enum ValueType {
+        STRING,
+        INT,
+        LONG,
+        BOOLEAN,
+    }
+    public static final Map<String, ValueType> ATTR_VALUE_TYPE_MAP =
+            Collections.unmodifiableMap(new HashMap<String, ValueType>() {{
+                // Course Entry
+                put(CourseEntry.ATTR_ID, ValueType.LONG);
+                put(CourseEntry.ATTR_NAME, ValueType.STRING);
+                put(CourseEntry.ATTR_LOCATION_ID_A, ValueType.LONG);
+                put(CourseEntry.ATTR_LOCATION_ID_B, ValueType.LONG);
+                put(CourseEntry.ATTR_INSTRUCTOR_ID_A, ValueType.LONG);
+                put(CourseEntry.ATTR_INSTRUCTOR_ID_B, ValueType.LONG);
+                put(CourseEntry.ATTR_INSTRUCTOR_ID_C, ValueType.LONG);
+                put(CourseEntry.ATTR_LENGTH, ValueType.LONG);
+                put(CourseEntry.ATTR_NOTE, ValueType.STRING);
+                // Location Entry
+                put(LocationEntry.ATTR_ID, ValueType.LONG);
+                put(LocationEntry.ATTR_NAME, ValueType.STRING);
+                put(LocationEntry.ATTR_NOTE, ValueType.STRING);
+                // Instructor Entry
+                put(InstructorEntry.ATTR_ID, ValueType.LONG);
+                put(InstructorEntry.ATTR_NAME, ValueType.STRING);
+                put(InstructorEntry.ATTR_LAB, ValueType.STRING);
+                put(InstructorEntry.ATTR_MAIL, ValueType.STRING);
+                put(InstructorEntry.ATTR_PHONE_NUMBER, ValueType.STRING);
+                put(InstructorEntry.ATTR_NOTE, ValueType.STRING);
+                // TimeBlock Entry
+                put(TimeBlockEntry.ATTR_ID, ValueType.LONG);
+                put(TimeBlockEntry.ATTR_TYPE, ValueType.INT);
+                put(TimeBlockEntry.ATTR_CATEGORY, ValueType.INT);
+                put(TimeBlockEntry.ATTR_TARGET_ID, ValueType.LONG);
+                put(TimeBlockEntry.ATTR_DATETIME_BEGIN, ValueType.LONG);
+                put(TimeBlockEntry.ATTR_DATETIME_END, ValueType.LONG);
+                put(TimeBlockEntry.ATTR_TIME_TABLE_ID, ValueType.INT);
+                // Assignment Entry
+                put(AssignmentEntry.ATTR_ID, ValueType.LONG);
+                put(AssignmentEntry.ATTR_NAME, ValueType.STRING);
+                put(AssignmentEntry.ATTR_NOTE, ValueType.STRING);
+                put(AssignmentEntry.ATTR_IS_DONE, ValueType.BOOLEAN);
+                // Event Entry
+                put(EventEntry.ATTR_ID, ValueType.LONG);
+                put(EventEntry.ATTR_NAME, ValueType.LONG);
+                put(EventEntry.ATTR_NOTE, ValueType.STRING);
+                // Notification Entry
+                put(NotificationEntry.ATTR_ID, ValueType.LONG);
+                put(NotificationEntry.ATTR_NAME, ValueType.STRING);
+                put(NotificationEntry.ATTR_NOTE, ValueType.STRING);
+                put(NotificationEntry.ATTR_CATEGORY, ValueType.INT);
+                put(NotificationEntry.ATTR_TARGET_ID, ValueType.LONG);
+                put(NotificationEntry.ATTR_TYPE, ValueType.INT);
+                put(NotificationEntry.ATTR_IS_DONE, ValueType.BOOLEAN);
+                put(NotificationEntry.ATTR_DATETIME_BEGIN, ValueType.LONG);
+                put(NotificationEntry.ATTR_DATETIME_END, ValueType.LONG);
+                // Attendance Entry
+                put(AttendanceEntry.ATTR_ID, ValueType.LONG);
+                put(AttendanceEntry.ATTR_PRESENT, ValueType.INT);
+                put(AttendanceEntry.ATTR_LATE, ValueType.INT);
+                put(AttendanceEntry.ATTR_ABSENT, ValueType.INT);
+                put(AttendanceEntry.ATTR_NOTE, ValueType.INT);
+            }});
 
     private DBContract() {}
 
