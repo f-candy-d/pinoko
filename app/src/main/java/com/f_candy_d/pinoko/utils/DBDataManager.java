@@ -117,23 +117,24 @@ public class DBDataManager {
             throw new IllegalStateException("DB is not open");
         }
 
-        final ArrayList<Entry> entries = new ArrayList<>();
+        final ArrayList<Entry> results = new ArrayList<>();
         // Select all rows in the database
-        final String select = "SELECT * FROM " + tableName + ";";
-        final Cursor cursor = mDatabase.rawQuery(select, null);
+//        final String select = "SELECT * FROM " + tableName + ";";
+        final SQLQuery query = new SQLQuery(null, new String[]{tableName}, null);
+        final Cursor cursor = mDatabase.rawQuery(query.toString(), null);
         boolean isEOF = cursor.moveToFirst();
         Entry entry;
 
         while (isEOF) {
             entry = EntryHelper.makeEntry(tableName, cursor);
             if (entry != null) {
-                entries.add(entry);
+                results.add(entry);
             }
             isEOF = cursor.moveToNext();
         }
 
         cursor.close();
-        return entries;
+        return results;
     }
 
     public ArrayList<Entry> select(@NonNull final SQLQuery query, @NonNull final String entryAffiliation) {

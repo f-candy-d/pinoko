@@ -309,8 +309,15 @@ public class MainActivity extends AppCompatActivity
         DBDataManager dataManager = new DBDataManager(this, DBDataManager.Mode.WRITE_APPEND);
         SQLQuery.CondExpr locIdCond = new SQLQuery.CondExpr().l(DBContract.CourseEntry.ATTR_LOCATION_ID_A).equalTo().r(DBContract.LocationEntry.ATTR_ID);
         SQLQuery.CondExpr instIdCond = new SQLQuery.CondExpr().l(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A).equalTo().r(DBContract.InstructorEntry.ATTR_ID);
-        SQLQuery.LogicExpr where = new SQLQuery.LogicExpr().l(locIdCond).and().r(instIdCond);
-        SQLQuery query = new SQLQuery(null, new String[] {DBContract.CourseEntry.TABLE_NAME, DBContract.LocationEntry.TABLE_NAME, DBContract.InstructorEntry.TABLE_NAME}, where);
+        SQLQuery.CondExpr notifiIDCond = new SQLQuery.CondExpr().l(DBContract.CourseEntry.ATTR_ID).equalTo().r(DBContract.NotificationEntry.ATTR_TARGET_ID);
+        SQLQuery.LogicExpr innerWhere = new SQLQuery.LogicExpr().l(locIdCond).and().r(instIdCond);
+        SQLQuery.LogicExpr where = new SQLQuery.LogicExpr().l(innerWhere).and().r(notifiIDCond);
+        SQLQuery query = new SQLQuery(null, new String[] {
+                DBContract.CourseEntry.TABLE_NAME,
+                DBContract.LocationEntry.TABLE_NAME,
+                DBContract.InstructorEntry.TABLE_NAME,
+                DBContract.NotificationEntry.TABLE_NAME},
+                where);
         ArrayList<Entry> results = dataManager.select(query, "testEntry");
 
         Log.d("mylog", "Query ==> " + query.toString());
