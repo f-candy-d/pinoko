@@ -1,5 +1,7 @@
 package com.f_candy_d.pinoko.utils;
 
+import android.text.TextUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -10,19 +12,25 @@ import java.util.Arrays;
 public class SQLQuery {
 
     /**
+     * The super class of expression classes
+     */
+    abstract public static class Expr {
+        protected static final String SPACE = " ";
+        public Expr() {}
+    }
+
+    /**
      * Logical expression class
      */
-    public static class LogicExpr {
+    public static class LogicExpr extends Expr {
 
         public enum LogicOp {
             AND,
             OR
         }
 
-        protected static final String SPACE = " ";
-
-        public LogicExpr left = null;
-        public LogicExpr right = null;
+        public Expr left = null;
+        public Expr right = null;
         public LogicOp operator = null;
         private boolean isInBrancketLeft = false;
         private boolean isInBrancketRight = false;
@@ -35,21 +43,21 @@ public class SQLQuery {
             this.right = r;
         }
 
-        public LogicExpr l(final LogicExpr l) {
+        public LogicExpr l(final Expr l) {
             return l(l, false);
         }
 
-        public LogicExpr l(final LogicExpr l, final boolean isInBrancket) {
+        public LogicExpr l(final Expr l, final boolean isInBrancket) {
             this.left = l;
             this.isInBrancketLeft = isInBrancket;
             return this;
         }
 
-        public LogicExpr r(final LogicExpr r) {
+        public LogicExpr r(final Expr r) {
             return r(r, false);
         }
 
-        public LogicExpr r(final LogicExpr r, final boolean isInBrancket) {
+        public LogicExpr r(final Expr r, final boolean isInBrancket) {
             this.right = r;
             this.isInBrancketRight = isInBrancket;
             return this;
@@ -110,7 +118,7 @@ public class SQLQuery {
     /**
      * Conditional expression class
      */
-    public static class CondExpr extends LogicExpr {
+    public static class CondExpr extends Expr {
 
         public enum CondOp {
             LT("<"),       // a <  b (a is Less Than b)
@@ -207,6 +215,143 @@ public class SQLQuery {
             }
 
             throw new IllegalStateException("There isn't enough arguments!");
+        }
+    }
+
+    /**
+     * Other special expression class
+     */
+    public static class SpecExpr extends Expr {
+
+        public enum SpecOp {
+            BETWEEN,
+            NOT_BETWEEN,
+            LIKE,
+            IN,
+            IS_NULL,
+            IS_NOT_NULL;
+
+            public String toString(final ArrayList<String> args) {
+                switch (this) {
+                    case BETWEEN: {
+                        if (2 <= args.size()) {
+                            return "BETWEEN " + args.get(0) + " AND " + args.get(1);
+                        }
+                        throw new IllegalArgumentException("Too few arguments");
+                    }
+
+                    case NOT_BETWEEN: {
+                        if (2 <= args.size()) {
+                            return "NOT BETWEEN " + args.get(0) + " AND " + args.get(1);
+                        }
+                        throw new IllegalArgumentException("Too few arguments");
+                    }
+
+                    case LIKE: {
+                        if (1 <= args.size()) {
+                            return "LIKE " + args.get(0);
+                        }
+                        throw new IllegalArgumentException("Too few arguments");
+                    }
+
+                    case IN: {
+                        if (1 <= args.size()) {
+                            return "IN(" + TextUtils.join(",", args) + ")";
+                        }
+                        throw new IllegalArgumentException("Too few arguments");
+                    }
+
+                    case IS_NULL: {
+                        return "IS NULL";
+                    }
+
+                    case IS_NOT_NULL: {
+                        return "IS NOT NULL";
+                    }
+
+                    default:
+                        throw new IllegalArgumentException();
+                }
+            }
+        }
+
+        private SpecOp operator = null;
+        private ArrayList<String> args;
+        public String operand = null;
+
+        public SpecExpr() {
+            this.args = new ArrayList<>(2);
+        }
+
+        public void between(final String operand, final int min, final int max) {
+            this.operator = SpecOp.BETWEEN;
+            this.operand = operand;
+            this.args.clear();
+            this.args.add(String.valueOf(min));
+            this.args.add(String.valueOf(max));
+        }
+
+        public void notBetween(final String operand, final int min, final int max) {
+            this.operator = SpecOp.NOT_BETWEEN;
+            this.operand = operand;
+            this.args.clear();
+            this.args.add(String.valueOf(min));
+            this.args.add(String.valueOf(max));
+        }
+
+        public void like(final String operand, final String regex) {
+            this.operator = SpecOp.LIKE;
+            this.operand = operand;
+            this.args.clear();
+            this.args.add("'" + regex + "'");
+        }
+
+        public void in(final String operand, final String[] vals) {
+            this.operator = SpecOp.IN;
+            this.operand = operand;
+            this.args.clear();
+            for (String val : vals) {
+                this.args.add("'" + val + "'");
+            }
+        }
+
+        public void in(final String operand, final int[] vals) {
+            this.operator = SpecOp.IN;
+            this.operand = operand;
+            this.args.clear();
+            for (int val : vals) {
+                this.args.add(String.valueOf(val));
+            }
+        }
+
+        public void in(final String operand, final long[] vals) {
+            this.operator = SpecOp.IN;
+            this.operand = operand;
+            this.args.clear();
+            for (long val : vals) {
+                this.args.add(String.valueOf(val));
+            }
+        }
+
+        public void isNull(final String operand) {
+            this.operator = SpecOp.IS_NULL;
+            this.operand = operand;
+            this.args.clear();
+        }
+
+        public void isNotNull(final String operand) {
+            this.operator = SpecOp.IS_NOT_NULL;
+            this.operand = operand;
+            this.args.clear();
+        }
+
+        @Override
+        public String toString() {
+            if (this.operand != null && this.operator != null) {
+                return this.operand + SPACE + this.operator.toString(this.args);
+            }
+
+            throw new IllegalStateException("Operator or Operand is null!");
         }
     }
 

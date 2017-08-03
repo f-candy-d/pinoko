@@ -253,5 +253,30 @@ public class MainActivity extends AppCompatActivity
         Log.d("mylog", "Right2 operand         ::::::::: " + condExprR2.toString());
         logicExpr.l(condExprL).and().r(logicExpr2);
         Log.d("mylog", "L && (L2 || R2)        ::::::::: " + logicExpr.toString());
+
+        SQLQuery.SpecExpr between = new SQLQuery.SpecExpr();
+        SQLQuery.SpecExpr notbetween = new SQLQuery.SpecExpr();
+        SQLQuery.SpecExpr like = new SQLQuery.SpecExpr();
+        SQLQuery.SpecExpr in = new SQLQuery.SpecExpr();
+        SQLQuery.SpecExpr isnull = new SQLQuery.SpecExpr();
+        SQLQuery.SpecExpr isnotnull = new SQLQuery.SpecExpr();
+
+        between.between("_id", 10, 20);
+        notbetween.notBetween("_id", 100, 200);
+        like.like("_id", "sabori's big ???? barger");
+        in.in("_id", new String[]{"af", "fff", "fkfk", "ffkf"});
+        isnull.isNull("_id");
+        isnotnull.isNotNull("_id");
+
+        Log.d("mylog", "between(\"_id\", 10, 20)                       ::::::::: " + between.toString());
+        Log.d("mylog", "notBetween(\"_id\", 100, 200)                  ::::::::: " + notbetween.toString());
+        Log.d("mylog", "like(\"_id\", \"sabori's big ???? barger\")    ::::::::: " + like.toString());
+        Log.d("mylog", "in(\"_id\", new int[]{1,2,3,4,5,6,7,8,9})      ::::::::: " + in.toString());
+        Log.d("mylog", "isNotNull(\"_id\");                            ::::::::: " + isnull.toString());
+        Log.d("mylog", "isNull(\"_id\");                               ::::::::: " + isnotnull.toString());
+
+        logicExpr.l(condExprL).and().r(condExprR);
+        logicExpr2.l(logicExpr, true).and().r(between, true);
+        Log.d("mylog", "logicExpr2.l(logicExpr, true).and().r(between, true)  :::::::" + logicExpr2.toString());
     }
 }
