@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity
 
         Log.d("mylog", "Left2  operand         ::::::::: " + condExprL2.toString());
         Log.d("mylog", "Right2 operand         ::::::::: " + condExprR2.toString());
-        logicExpr.l(condExprL).and().r(logicExpr2, true);
+        logicExpr.l(condExprL).and().r(logicExpr2);
         Log.d("mylog", "L && (L2 || R2)        ::::::::: " + logicExpr.toString());
     }
 }

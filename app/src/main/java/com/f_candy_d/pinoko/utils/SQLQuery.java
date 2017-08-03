@@ -14,7 +14,7 @@ public class SQLQuery {
      */
     public static class LogicExpr {
 
-        public enum Op {
+        public enum LogicOp {
             AND,
             OR
         }
@@ -23,15 +23,15 @@ public class SQLQuery {
 
         public LogicExpr left = null;
         public LogicExpr right = null;
-        public Op operator = null;
+        public LogicOp operator = null;
         private boolean isInBrancketLeft = false;
         private boolean isInBrancketRight = false;
 
         public LogicExpr() {}
 
-        public LogicExpr(final LogicExpr l, final Op op, final LogicExpr r) {
+        public LogicExpr(final LogicExpr l, final LogicOp logicOp, final LogicExpr r) {
             this.left = l;
-            this.operator = op;
+            this.operator = logicOp;
             this.right = r;
         }
 
@@ -56,12 +56,12 @@ public class SQLQuery {
         }
 
         public LogicExpr and() {
-            this.operator = Op.AND;
+            this.operator = LogicOp.AND;
             return this;
         }
 
         public LogicExpr or() {
-            this.operator = Op.OR;
+            this.operator = LogicOp.OR;
             return this;
         }
 
@@ -112,17 +112,17 @@ public class SQLQuery {
      */
     public static class CondExpr extends LogicExpr {
 
-        public enum Op {
-            LT("<"),   // a <  b (a is Less Than b)
-            LTE("<="), // a <= b (a is Less Than or Equal to b)
-            GT(">"),   // a >  b (a is Grater Than b)
-            GTE(">="), // a >= b (a is Grater Than or Equal to b)
-            EQ("="),   // a == b (a is EQual to b)
-            NEQ("!="); // a != b (a is Not EQual to b)
+        public enum CondOp {
+            LT("<"),       // a <  b (a is Less Than b)
+            LTE("<="),     // a <= b (a is Less Than or Equal to b)
+            GT(">"),       // a >  b (a is Grater Than b)
+            GTE(">="),     // a >= b (a is Grater Than or Equal to b)
+            EQ("="),       // a == b (a is EQual to b)
+            NEQ("!=");     // a != b (a is Not EQual to b)
 
             private String mString;
 
-            Op(final String string) {
+            CondOp(final String string) {
                 mString = string;
             }
 
@@ -134,22 +134,22 @@ public class SQLQuery {
 
         private String left = null;
         private String right = null;
-        private Op operator = null;
+        private CondOp operator = null;
 
         public CondExpr() {}
 
-        public CondExpr(final String l, final Op op, final String r) {
+        public CondExpr(final String l, final CondOp condOp, final String r) {
             this.left = l;
-            this.operator = op;
+            this.operator = condOp;
             this.right = r;
         }
 
-        public CondExpr(final String l, final Op op, final int r) {
-            this(l, op, String.valueOf(r));
+        public CondExpr(final String l, final CondOp condOp, final int r) {
+            this(l, condOp, String.valueOf(r));
         }
 
-        public CondExpr(final String l, final Op op, final long r) {
-            this(l, op, String.valueOf(r));
+        public CondExpr(final String l, final CondOp condOp, final long r) {
+            this(l, condOp, String.valueOf(r));
         }
 
         public CondExpr l(final String arg) {
@@ -171,32 +171,32 @@ public class SQLQuery {
         }
 
         public CondExpr lessThan() {
-            this.operator = Op.LT;
+            this.operator = CondOp.LT;
             return this;
         }
 
         public CondExpr lessThanOrEqualTo() {
-            this.operator = Op.LTE;
+            this.operator = CondOp.LTE;
             return this;
         }
 
         public CondExpr graterThan() {
-            this.operator = Op.GT;
+            this.operator = CondOp.GT;
             return this;
         }
 
         public CondExpr graterThanOrEqualTo() {
-            this.operator = Op.GTE;
+            this.operator = CondOp.GTE;
             return this;
         }
 
         public CondExpr equalTo() {
-            this.operator = Op.EQ;
+            this.operator = CondOp.EQ;
             return this;
         }
 
         public CondExpr notEqualTo() {
-            this.operator = Op.NEQ;
+            this.operator = CondOp.NEQ;
             return this;
         }
 
