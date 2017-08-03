@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity
         SQLQuery query = new SQLQuery(null,
                 new String[]{
                         DBContract.CourseEntry.TABLE_NAME, DBContract.AssignmentEntry.TABLE_NAME},
-                logicExpr);
+                condExprL);
 
 
         Log.d("mylog", "QUERY =======> " + query.toString());
