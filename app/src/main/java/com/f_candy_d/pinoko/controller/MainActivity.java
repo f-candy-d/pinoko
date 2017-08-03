@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity
         saveTest();
         loadTest();
         exprTest();
+        queryTest();
     }
 
     @Override
@@ -278,5 +279,28 @@ public class MainActivity extends AppCompatActivity
         logicExpr.l(condExprL).and().r(condExprR);
         logicExpr2.l(logicExpr, true).and().r(between, true);
         Log.d("mylog", "logicExpr2.l(logicExpr, true).and().r(between, true)  :::::::" + logicExpr2.toString());
+    }
+
+    private void queryTest() {
+        SQLQuery.CondExpr condExprL = new SQLQuery.CondExpr();
+        SQLQuery.CondExpr condExprR = new SQLQuery.CondExpr();
+        SQLQuery.LogicExpr logicExpr = new SQLQuery.LogicExpr();
+        condExprL.l("id_g").graterThanOrEqualTo().r(10);
+        condExprR.l("name").equalTo().r("smith");
+        logicExpr.l(condExprL).and().r(condExprR);
+
+//        SQLQuery query = new SQLQuery(new String[]{
+//                DBContract.COL_ID, DBContract.COL_CATEGORY, DBContract.COL_DATETIME_END},
+//                new String[]{
+//                        DBContract.CourseEntry.TABLE_NAME, DBContract.AssignmentEntry.TABLE_NAME},
+//                logicExpr);
+
+        SQLQuery query = new SQLQuery(null,
+                new String[]{
+                        DBContract.CourseEntry.TABLE_NAME, DBContract.AssignmentEntry.TABLE_NAME},
+                logicExpr);
+
+
+        Log.d("mylog", "QUERY =======> " + query.toString());
     }
 }

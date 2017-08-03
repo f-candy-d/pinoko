@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.IllegalFormatCodePointException;
 
 /**
  * Created by daichi on 17/08/03.
@@ -280,6 +281,8 @@ public class SQLQuery {
         public String operand = null;
 
         public SpecExpr() {
+            // (NOT)BETWEEN requires 2 arguments, LIKE requires 1 argument,
+            // IN requires some arguments more than 0, and IS(NOT)NULL requires no argument, so...
             this.args = new ArrayList<>(2);
         }
 
@@ -357,15 +360,69 @@ public class SQLQuery {
 
     private ArrayList<String> mRequests;
     private ArrayList<String> mFrom;
-    private LogicExpr mWhere;
+    private Expr mWhere = null;
 
-    public SQLQuery(final String[] requests, final String[] from, final LogicExpr where) {
+    public SQLQuery() {
+        this(null, null, null);
+    }
+
+    public SQLQuery(final String[] requests, final String[] from, final Expr where) {
         if (requests != null) {
             mRequests = new ArrayList<>(Arrays.asList(requests));
+        } else {
+            mRequests = new ArrayList<>();
         }
+
         if (from != null) {
             mFrom = new ArrayList<>(Arrays.asList(from));
+        } else {
+            mFrom = new ArrayList<>();
         }
+
         mWhere = where;
+    }
+
+    public void setRequests(ArrayList<String> requests) {
+        mRequests = requests;
+    }
+
+    public void addRequest(final String request) {
+        mRequests.add(request);
+    }
+
+    public void setFrom(ArrayList<String> from) {
+        mFrom = from;
+    }
+
+    public void addFrom(final String from) {
+        mFrom.add(from);
+    }
+
+    public void setWhere(Expr where) {
+        mWhere = where;
+    }
+
+    @Override
+    public String toString() {
+        String select;
+        if (mRequests != null && mRequests.size() != 0) {
+            select = "SELECT " + TextUtils.join(",", mRequests);
+        } else {
+            // Select all columns of tables in mFrom
+            select = "SELECT *";
+        }
+
+        String from;
+        if (mFrom != null && mFrom.size() != 0) {
+            from = "FROM " + TextUtils.join(" JOIN ", mFrom);
+        } else {
+            throw new IllegalStateException("Give table names");
+        }
+
+        if (mWhere != null) {
+            return select + " " + from + " WHERE " + mWhere.toString() + ";";
+        } else {
+            return select + " " + from + ";";
+        }
     }
 }
