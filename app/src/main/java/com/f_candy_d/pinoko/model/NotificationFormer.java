@@ -3,7 +3,9 @@ package com.f_candy_d.pinoko.model;
 import android.content.ContentValues;
 
 import com.f_candy_d.pinoko.utils.DBContract;
+import com.f_candy_d.pinoko.utils.EntryHelper;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -170,7 +172,7 @@ public class NotificationFormer extends EntryFormer {
     }
 
     public NotificationFormer setCategory(final Category category) {
-        getEntry().set(DBContract.NotificationEntry.ATTR_CATEGORY, category.toInt());
+        getEntry().set(DBContract.NotificationEntry.ATTR_CATEGORY, category);
         return this;
     }
 
@@ -180,7 +182,7 @@ public class NotificationFormer extends EntryFormer {
     }
 
     public NotificationFormer setType(final Type type) {
-        getEntry().set(DBContract.NotificationEntry.ATTR_TYPE, type.toInt());
+        getEntry().set(DBContract.NotificationEntry.ATTR_TYPE, type);
         return this;
     }
 
@@ -212,7 +214,7 @@ public class NotificationFormer extends EntryFormer {
     }
 
     public Category getCategory() {
-        return Category.from(getEntry().getInt(DBContract.NotificationEntry.ATTR_CATEGORY));
+        return EntryHelper.getNotificationCategory(getEntry());
     }
 
     public long getTargetID() {
@@ -220,7 +222,7 @@ public class NotificationFormer extends EntryFormer {
     }
 
     public Type getType() {
-        return Type.from(getEntry().getInt(DBContract.NotificationEntry.ATTR_TYPE));
+        return EntryHelper.getNotificationType(getEntry());
     }
 
     public boolean getIsDone() {

@@ -24,7 +24,7 @@ public class EntryFactory {
      * Create a entry object from 'cursor' which contains results of SQL:SELECT
      */
 
-    public static Entry makeEntry(@NonNull final String tableName, @NonNull final Cursor cursor) {
+    public static Entry makeBasicEntry(@NonNull final String tableName, @NonNull final Cursor cursor) {
         switch (tableName) {
             case DBContract.CourseEntry.TABLE_NAME:
                 return makeCourseEntry(cursor);

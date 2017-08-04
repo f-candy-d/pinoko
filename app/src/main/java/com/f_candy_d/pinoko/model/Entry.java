@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -121,6 +123,11 @@ public class Entry {
         return this;
     }
 
+    public Entry set(final String attr, final Serializable value) {
+        mAttributes.putSerializable(attr,value);
+        return this;
+    }
+
     public String getString(final String attr) {
         return mAttributes.getString(attr, mDefaultStringValue);
     }
@@ -151,5 +158,9 @@ public class Entry {
 
     public long getLong(final String attr, final long def) {
         return mAttributes.getLong(attr, def);
+    }
+
+    public Serializable getEnum(final String attr) {
+        return mAttributes.getSerializable(attr);
     }
 }

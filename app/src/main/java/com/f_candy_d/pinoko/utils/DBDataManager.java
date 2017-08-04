@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
 import com.f_candy_d.pinoko.model.Entry;
+import com.f_candy_d.pinoko.model.NotificationFormer;
+import com.f_candy_d.pinoko.model.TimeBlockFormer;
 
 import java.util.ArrayList;
 
@@ -124,7 +126,7 @@ public class DBDataManager {
         Entry entry;
 
         while (isEOF) {
-            entry = EntryFactory.makeEntry(tableName, cursor);
+            entry = EntryFactory.makeBasicEntry(tableName, cursor);
             if (entry != null) {
                 results.add(entry);
             }
@@ -171,6 +173,26 @@ public class DBDataManager {
                         final boolean bool = (0 != cursor.getInt(cursor.getColumnIndexOrThrow(request)));
                         entry.set(request, bool);
                         break;
+                    }
+
+                    case TB_TYPE: {
+                        final int typeId = cursor.getInt(cursor.getColumnIndexOrThrow(request));
+                        entry.set(request, TimeBlockFormer.Type.from(typeId));
+                    }
+
+                    case TB_CATEGORY: {
+                        final int categoryId = cursor.getInt(cursor.getColumnIndexOrThrow(request));
+                        entry.set(request, TimeBlockFormer.Category.from(categoryId));
+                    }
+
+                    case NOTIF_TYPE: {
+                        final int typeId = cursor.getInt(cursor.getColumnIndexOrThrow(request));
+                        entry.set(request, NotificationFormer.Type.from(typeId));
+                    }
+
+                    case NOTIF_CATEGORY: {
+                        final int categoryId = cursor.getInt(cursor.getColumnIndexOrThrow(request));
+                        entry.set(request, NotificationFormer.Category.from(categoryId));
                     }
                 }
             }

@@ -3,6 +3,7 @@ package com.f_candy_d.pinoko.model;
 import android.content.ContentValues;
 
 import com.f_candy_d.pinoko.utils.DBContract;
+import com.f_candy_d.pinoko.utils.EntryHelper;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -149,12 +150,12 @@ public class TimeBlockFormer extends EntryFormer {
     }
 
     public TimeBlockFormer setType(final Type type) {
-        getEntry().set(DBContract.TimeBlockEntry.ATTR_TYPE, type.toInt());
+        getEntry().set(DBContract.TimeBlockEntry.ATTR_TYPE, type);
         return this;
     }
 
     public TimeBlockFormer setCategory(final Category category) {
-        getEntry().set(DBContract.TimeBlockEntry.ATTR_CATEGORY, category.toInt());
+        getEntry().set(DBContract.TimeBlockEntry.ATTR_CATEGORY, category);
         return this;
     }
 
@@ -183,11 +184,11 @@ public class TimeBlockFormer extends EntryFormer {
     }
 
     public Type getType() {
-        return Type.from(getEntry().getInt(DBContract.TimeBlockEntry.ATTR_TYPE));
+        return EntryHelper.getTimeBlockType(getEntry());
     }
 
     public Category getCategory() {
-        return Category.from(getEntry().getInt(DBContract.TimeBlockEntry.ATTR_CATEGORY));
+        return EntryHelper.getTimeBlockCategory(getEntry());
     }
 
     public long getTargetID() {

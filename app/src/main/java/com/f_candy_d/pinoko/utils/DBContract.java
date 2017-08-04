@@ -1,9 +1,5 @@
 package com.f_candy_d.pinoko.utils;
 
-import com.f_candy_d.pinoko.model.AttendanceFormer;
-import com.f_candy_d.pinoko.model.NotificationFormer;
-
-import java.net.NoRouteToHostException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -75,7 +71,12 @@ public class DBContract {
         INT,
         LONG,
         BOOLEAN,
+        TB_TYPE,
+        TB_CATEGORY,
+        NOTIF_TYPE,
+        NOTIF_CATEGORY
     }
+
     public static final Map<String, ValueType> ATTR_VALUE_TYPE_MAP =
             Collections.unmodifiableMap(new HashMap<String, ValueType>() {{
                 // Course Entry
@@ -101,8 +102,8 @@ public class DBContract {
                 put(InstructorEntry.ATTR_NOTE, ValueType.STRING);
                 // TimeBlock Entry
                 put(TimeBlockEntry.ATTR_ID, ValueType.LONG);
-                put(TimeBlockEntry.ATTR_TYPE, ValueType.INT);
-                put(TimeBlockEntry.ATTR_CATEGORY, ValueType.INT);
+                put(TimeBlockEntry.ATTR_TYPE, ValueType.TB_TYPE);
+                put(TimeBlockEntry.ATTR_CATEGORY, ValueType.TB_CATEGORY);
                 put(TimeBlockEntry.ATTR_TARGET_ID, ValueType.LONG);
                 put(TimeBlockEntry.ATTR_DATETIME_BEGIN, ValueType.LONG);
                 put(TimeBlockEntry.ATTR_DATETIME_END, ValueType.LONG);
@@ -120,9 +121,9 @@ public class DBContract {
                 put(NotificationEntry.ATTR_ID, ValueType.LONG);
                 put(NotificationEntry.ATTR_NAME, ValueType.STRING);
                 put(NotificationEntry.ATTR_NOTE, ValueType.STRING);
-                put(NotificationEntry.ATTR_CATEGORY, ValueType.INT);
+                put(NotificationEntry.ATTR_CATEGORY, ValueType.NOTIF_CATEGORY);
                 put(NotificationEntry.ATTR_TARGET_ID, ValueType.LONG);
-                put(NotificationEntry.ATTR_TYPE, ValueType.INT);
+                put(NotificationEntry.ATTR_TYPE, ValueType.NOTIF_TYPE);
                 put(NotificationEntry.ATTR_IS_DONE, ValueType.BOOLEAN);
                 put(NotificationEntry.ATTR_DATETIME_BEGIN, ValueType.LONG);
                 put(NotificationEntry.ATTR_DATETIME_END, ValueType.LONG);
