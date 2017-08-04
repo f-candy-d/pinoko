@@ -4,7 +4,6 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.IllegalFormatCodePointException;
 
 /**
  * Created by daichi on 17/08/03.

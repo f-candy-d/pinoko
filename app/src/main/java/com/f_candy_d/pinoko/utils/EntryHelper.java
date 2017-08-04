@@ -1,143 +1,382 @@
 package com.f_candy_d.pinoko.utils;
 
-import android.database.Cursor;
-import android.support.annotation.NonNull;
+import android.app.FragmentTransaction;
 
-import com.f_candy_d.pinoko.model.AssignmentFormer;
-import com.f_candy_d.pinoko.model.AttendanceFormer;
-import com.f_candy_d.pinoko.model.CourseFormer;
 import com.f_candy_d.pinoko.model.Entry;
 import com.f_candy_d.pinoko.model.EventFormer;
-import com.f_candy_d.pinoko.model.InstructorFormer;
-import com.f_candy_d.pinoko.model.LocationFormer;
 import com.f_candy_d.pinoko.model.NotificationFormer;
 import com.f_candy_d.pinoko.model.TimeBlockFormer;
 
 /**
- * Created by daichi on 7/30/17.
+ * Created by daichi on 17/08/04.
+ * Helper methods for getting or setting an attribute
  */
 
 public class EntryHelper {
 
-    public static Entry makeEntry(@NonNull final String tableName, @NonNull final Cursor cursor) {
-        switch (tableName) {
-            case DBContract.CourseEntry.TABLE_NAME:
-                return makeCourseEntry(cursor);
-            case DBContract.LocationEntry.TABLE_NAME:
-                return makeLocationEntry(cursor);
-            case DBContract.InstructorEntry.TABLE_NAME:
-                return makeInstructorEntry(cursor);
-            case DBContract.TimeBlockEntry.TABLE_NAME:
-                return makeTimeBlockEntry(cursor);
-            case DBContract.AssignmentEntry.TABLE_NAME:
-                return makeAssignmentEntry(cursor);
-            case DBContract.EventEntry.TABLE_NAME:
-                return makeEventEntry(cursor);
-            case DBContract.NotificationEntry.TABLE_NAME:
-                return makeNotificationEntry(cursor);
-            case DBContract.AttendanceEntry.TABLE_NAME:
-                return makeAttendanceEntry(cursor);
-            default:
-                return null;
-        }
+    /**
+     * For Course Entry
+     */
+    public static long getCourseId(final Entry entry) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_ID);
     }
 
-    public static Entry makeCourseEntry(@NonNull final Cursor cursor) {
-        CourseFormer course = CourseFormer.createWithEntry();
-        course.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_NAME)));
-        course.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_NOTE)));
-        course.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_ID)));
-        course.setLocationIDA(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_LOCATION_ID_A)));
-        course.setLocationIDB(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_LOCATION_ID_B)));
-        course.setInstructorIDA(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A)));
-        course.setInstructorIDB(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_B)));
-        course.setInstructorIDC(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_C)));
-        course.setLength(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_LENGTH)));
-
-        return course.getEntry();
+    public static long getCourseId(final Entry entry, final long def) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_ID, def);
     }
 
-    public static Entry makeLocationEntry(@NonNull final Cursor cursor) {
-        LocationFormer location = LocationFormer.createWithEntry();
-        location.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.LocationEntry.ATTR_NAME)));
-        location.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.LocationEntry.ATTR_NOTE)));
-        location.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.LocationEntry.ATTR_ID)));
-
-        return location.getEntry();
+    public static String getCourseName(final Entry entry) {
+        return entry.getString(DBContract.CourseEntry.ATTR_NAME);
     }
 
-    public static Entry makeInstructorEntry(@NonNull final Cursor cursor) {
-        InstructorFormer instructor = InstructorFormer.createWithEntry();
-        instructor.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.ATTR_NAME)));
-        instructor.setLab(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.ATTR_LAB)));
-        instructor.setMail(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.ATTR_MAIL)));
-        instructor.setPhoneNumber(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.ATTR_PHONE_NUMBER)));
-        instructor.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.ATTR_NOTE)));
-        instructor.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.InstructorEntry.ATTR_ID)));
-
-        return instructor.getEntry();
+    public static String getCourseName(final Entry entry, final String def) {
+        return entry.getString(DBContract.CourseEntry.ATTR_NAME, def);
     }
 
-    public static Entry makeTimeBlockEntry(@NonNull final Cursor cursor) {
-        TimeBlockFormer timeBlock = TimeBlockFormer.createWithEntry();
-        timeBlock.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_ID)));
-        timeBlock.setType(TimeBlockFormer.Type.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_TYPE))));
-        timeBlock.setCategory(TimeBlockFormer.Category.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_CATEGORY))));
-        timeBlock.setTargetID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_TARGET_ID)));
-        timeBlock.setDatetimeBegin(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_DATETIME_BEGIN)));
-        timeBlock.setDatetimeEnd(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_DATETIME_END)));
-        timeBlock.setTimeTableID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_TIME_TABLE_ID)));
-
-        return timeBlock.getEntry();
+    public static long getCourseLocationIdA(final Entry entry) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_LOCATION_ID_A);
     }
 
-    public static Entry makeAssignmentEntry(@NonNull final Cursor cursor) {
-        AssignmentFormer assignment = AssignmentFormer.createWithEntry();
-        assignment.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.ATTR_NAME)));
-        assignment.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.ATTR_NOTE)));
-        assignment.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.ATTR_ID)));
-        assignment.setTimeBlockID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.ATTR_TIME_BLOCK_ID)));
-        final int isDone = cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.ATTR_IS_DONE));
-        assignment.setIsDone(isDone != 0);
-
-        return assignment.getEntry();
+    public static long getCourseLocationIdA(final Entry entry, final long def) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_LOCATION_ID_A, def);
     }
 
-    public static Entry makeEventEntry(@NonNull final Cursor cursor) {
-        EventFormer event = EventFormer.createWithEntry();
-        event.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.EventEntry.ATTR_NAME)));
-        event.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.EventEntry.ATTR_NOTE)));
-        event.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.EventEntry.ATTR_ID)));
-        event.setLocationID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.EventEntry.ATTR_LOCATION_ID)));
-
-        return event.getEntry();
+    public static long getCourseLocationIdB(final Entry entry) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_LOCATION_ID_B);
     }
 
-    public static Entry makeNotificationEntry(@NonNull final Cursor cursor) {
-        NotificationFormer notification = NotificationFormer.createWithEntry();
-        notification.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_NAME)));
-        notification.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_NOTE)));
-        notification.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_ID)));
-        notification.setCategory(NotificationFormer.Category.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_CATEGORY))));
-        notification.setTargetID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_TARGET_ID)));
-        notification.setType(NotificationFormer.Type.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_TYPE))));
-        notification.setDatetimeBegin(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_DATETIME_BEGIN)));
-        notification.setDatetimeEnd(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_DATETIME_END)));
-        final int isDone = cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_IS_DONE));
-        notification.setIsDone(isDone != 0);
-
-        return notification.getEntry();
+    public static long getCourseLocationIdB(final Entry entry, final long def) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_LOCATION_ID_B, def);
     }
 
-    public static Entry makeAttendanceEntry(@NonNull final Cursor cursor) {
-        AttendanceFormer attendance = AttendanceFormer.createWithEntry();
-        attendance.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.ATTR_NOTE)));
-        attendance.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.ATTR_ID)));
-        attendance.setTimeBlockID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.ATTR_TIME_BLOCK_ID)));
-        attendance.setPresent(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.ATTR_PRESENT)));
-        attendance.setLate(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.ATTR_LATE)));
-        attendance.setAbsent(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.AttendanceEntry.ATTR_ABSENT)));
+    public static long getCourseInstructorIdA(final Entry entry) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A);
+    }
 
-        return attendance.getEntry();
+    public static long getCourseInstructorIdA(final Entry entry, final long def) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A);
+    }
+
+    public static long getCourseInstructorIdB(final Entry entry) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_B);
+    }
+
+    public static long getCourseInstructorIdB(final Entry entry, final long def) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_B);
+    }
+
+    public static long getCourseInstructorIdC(final Entry entry) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_C);
+    }
+
+    public static long getCourseInstructorIdC(final Entry entry, final long def) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_C);
+    }
+
+    public static int getCourseLength(final Entry entry) {
+        return entry.getInt(DBContract.CourseEntry.ATTR_LENGTH);
+    }
+
+    public static int getCourseLength(final Entry entry, final int def) {
+        return entry.getInt(DBContract.CourseEntry.ATTR_LENGTH, def);
+    }
+
+    public static String getCourseNote(final Entry entry) {
+        return entry.getString(DBContract.CourseEntry.ATTR_NOTE);
+    }
+
+    public static String getCourseNote(final Entry entry, final String def) {
+        return entry.getString(DBContract.CourseEntry.ATTR_NOTE, def);
+    }
+
+    /**
+     * For Location Entry
+     */
+    public static long getLocationId(final Entry entry) {
+        return entry.getLong(DBContract.LocationEntry.ATTR_ID);
+    }
+
+    public static long getLocationId(final Entry entry, final long def) {
+        return entry.getLong(DBContract.LocationEntry.ATTR_ID, def);
+    }
+
+    public static String getLocationName(final Entry entry) {
+        return entry.getString(DBContract.LocationEntry.ATTR_NAME);
+    }
+
+    public static String getLocationName(final Entry entry, final String def) {
+        return entry.getString(DBContract.LocationEntry.ATTR_NAME, def);
+    }
+
+    public static String getLocationNote(final Entry entry) {
+        return entry.getString(DBContract.LocationEntry.ATTR_NOTE);
+    }
+
+    public static String getLocationNote(final Entry entry, final String def) {
+        return entry.getString(DBContract.LocationEntry.ATTR_NOTE, def);
+    }
+
+    /**
+     * For TimeBlock Entry
+     */
+
+    public static long getTimeBlockId(final Entry entry) {
+        return entry.getLong(DBContract.TimeBlockEntry.ATTR_ID);
+    }
+
+    public static long getTimeBlockId(final Entry entry, final long def) {
+        return entry.getLong(DBContract.TimeBlockEntry.ATTR_ID, def);
+    }
+
+    public static TimeBlockFormer.Type getTimeBlockType(final Entry entry) {
+        return TimeBlockFormer.Type.from(entry.getInt(DBContract.TimeBlockEntry.ATTR_TYPE));
+    }
+
+    public static TimeBlockFormer.Type getTimeBlockType(final Entry entry, final TimeBlockFormer.Type def) {
+        return TimeBlockFormer.Type.from(entry.getInt(DBContract.TimeBlockEntry.ATTR_TYPE, def.toInt()));
+    }
+
+    public static TimeBlockFormer.Category getTimeBlockCategory(final Entry entry) {
+        return TimeBlockFormer.Category.from(entry.getInt(DBContract.TimeBlockEntry.ATTR_CATEGORY));
+    }
+
+    public static TimeBlockFormer.Category getTimeBlockCategory(final Entry entry, final TimeBlockFormer.Category def) {
+        return TimeBlockFormer.Category.from(entry.getInt(DBContract.TimeBlockEntry.ATTR_CATEGORY, def.toInt()));
+    }
+
+    public static long getTimeBlockTargetId(final Entry entry) {
+        return entry.getLong(DBContract.TimeBlockEntry.ATTR_TARGET_ID);
+    }
+
+    public static long getTimeBlockTargetId(final Entry entry, final long def) {
+        return entry.getLong(DBContract.TimeBlockEntry.ATTR_TARGET_ID, def);
+    }
+
+    public static long getTimeBlockDatetimeBegin(final Entry entry) {
+        return entry.getLong(DBContract.TimeBlockEntry.ATTR_DATETIME_BEGIN);
+    }
+
+    public static long getTimeBlockDatetimeBegin(final Entry entry, final  long def) {
+        return entry.getLong(DBContract.TimeBlockEntry.ATTR_DATETIME_BEGIN, def);
+    }
+
+    public static long getTimeBlockDatetimeEnd(final Entry entry) {
+        return entry.getLong(DBContract.TimeBlockEntry.ATTR_DATETIME_END);
+    }
+
+    public static long getTimeBlockDatetimeEnd(final Entry entry, final  long def) {
+        return entry.getLong(DBContract.TimeBlockEntry.ATTR_DATETIME_END, def);
+    }
+
+    public static int getTimeBlockTimeTableId(final Entry entry) {
+        return entry.getInt(DBContract.TimeBlockEntry.ATTR_TIME_TABLE_ID);
+    }
+
+    public static int getTimeBlockTimeTableId(final Entry entry, final int def) {
+        return entry.getInt(DBContract.TimeBlockEntry.ATTR_TIME_TABLE_ID, def);
+    }
+
+    /**
+     * For assignment entry
+     */
+    public static long getAssignmentId(final Entry entry) {
+        return entry.getLong(DBContract.AssignmentEntry.ATTR_ID);
+    }
+
+    public static long getAssignmentId(final Entry entry, final long def) {
+        return entry.getLong(DBContract.AssignmentEntry.ATTR_ID, def);
+    }
+
+    public static String getAssignmentName(final Entry entry) {
+        return entry.getString(DBContract.AssignmentEntry.ATTR_NAME);
+    }
+
+    public static String getAssignmentName(final Entry entry, final String def) {
+        return entry.getString(DBContract.AssignmentEntry.ATTR_NAME, def);
+    }
+
+    public static long getAssignmentTimeBlockId(final Entry entry) {
+        return entry.getLong(DBContract.AssignmentEntry.ATTR_TIME_BLOCK_ID);
+    }
+
+    public static long getAssignmentTimeBlockId(final Entry entry, final long def) {
+        return entry.getLong(DBContract.AssignmentEntry.ATTR_TIME_BLOCK_ID, def);
+    }
+
+    public static String getAssignmentNote(final Entry entry) {
+        return entry.getString(DBContract.AssignmentEntry.ATTR_NOTE);
+    }
+
+    public static String getAssignmentNote(final Entry entry, final String def) {
+        return entry.getString(DBContract.AssignmentEntry.ATTR_NOTE, def);
+    }
+
+    public static boolean getAssignmentIsDone(final Entry entry) {
+        return entry.getBool(DBContract.AssignmentEntry.ATTR_IS_DONE);
+    }
+
+    public static boolean getAssignmentIsDone(final Entry entry, final boolean def) {
+        return entry.getBool(DBContract.AssignmentEntry.ATTR_IS_DONE, def);
+    }
+
+    /**
+     * For event entry
+     */
+    public static long getEventId(final Entry entry) {
+        return entry.getLong(DBContract.EventEntry.ATTR_ID);
+    }
+
+    public static long getEventId(final Entry entry, final long def) {
+        return entry.getLong(DBContract.EventEntry.ATTR_ID, def);
+    }
+
+    public static String getEventName(final Entry entry) {
+        return entry.getString(DBContract.EventEntry.ATTR_NAME);
+    }
+
+    public static String getEventName(final Entry entry, final String def) {
+        return entry.getString(DBContract.EventEntry.ATTR_NAME, def);
+    }
+
+    public static long getEventLocationId(final Entry entry) {
+        return entry.getLong(DBContract.EventEntry.ATTR_LOCATION_ID);
+    }
+
+    public static long getEventLocationId(final Entry entry, final long def) {
+        return entry.getLong(DBContract.EventEntry.ATTR_LOCATION_ID, def);
+    }
+
+    public static String getEventNote(final Entry entry) {
+        return entry.getString(DBContract.EventEntry.ATTR_NOTE);
+    }
+
+    public static String getEventNote(final Entry entry, final String note) {
+        return entry.getString(DBContract.EventEntry.ATTR_NOTE, note);
+    }
+
+    /**
+     * For notification entry
+     */
+    public static long getNotificationId(final Entry entry, final long def) {
+        return entry.getLong(DBContract.NotificationEntry.ATTR_ID, def);
+    }
+
+    public static long getNotificationId(final Entry entry) {
+        return entry.getLong(DBContract.NotificationEntry.ATTR_ID);
+    }
+
+    public static String getNotificationName(final Entry entry, final String def) {
+        return entry.getString(DBContract.NotificationEntry.ATTR_NAME, def);
+    }
+
+    public static String getNotificationName(final Entry entry) {
+        return entry.getString(DBContract.NotificationEntry.ATTR_NAME);
+    }
+
+    public static String getNotificationNote(final Entry entry, final String def) {
+        return entry.getString(DBContract.NotificationEntry.ATTR_NOTE, def);
+    }
+
+    public static String getNotificationNote(final Entry entry) {
+        return entry.getString(DBContract.NotificationEntry.ATTR_NOTE);
+    }
+
+    public static NotificationFormer.Category getNotificationCategory(final Entry entry, final NotificationFormer.Category def) {
+        return NotificationFormer.Category.from(entry.getInt(DBContract.NotificationEntry.ATTR_CATEGORY, def.toInt()));
+    }
+
+    public static NotificationFormer.Category getNotificationCategory(final Entry entry) {
+        return NotificationFormer.Category.from(entry.getInt(DBContract.NotificationEntry.ATTR_CATEGORY));
+    }
+
+    public static long getNotificationTargetId(final Entry entry, final long def) {
+        return entry.getLong(DBContract.NotificationEntry.ATTR_TARGET_ID, def);
+    }
+
+    public static long getNotificationTargetId(final Entry entry) {
+        return entry.getLong(DBContract.NotificationEntry.ATTR_TARGET_ID);
+    }
+
+    public static NotificationFormer.Type getNotificationType(final Entry entry, final NotificationFormer.Type def) {
+        return NotificationFormer.Type.from(entry.getInt(DBContract.NotificationEntry.ATTR_TYPE, def.toInt()));
+    }
+
+    public static NotificationFormer.Type getNotificationType(final Entry entry) {
+        return NotificationFormer.Type.from(entry.getInt(DBContract.NotificationEntry.ATTR_TYPE));
+    }
+
+    public static boolean getNotificationIsDone(final Entry entry, final boolean def) {
+        return entry.getBool(DBContract.NotificationEntry.ATTR_IS_DONE, def);
+    }
+
+    public static boolean getNotificationIsDone(final Entry entry) {
+        return entry.getBool(DBContract.NotificationEntry.ATTR_IS_DONE);
+    }
+
+    public static long getNotificationDatetimeBegin(final Entry entry, final long def) {
+        return entry.getLong(DBContract.NotificationEntry.ATTR_DATETIME_BEGIN, def);
+    }
+
+    public static long getNotificationDatetimeBegin(final Entry entry) {
+        return entry.getLong(DBContract.NotificationEntry.ATTR_DATETIME_BEGIN);
+    }
+
+    public static long getNotificationDatetimeEnd(final Entry entry, final long def) {
+        return entry.getLong(DBContract.NotificationEntry.ATTR_DATETIME_BEGIN, def);
+    }
+
+    public static long getNotificationDatetimeEnd(final Entry entry) {
+        return entry.getLong(DBContract.NotificationEntry.ATTR_DATETIME_BEGIN);
+    }
+
+    /**
+     * For attendance entry
+     */
+    public static long getAttendanceId(final Entry entry, final long def) {
+        return entry.getLong(DBContract.AttendanceEntry.ATTR_ID, def);
+    }
+
+    public static long getAttendanceId(final Entry entry) {
+        return entry.getLong(DBContract.AttendanceEntry.ATTR_ID);
+    }
+
+    public static long getAttendanceTimeBlockId(final Entry entry, final long def) {
+        return entry.getLong(DBContract.AttendanceEntry.ATTR_TIME_BLOCK_ID, def);
+    }
+
+    public static long getAttendanceTimeBlockId(final Entry entry) {
+        return entry.getLong(DBContract.AttendanceEntry.ATTR_TIME_BLOCK_ID);
+    }
+
+    public static int getAttendancePresent(final Entry entry, final int def) {
+        return entry.getInt(DBContract.AttendanceEntry.ATTR_PRESENT, def);
+    }
+
+    public static int getAttendancePresent(final Entry entry) {
+        return entry.getInt(DBContract.AttendanceEntry.ATTR_PRESENT);
+    }
+
+    public static int getAttendanceLate(final Entry entry, final int def) {
+        return entry.getInt(DBContract.AttendanceEntry.ATTR_LATE, def);
+    }
+
+    public static int getAttendanceLate(final Entry entry) {
+        return entry.getInt(DBContract.AttendanceEntry.ATTR_LATE);
+    }
+
+    public static int getAttendanceAbsent(final Entry entry, final int def) {
+        return entry.getInt(DBContract.AttendanceEntry.ATTR_ABSENT, def);
+    }
+
+    public static int getAttendanceAbsent(final Entry entry) {
+        return entry.getInt(DBContract.AttendanceEntry.ATTR_ABSENT);
+    }
+
+    public static String getAttendanceNote(final Entry entry, final String def) {
+        return entry.getString(DBContract.AttendanceEntry.ATTR_NOTE, def);
+    }
+
+    public static String getAttendanceNote(final Entry entry) {
+        return entry.getString(DBContract.AttendanceEntry.ATTR_NOTE);
     }
 }

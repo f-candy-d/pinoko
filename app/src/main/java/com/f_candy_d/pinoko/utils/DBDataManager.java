@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
 import com.f_candy_d.pinoko.model.Entry;
-import com.f_candy_d.pinoko.model.TimeBlockFormer;
 
 import java.util.ArrayList;
 
@@ -119,14 +118,13 @@ public class DBDataManager {
 
         final ArrayList<Entry> results = new ArrayList<>();
         // Select all rows in the database
-//        final String select = "SELECT * FROM " + tableName + ";";
         final SQLQuery query = new SQLQuery(null, new String[]{tableName}, null);
         final Cursor cursor = mDatabase.rawQuery(query.toString(), null);
         boolean isEOF = cursor.moveToFirst();
         Entry entry;
 
         while (isEOF) {
-            entry = EntryHelper.makeEntry(tableName, cursor);
+            entry = EntryFactory.makeEntry(tableName, cursor);
             if (entry != null) {
                 results.add(entry);
             }

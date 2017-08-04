@@ -125,15 +125,31 @@ public class Entry {
         return mAttributes.getString(attr, mDefaultStringValue);
     }
 
+    public String getString(final String attr, final String def) {
+        return mAttributes.getString(attr, def);
+    }
+
     public int getInt(final String attr) {
         return mAttributes.getInt(attr, mDefaultIntValue);
+    }
+
+    public int getInt(final String attr, final int def) {
+        return mAttributes.getInt(attr, def);
     }
 
     public boolean getBool(final String attr) {
         return mAttributes.getBoolean(attr, mDefaultBoolValue);
     }
 
+    public boolean getBool(final String attr, final boolean def) {
+        return mAttributes.getBoolean(attr, def);
+    }
+
     public long getLong(final String attr) {
         return mAttributes.getLong(attr, mDefaultLongValue);
+    }
+
+    public long getLong(final String attr, final long def) {
+        return mAttributes.getLong(attr, def);
     }
 }
