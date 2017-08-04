@@ -9,6 +9,16 @@ import java.util.Set;
 
 /**
  * Created by daichi on 17/08/02.
+ *
+ * When add new a new column to the assignment table...
+ *
+ * 1. Update {@link AssignmentFormer#toContentValues(boolean)}
+ *    and {@link AssignmentFormer#formatAttributes()}
+ *
+ * 2. Create getter & setter methods for that column.
+ *
+ * 3. Update {@link AssignmentFormer#isSavable()} if you need.
+ *
  */
 
 abstract public class EntryFormer implements Savable {

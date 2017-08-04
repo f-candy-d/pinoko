@@ -69,6 +69,9 @@ public class AssignmentFormer extends EntryFormer {
         if (!has(DBContract.AssignmentEntry.ATTR_IS_DONE)) {
             setIsDone(getEntry().getDefaultBoolValue());
         }
+        if (!has(DBContract.AssignmentEntry.ATTR_DEADLINE)) {
+            setDeadline(getEntry().getDefaultLongValue());
+        }
     }
 
     @Override
