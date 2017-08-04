@@ -394,6 +394,18 @@ public class EntryHelper {
         entry.set(DBContract.AssignmentEntry.ATTR_IS_DONE, isDone);
     }
 
+    public static long getAssignmentDeadline(final Entry entry, final long def) {
+        return entry.getLong(DBContract.AssignmentEntry.ATTR_DEADLINE, def);
+    }
+
+    public static long getAssignmentDeadline(final Entry entry) {
+        return entry.getLong(DBContract.AssignmentEntry.ATTR_DEADLINE);
+    }
+
+    public static void setAssignmentDeadline(final Entry entry, final long deadline) {
+        entry.set(DBContract.AssignmentEntry.ATTR_DEADLINE, deadline);
+    }
+
     /**
      * For event entry
      */

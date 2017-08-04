@@ -164,7 +164,8 @@ public class MainActivity extends AppCompatActivity
         assignment.setName("assignment")
                 .setTimeBlockID(1)
                 .setNote("assignment note")
-                .setIsDone(true);
+                .setIsDone(true)
+                .setDeadline(120170804);
 
         EventFormer event = EventFormer.createWithEntry();
         event.setName("event")

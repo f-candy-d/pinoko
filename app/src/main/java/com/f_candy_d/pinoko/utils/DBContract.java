@@ -113,6 +113,7 @@ public class DBContract {
                 put(AssignmentEntry.ATTR_NAME, ValueType.STRING);
                 put(AssignmentEntry.ATTR_NOTE, ValueType.STRING);
                 put(AssignmentEntry.ATTR_IS_DONE, ValueType.BOOLEAN);
+                put(AssignmentEntry.ATTR_DEADLINE, ValueType.LONG);
                 // Event Entry
                 put(EventEntry.ATTR_ID, ValueType.LONG);
                 put(EventEntry.ATTR_NAME, ValueType.LONG);
@@ -294,18 +295,20 @@ public class DBContract {
         public static final String PREFIX = "ass";
 
         public static final String ATTR_ID            = PREFIX + COL_ID;
-        public static final String ATTR_NAME          = PREFIX + COL_NAME;      // Not null
+        public static final String ATTR_NAME          = PREFIX + COL_NAME;           // Not null
         public static final String ATTR_TIME_BLOCK_ID = TimeBlockEntry.ATTR_ID;
         public static final String ATTR_NOTE          = PREFIX + COL_NOTE;
-        public static final String ATTR_IS_DONE       = PREFIX + COL_IS_DONE;   // Not null
+        public static final String ATTR_IS_DONE       = PREFIX + COL_IS_DONE;        // Not null
+        public static final String ATTR_DEADLINE      = PREFIX + COL_DATETIME_BEGIN;
 
         public static final String SQL_CREATE_TABLE =
                 SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                        + ATTR_ID            + TYPE_ID_PK              + C_S
-                        + ATTR_NAME          + TYPE_NAME    + NOT_NULL + C_S
-                        + ATTR_TIME_BLOCK_ID + TYPE_ID                 + C_S
-                        + ATTR_NOTE          + TYPE_NOTE               + C_S
-                        + ATTR_IS_DONE       + TYPE_IS_DONE + NOT_NULL
+                        + ATTR_ID            + TYPE_ID_PK                     + C_S
+                        + ATTR_NAME          + TYPE_NAME           + NOT_NULL + C_S
+                        + ATTR_TIME_BLOCK_ID + TYPE_ID                        + C_S
+                        + ATTR_NOTE          + TYPE_NOTE                      + C_S
+                        + ATTR_IS_DONE       + TYPE_IS_DONE        + NOT_NULL + C_S
+                        + ATTR_DEADLINE      + TYPE_DATETIME_BEGIN
                         + ");";
 
         public static String[] getColumnNames() {
@@ -314,7 +317,8 @@ public class DBContract {
                     ATTR_NAME,
                     ATTR_TIME_BLOCK_ID,
                     ATTR_NOTE,
-                    ATTR_IS_DONE
+                    ATTR_IS_DONE,
+                    ATTR_DEADLINE
             };
         }
     }

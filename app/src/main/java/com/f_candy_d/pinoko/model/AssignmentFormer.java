@@ -47,6 +47,7 @@ public class AssignmentFormer extends EntryFormer {
         contentValues.put(DBContract.AssignmentEntry.ATTR_TIME_BLOCK_ID, getTimeBlockID());
         contentValues.put(DBContract.AssignmentEntry.ATTR_NOTE, getNote());
         contentValues.put(DBContract.AssignmentEntry.ATTR_IS_DONE, getIsDone());
+        contentValues.put(DBContract.AssignmentEntry.ATTR_DEADLINE, getDeadline());
 
         return contentValues;
     }
@@ -108,6 +109,11 @@ public class AssignmentFormer extends EntryFormer {
         return this;
     }
 
+    public AssignmentFormer setDeadline(final long deadline) {
+        EntryHelper.setAssignmentDeadline(getEntry(), deadline);
+        return this;
+    }
+
     public long getID() {
         return EntryHelper.getAssignmentId(getEntry(), DBContract.NULL_ID);
     }
@@ -126,5 +132,9 @@ public class AssignmentFormer extends EntryFormer {
 
     public boolean getIsDone() {
         return EntryHelper.getAssignmentIsDone(getEntry(), false);
+    }
+
+    public long getDeadline() {
+        return EntryHelper.getAssignmentDeadline(getEntry(), 0);
     }
 }

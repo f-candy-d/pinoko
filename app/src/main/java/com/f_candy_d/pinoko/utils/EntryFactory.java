@@ -21,7 +21,7 @@ import com.f_candy_d.pinoko.model.TimeBlockFormer;
 public class EntryFactory {
 
     /**
-     * Create a entry object from 'cursor' which contains results of SQL:SELECT
+     * Create an entry object from 'cursor' which contains results of SQL:SELECT
      */
 
     public static Entry makeBasicEntry(@NonNull final String tableName, @NonNull final Cursor cursor) {
@@ -102,6 +102,7 @@ public class EntryFactory {
         assignment.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.ATTR_NOTE)));
         assignment.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.ATTR_ID)));
         assignment.setTimeBlockID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.ATTR_TIME_BLOCK_ID)));
+        assignment.setDeadline(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.ATTR_DEADLINE)));
         final int isDone = cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.AssignmentEntry.ATTR_IS_DONE));
         assignment.setIsDone(isDone != 0);
 
