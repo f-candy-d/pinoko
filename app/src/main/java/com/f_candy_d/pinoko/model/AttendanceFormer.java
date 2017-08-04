@@ -3,6 +3,7 @@ package com.f_candy_d.pinoko.model;
 import android.content.ContentValues;
 
 import com.f_candy_d.pinoko.utils.DBContract;
+import com.f_candy_d.pinoko.utils.EntryHelper;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -87,56 +88,56 @@ public class AttendanceFormer extends EntryFormer {
     }
 
     public AttendanceFormer setID(final long id) {
-        getEntry().set(DBContract.AttendanceEntry.ATTR_ID, id);
+        EntryHelper.setAttendanceId(getEntry(), id);
         return this;
     }
 
     public AttendanceFormer setTimeBlockID(final long timeBlockID) {
-        getEntry().set(DBContract.AttendanceEntry.ATTR_TIME_BLOCK_ID, timeBlockID);
+        EntryHelper.setAttendanceTimeBlockId(getEntry(), timeBlockID);
         return this;
     }
 
     public AttendanceFormer setPresent(final int present) {
-        getEntry().set(DBContract.AttendanceEntry.ATTR_PRESENT, present);
+        EntryHelper.setAttendancePresent(getEntry(), present);
         return this;
     }
 
     public AttendanceFormer setLate(final int late) {
-        getEntry().set(DBContract.AttendanceEntry.ATTR_LATE, late);
+        EntryHelper.setAttendanceLate(getEntry(), late);
         return this;
     }
 
     public AttendanceFormer setAbsent(final int absent) {
-        getEntry().set(DBContract.AttendanceEntry.ATTR_ABSENT, absent);
+        EntryHelper.setAttendanceAbsent(getEntry(), absent);
         return this;
     }
 
     public AttendanceFormer setNote(final String note) {
-        getEntry().set(DBContract.AttendanceEntry.ATTR_NOTE, note);
+        EntryHelper.setAttendanceNote(getEntry(), note);
         return this;
     }
 
     public long getID() {
-        return getEntry().getLong(DBContract.AttendanceEntry.ATTR_ID);
+        return EntryHelper.getAttendanceId(getEntry(), DBContract.NULL_ID);
     }
 
     public long getTimeBlockID() {
-        return getEntry().getLong(DBContract.AttendanceEntry.ATTR_TIME_BLOCK_ID);
+        return EntryHelper.getAttendanceTimeBlockId(getEntry(), DBContract.NULL_ID);
     }
 
     public int getPresent() {
-        return getEntry().getInt(DBContract.AttendanceEntry.ATTR_PRESENT);
+        return EntryHelper.getAttendancePresent(getEntry(), 0);
     }
 
     public int getLate() {
-        return getEntry().getInt(DBContract.AttendanceEntry.ATTR_LATE);
+        return EntryHelper.getAttendanceLate(getEntry(), 0);
     }
 
     public int getAbsent() {
-        return getEntry().getInt(DBContract.AttendanceEntry.ATTR_ABSENT);
+        return EntryHelper.getAttendanceAbsent(getEntry(), 0);
     }
 
     public String getNote() {
-        return getEntry().getString(DBContract.AttendanceEntry.ATTR_NOTE);
+        return EntryHelper.getAttendanceNote(getEntry(), null);
     }
 }

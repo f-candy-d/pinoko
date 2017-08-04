@@ -81,11 +81,10 @@ public class TimeBlockFormer extends EntryFormer {
 
     @Override
     public boolean isSavable() {
-        return (getType() != null &&
-                getCategory() != null &&
+        return (getType() != Type.NULL_TYPE &&
+                getCategory() != Category.NULL_CATEGORY &&
                 0 < getDatetimeBegin() &&
-                getDatetimeBegin() <= getDatetimeEnd() &&
-                DBContract.MIN_AVAILABLE_ID <= getTimeTableID());
+                getDatetimeBegin() <= getDatetimeEnd());
     }
 
     @Override
@@ -145,42 +144,42 @@ public class TimeBlockFormer extends EntryFormer {
     }
 
     public TimeBlockFormer setID(final long id) {
-        getEntry().set(DBContract.TimeBlockEntry.ATTR_ID, id);
+        EntryHelper.setTimeBlockId(getEntry(), id);
         return this;
     }
 
     public TimeBlockFormer setType(final Type type) {
-        getEntry().set(DBContract.TimeBlockEntry.ATTR_TYPE, type);
+        EntryHelper.setTimeBlockType(getEntry(), type);
         return this;
     }
 
     public TimeBlockFormer setCategory(final Category category) {
-        getEntry().set(DBContract.TimeBlockEntry.ATTR_CATEGORY, category);
+        EntryHelper.setTimeBlockCategory(getEntry(), category);
         return this;
     }
 
     public TimeBlockFormer setTargetID(final long targetID) {
-        getEntry().set(DBContract.TimeBlockEntry.ATTR_TARGET_ID, targetID);
+        EntryHelper.setTImeBlockTargetId(getEntry(), targetID);
         return this;
     }
 
     public TimeBlockFormer setDatetimeBegin(final long datetimeBegin) {
-        getEntry().set(DBContract.TimeBlockEntry.ATTR_DATETIME_BEGIN, datetimeBegin);
+        EntryHelper.setTimeBlockDatetimeBegin(getEntry(), datetimeBegin);
         return this;
     }
 
     public TimeBlockFormer setDatetimeEnd(final long datetimeEnd) {
-        getEntry().set(DBContract.TimeBlockEntry.ATTR_DATETIME_END, datetimeEnd);
+        EntryHelper.setTimeBlockDatetimeEnd(getEntry(), datetimeEnd);
         return this;
     }
 
-    public TimeBlockFormer setTimeTableID(final long timeTableID) {
-        getEntry().set(DBContract.TimeBlockEntry.ATTR_TIME_TABLE_ID, timeTableID);
+    public TimeBlockFormer setTimeTableID(final int timeTableID) {
+        EntryHelper.setTimeBlockTimeTableId(getEntry(), timeTableID);
         return this;
     }
 
     public long getID() {
-        return getEntry().getLong(DBContract.TimeBlockEntry.ATTR_ID);
+        return EntryHelper.getTimeBlockId(getEntry(), DBContract.NULL_ID);
     }
 
     public Type getType() {
@@ -192,18 +191,18 @@ public class TimeBlockFormer extends EntryFormer {
     }
 
     public long getTargetID() {
-        return getEntry().getLong(DBContract.TimeBlockEntry.ATTR_TARGET_ID);
+        return EntryHelper.getTimeBlockTargetId(getEntry(), DBContract.NULL_ID);
     }
 
     public long getDatetimeBegin() {
-        return getEntry().getLong(DBContract.TimeBlockEntry.ATTR_DATETIME_BEGIN);
+        return EntryHelper.getTimeBlockDatetimeBegin(getEntry(), 0);
     }
 
     public long getDatetimeEnd() {
-        return getEntry().getLong(DBContract.TimeBlockEntry.ATTR_DATETIME_END);
+        return EntryHelper.getTimeBlockDatetimeEnd(getEntry(), 0);
     }
 
     public long getTimeTableID() {
-        return getEntry().getLong(DBContract.TimeBlockEntry.ATTR_TIME_TABLE_ID);
+        return EntryHelper.getTimeBlockTimeTableId(getEntry());
     }
 }

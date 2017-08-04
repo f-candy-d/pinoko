@@ -3,6 +3,7 @@ package com.f_candy_d.pinoko.model;
 import android.content.ContentValues;
 
 import com.f_candy_d.pinoko.utils.DBContract;
+import com.f_candy_d.pinoko.utils.EntryHelper;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -82,56 +83,56 @@ public class InstructorFormer extends EntryFormer {
     }
 
     public InstructorFormer setID(final long id) {
-        getEntry().set(DBContract.InstructorEntry.ATTR_ID, id);
+        EntryHelper.setInstructorId(getEntry(), id);
         return this;
     }
 
     public InstructorFormer setName(final String name) {
-        getEntry().set(DBContract.InstructorEntry.ATTR_NAME, name);
+        EntryHelper.setInstructorName(getEntry(), name);
         return this;
     }
 
     public InstructorFormer setLab(final String lab) {
-        getEntry().set(DBContract.InstructorEntry.ATTR_LAB, lab);
+        EntryHelper.setInstructorLab(getEntry(), lab);
         return this;
     }
 
     public InstructorFormer setMail(final String mail) {
-        getEntry().set(DBContract.InstructorEntry.ATTR_MAIL, mail);
+        EntryHelper.setInstructorMail(getEntry(), mail);
         return this;
     }
 
     public InstructorFormer setPhoneNumber(final String phoneNumber) {
-        getEntry().set(DBContract.InstructorEntry.ATTR_PHONE_NUMBER, phoneNumber);
+        EntryHelper.setInstructorPhoneNumber(getEntry(), phoneNumber);
         return this;
     }
 
     public InstructorFormer setNote(final String note) {
-        getEntry().set(DBContract.InstructorEntry.ATTR_NOTE, note);
+        EntryHelper.setInstructorNote(getEntry(), note);
         return this;
     }
 
     public long getID() {
-        return getEntry().getLong(DBContract.InstructorEntry.ATTR_ID);
+        return EntryHelper.getInstructorId(getEntry(), DBContract.NULL_ID);
     }
 
     public String getName() {
-        return getEntry().getString(DBContract.InstructorEntry.ATTR_NAME);
+        return EntryHelper.getInstructorName(getEntry(), null);
     }
 
     public String getLab() {
-        return getEntry().getString(DBContract.InstructorEntry.ATTR_LAB);
+        return EntryHelper.getInstructorLab(getEntry(), null);
     }
 
     public String getMail() {
-        return getEntry().getString(DBContract.InstructorEntry.ATTR_MAIL);
+        return EntryHelper.getInstructorMail(getEntry(), null);
     }
 
     public String getPhoneNumber() {
-        return getEntry().getString(DBContract.InstructorEntry.ATTR_PHONE_NUMBER);
+        return EntryHelper.getInstructorPhoneNumber(getEntry(), null);
     }
 
     public String getNote() {
-        return getEntry().getString(DBContract.InstructorEntry.ATTR_NOTE);
+        return EntryHelper.getInstructorNote(getEntry(), null);
     }
 }

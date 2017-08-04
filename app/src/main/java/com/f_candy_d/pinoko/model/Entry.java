@@ -55,8 +55,15 @@ public class Entry {
     public String toString() {
         String string = super.toString() + "\n";
         ArrayList<String> values = new ArrayList<>();
+        Object value;
+
         for (String attr : mAttributes.keySet()) {
-            values.add("#" + attr + " :: " + mAttributes.get(attr).toString());
+            value = mAttributes.get(attr);
+            if (value != null) {
+                values.add("#" + attr + " :: " + value.toString());
+            } else {
+                values.add("#" + attr + " :: NULL");
+            }
         }
 
         return string + TextUtils.join("\n", values);

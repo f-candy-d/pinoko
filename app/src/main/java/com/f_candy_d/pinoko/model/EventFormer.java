@@ -4,6 +4,7 @@ package com.f_candy_d.pinoko.model;
 import android.content.ContentValues;
 
 import com.f_candy_d.pinoko.utils.DBContract;
+import com.f_candy_d.pinoko.utils.EntryHelper;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -75,38 +76,38 @@ public class EventFormer extends EntryFormer {
     }
 
     public EventFormer setID(final long id) {
-        getEntry().set(DBContract.EventEntry.ATTR_ID, id);
+        EntryHelper.setEventId(getEntry(), id);
         return this;
     }
 
     public EventFormer setName(final String name) {
-        getEntry().set(DBContract.EventEntry.ATTR_NAME, name);
+        EntryHelper.setEventName(getEntry(), name);
         return this;
     }
 
     public EventFormer setLocationID(final long locationID) {
-        getEntry().set(DBContract.EventEntry.ATTR_LOCATION_ID, locationID);
+        EntryHelper.setEventLocationId(getEntry(), locationID);
         return this;
     }
 
     public EventFormer setNote(final String note) {
-        getEntry().set(DBContract.EventEntry.ATTR_NOTE, note);
+        EntryHelper.setEventNote(getEntry(), note);
         return this;
     }
 
     public long getID() {
-        return getEntry().getLong(DBContract.EventEntry.ATTR_ID);
+        return EntryHelper.getEventId(getEntry(), DBContract.NULL_ID);
     }
 
     public String getName() {
-        return getEntry().getString(DBContract.EventEntry.ATTR_NAME);
+        return EntryHelper.getEventName(getEntry(), null);
     }
 
     public long getLocationID() {
-        return getEntry().getLong(DBContract.EventEntry.ATTR_LOCATION_ID);
+        return EntryHelper.getEventLocationId(getEntry(), DBContract.NULL_ID);
     }
 
     public String getNote() {
-        return getEntry().getString(DBContract.EventEntry.ATTR_NOTE);
+        return EntryHelper.getEventNote(getEntry(), null);
     }
 }

@@ -3,6 +3,7 @@ package com.f_candy_d.pinoko.model;
 import android.content.ContentValues;
 
 import com.f_candy_d.pinoko.utils.DBContract;
+import com.f_candy_d.pinoko.utils.EntryHelper;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -83,47 +84,47 @@ public class AssignmentFormer extends EntryFormer {
      * Getters & Setters of Entry's attributes
      */
     public AssignmentFormer setID(final long id) {
-        getEntry().set(DBContract.AssignmentEntry.ATTR_ID, id);
+        EntryHelper.setAssignmentId(getEntry(), id);
         return this;
     }
 
     public AssignmentFormer setName(final String name) {
-        getEntry().set(DBContract.AssignmentEntry.ATTR_NAME, name);
+        EntryHelper.setAssignmentName(getEntry(), name);
         return this;
     }
 
     public AssignmentFormer setTimeBlockID(final long id) {
-        getEntry().set(DBContract.AssignmentEntry.ATTR_TIME_BLOCK_ID, id);
+        EntryHelper.setAssignmentTimeBlockId(getEntry(), id);
         return this;
     }
 
     public AssignmentFormer setNote(final String note) {
-        getEntry().set(DBContract.AssignmentEntry.ATTR_NOTE, note);
+        EntryHelper.setAssignmentNote(getEntry(), note);
         return this;
     }
 
     public AssignmentFormer setIsDone(final boolean isDone) {
-        getEntry().set(DBContract.AssignmentEntry.ATTR_IS_DONE, isDone);
+        EntryHelper.setAssignmentIsDone(getEntry(), isDone);
         return this;
     }
 
     public long getID() {
-        return getEntry().getLong(DBContract.AssignmentEntry.ATTR_ID);
+        return EntryHelper.getAssignmentId(getEntry(), DBContract.NULL_ID);
     }
 
     public String getName() {
-        return getEntry().getString(DBContract.AssignmentEntry.ATTR_NAME);
+        return EntryHelper.getAssignmentName(getEntry(), null);
     }
 
     public long getTimeBlockID() {
-        return getEntry().getLong(DBContract.AssignmentEntry.ATTR_TIME_BLOCK_ID);
+        return EntryHelper.getAssignmentTimeBlockId(getEntry(), DBContract.NULL_ID);
     }
 
     public String getNote() {
-        return getEntry().getString(DBContract.AssignmentEntry.ATTR_NOTE);
+        return EntryHelper.getAssignmentNote(getEntry(), null);
     }
 
     public boolean getIsDone() {
-        return getEntry().getBool(DBContract.AssignmentEntry.ATTR_IS_DONE);
+        return EntryHelper.getAssignmentIsDone(getEntry(), false);
     }
 }

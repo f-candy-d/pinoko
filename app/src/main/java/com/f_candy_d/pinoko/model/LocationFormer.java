@@ -3,6 +3,7 @@ package com.f_candy_d.pinoko.model;
 import android.content.ContentValues;
 
 import com.f_candy_d.pinoko.utils.DBContract;
+import com.f_candy_d.pinoko.utils.EntryHelper;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -70,29 +71,29 @@ public class LocationFormer extends EntryFormer {
     }
 
     public LocationFormer setID(final long id) {
-        getEntry().set(DBContract.LocationEntry.ATTR_ID, id);
+        EntryHelper.setLocationId(getEntry(), id);
         return this;
     }
 
     public LocationFormer setName(final String name) {
-        getEntry().set(DBContract.LocationEntry.ATTR_NAME, name);
+        EntryHelper.setLocationName(getEntry(), name);
         return this;
     }
 
     public LocationFormer setNote(final String note) {
-        getEntry().set(DBContract.LocationEntry.ATTR_NOTE, note);
+        EntryHelper.setLocationNote(getEntry(), note);
         return this;
     }
 
     public long getID() {
-        return getEntry().getLong(DBContract.LocationEntry.ATTR_ID);
+        return EntryHelper.getLocationId(getEntry(), DBContract.NULL_ID);
     }
 
     public String getName() {
-        return getEntry().getString(DBContract.LocationEntry.ATTR_NAME);
+        return EntryHelper.getLocationName(getEntry(), null);
     }
 
     public String getNote() {
-        return getEntry().getString(DBContract.LocationEntry.ATTR_NOTE);
+        return EntryHelper.getLocationNote(getEntry(), null);
     }
 }

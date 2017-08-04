@@ -3,6 +3,7 @@ package com.f_candy_d.pinoko.model;
 import android.content.ContentValues;
 
 import com.f_candy_d.pinoko.utils.DBContract;
+import com.f_candy_d.pinoko.utils.EntryHelper;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -99,83 +100,83 @@ public class CourseFormer extends EntryFormer {
     }
 
     public CourseFormer setID(final long id) {
-        getEntry().set(DBContract.CourseEntry.ATTR_ID, id);
+        EntryHelper.setCourseId(getEntry(), id);
         return this;
     }
 
     public CourseFormer setName(final String name) {
-        getEntry().set(DBContract.CourseEntry.ATTR_NAME, name);
+        EntryHelper.setCourseName(getEntry(), name);
         return this;
     }
 
     public CourseFormer setLocationIDA(final long id) {
-        getEntry().set(DBContract.CourseEntry.ATTR_LOCATION_ID_A, id);
+        EntryHelper.setCourseLocationIdA(getEntry(), id);
         return this;
     }
 
     public CourseFormer setLocationIDB(final long id) {
-        getEntry().set(DBContract.CourseEntry.ATTR_LOCATION_ID_B, id);
+        EntryHelper.setCourseLocationIdB(getEntry(), id);
         return this;
     }
 
     public CourseFormer setInstructorIDA(final long  id) {
-        getEntry().set(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A, id);
+        EntryHelper.setCourseInstructorIdA(getEntry(), id);
         return this;
     }
 
     public CourseFormer setInstructorIDB(final long id) {
-        getEntry().set(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_B, id);
+        EntryHelper.setCourseInstructorIdB(getEntry(), id);
         return this;
     }
 
     public CourseFormer setInstructorIDC(final long id) {
-        getEntry().set(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_C, id);
+        EntryHelper.setCourseInstructorIdC(getEntry(), id);
         return this;
     }
 
     public CourseFormer setLength(final int length) {
-        getEntry().set(DBContract.CourseEntry.ATTR_LENGTH, length);
+        EntryHelper.setCourseLength(getEntry(), length);
         return this;
     }
 
     public CourseFormer setNote(final String note) {
-        getEntry().set(DBContract.CourseEntry.ATTR_NOTE, note);
+        EntryHelper.setCourseNote(getEntry(), note);
         return this;
     }
 
     public long getID() {
-        return getEntry().getLong(DBContract.CourseEntry.ATTR_ID);
+        return EntryHelper.getCourseId(getEntry(), DBContract.NULL_ID);
     }
 
     public String getName() {
-        return getEntry().getString(DBContract.CourseEntry.ATTR_NAME);
+        return EntryHelper.getCourseName(getEntry(), null);
     }
 
     public long getLocationIDA() {
-        return getEntry().getLong(DBContract.CourseEntry.ATTR_LOCATION_ID_A);
+        return EntryHelper.getCourseLocationIdA(getEntry(), DBContract.NULL_ID);
     }
 
     public long getLocationIDB() {
-        return getEntry().getLong(DBContract.CourseEntry.ATTR_LOCATION_ID_B);
+        return EntryHelper.getCourseLocationIdB(getEntry(), DBContract.NULL_ID);
     }
 
     public long getInstructorIDA() {
-        return getEntry().getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A);
+        return EntryHelper.getCourseInstructorIdA(getEntry(), DBContract.NULL_ID);
     }
 
     public long getInstructorIDB() {
-        return getEntry().getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_B);
+        return EntryHelper.getCourseInstructorIdB(getEntry(), DBContract.NULL_ID);
     }
 
     public long getInstructorIDC() {
-        return getEntry().getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_C);
+        return EntryHelper.getCourseInstructorIdC(getEntry(), DBContract.NULL_ID);
     }
 
     public int getLength() {
-        return getEntry().getInt(DBContract.CourseEntry.ATTR_LENGTH);
+        return EntryHelper.getCourseLength(getEntry(), 0);
     }
 
     public String getNote() {
-        return getEntry().getString(DBContract.CourseEntry.ATTR_NOTE);
+        return EntryHelper.getCourseNote(getEntry(), null);
     }
 }

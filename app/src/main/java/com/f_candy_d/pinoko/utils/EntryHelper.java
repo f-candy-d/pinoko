@@ -75,7 +75,7 @@ public class EntryHelper {
         return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A);
     }
 
-    public void setInstructorIdA(final Entry entry, final long instId) {
+    public static void setCourseInstructorIdA(final Entry entry, final long instId) {
         entry.set(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A, instId);
     }
 
@@ -87,7 +87,7 @@ public class EntryHelper {
         return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_B);
     }
 
-    public void setInstructorIdB(final Entry entry, final long instId) {
+    public static void setCourseInstructorIdB(final Entry entry, final long instId) {
         entry.set(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_B, instId);
     }
 
@@ -99,7 +99,7 @@ public class EntryHelper {
         return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_C);
     }
 
-    public void setInstructorIdC(final Entry entry, final long instId) {
+    public static void setCourseInstructorIdC(final Entry entry, final long instId) {
         entry.set(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_C, instId);
     }
 
@@ -316,7 +316,7 @@ public class EntryHelper {
     }
 
     public static void setTimeBlockDatetimeEnd(final Entry entry, final long datetimeEnd) {
-        entry.set(DBContract.TimeBlockEntry.ATTR_DATETIME_BEGIN, datetimeEnd);
+        entry.set(DBContract.TimeBlockEntry.ATTR_DATETIME_END, datetimeEnd);
     }
 
     public static int getTimeBlockTimeTableId(final Entry entry) {
@@ -481,7 +481,7 @@ public class EntryHelper {
     }
 
     public static void setNotificationNote(final Entry entry, final String note) {
-        entry.set(DBContract.NotificationEntry.ATTR_NAME, note);
+        entry.set(DBContract.NotificationEntry.ATTR_NOTE, note);
     }
 
     public static NotificationFormer.Category getNotificationCategory(final Entry entry) {
@@ -516,6 +516,10 @@ public class EntryHelper {
         } else {
             throw new ClassCastException("The object for key NotificationEntry.ATTR_TYPE is not an instance of NotificationFormer.Type");
         }
+    }
+
+    public static void setNotificationType(final Entry entry, NotificationFormer.Type type) {
+        entry.set(DBContract.NotificationEntry.ATTR_TYPE, type);
     }
 
     public static boolean getNotificationIsDone(final Entry entry, final boolean def) {
@@ -602,7 +606,7 @@ public class EntryHelper {
     }
 
     public static void setAttendanceLate(final Entry entry, final int late) {
-        entry.set(DBContract.AttendanceEntry.ATTR_PRESENT, late);
+        entry.set(DBContract.AttendanceEntry.ATTR_LATE, late);
     }
 
     public static int getAttendanceAbsent(final Entry entry, final int def) {
@@ -614,7 +618,7 @@ public class EntryHelper {
     }
 
     public static void setAttendanceAbsent(final Entry entry, final int absent) {
-        entry.set(DBContract.AttendanceEntry.ATTR_PRESENT, absent);
+        entry.set(DBContract.AttendanceEntry.ATTR_ABSENT, absent);
     }
 
     public static String getAttendanceNote(final Entry entry, final String def) {

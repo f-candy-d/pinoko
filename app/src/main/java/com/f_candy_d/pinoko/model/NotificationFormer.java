@@ -157,60 +157,60 @@ public class NotificationFormer extends EntryFormer {
     }
 
     public NotificationFormer setID(final long id) {
-        getEntry().set(DBContract.NotificationEntry.ATTR_ID, id);
+        EntryHelper.setNotificationId(getEntry(), id);
         return this;
     }
 
     public NotificationFormer setName(final String name) {
-        getEntry().set(DBContract.NotificationEntry.ATTR_NAME, name);
+        EntryHelper.setNotificationName(getEntry(), name);
         return this;
     }
 
     public NotificationFormer setNote(final String note) {
-        getEntry().set(DBContract.NotificationEntry.ATTR_NOTE, note);
+        EntryHelper.setNotificationNote(getEntry(), note);
         return this;
     }
 
     public NotificationFormer setCategory(final Category category) {
-        getEntry().set(DBContract.NotificationEntry.ATTR_CATEGORY, category);
+        EntryHelper.setNotificationCategory(getEntry(), category);
         return this;
     }
 
     public NotificationFormer setTargetID(final long targetID) {
-        getEntry().set(DBContract.NotificationEntry.ATTR_TARGET_ID, targetID);
+        EntryHelper.setNotificationTargetId(getEntry(), targetID);
         return this;
     }
 
     public NotificationFormer setType(final Type type) {
-        getEntry().set(DBContract.NotificationEntry.ATTR_TYPE, type);
+        EntryHelper.setNotificationType(getEntry(), type);
         return this;
     }
 
     public NotificationFormer setIsDone(final boolean isDone) {
-        getEntry().set(DBContract.NotificationEntry.ATTR_IS_DONE, isDone);
+        EntryHelper.setNotificationIsDone(getEntry(), isDone);
         return this;
     }
 
     public NotificationFormer setDatetimeBegin(final long datetimeBegin) {
-        getEntry().set(DBContract.NotificationEntry.ATTR_DATETIME_BEGIN, datetimeBegin);
+        EntryHelper.setNotificationDatetimeBegin(getEntry(), datetimeBegin);
         return this;
     }
 
     public NotificationFormer setDatetimeEnd(final long datetimeEnd) {
-        getEntry().set(DBContract.NotificationEntry.ATTR_DATETIME_END, datetimeEnd);
+        EntryHelper.setNotificationDatetimeEnd(getEntry(), getDatetimeEnd());
         return this;
     }
 
     public long getID() {
-        return getEntry().getLong(DBContract.NotificationEntry.ATTR_ID);
+        return EntryHelper.getNotificationId(getEntry(), DBContract.NULL_ID);
     }
 
     public String getName() {
-        return getEntry().getString(DBContract.NotificationEntry.ATTR_NAME);
+        return EntryHelper.getNotificationName(getEntry(), null);
     }
 
     public String getNote() {
-        return getEntry().getString(DBContract.NotificationEntry.ATTR_NOTE);
+        return EntryHelper.getNotificationNote(getEntry(), null);
     }
 
     public Category getCategory() {
@@ -218,7 +218,7 @@ public class NotificationFormer extends EntryFormer {
     }
 
     public long getTargetID() {
-        return getEntry().getLong(DBContract.NotificationEntry.ATTR_TARGET_ID);
+        return EntryHelper.getNotificationTargetId(getEntry(), DBContract.NULL_ID);
     }
 
     public Type getType() {
@@ -226,14 +226,14 @@ public class NotificationFormer extends EntryFormer {
     }
 
     public boolean getIsDone() {
-        return getEntry().getBool(DBContract.NotificationEntry.ATTR_IS_DONE);
+        return EntryHelper.getNotificationIsDone(getEntry(), false);
     }
 
     public long getDatetimeBegin() {
-        return getEntry().getLong(DBContract.NotificationEntry.ATTR_DATETIME_BEGIN);
+        return EntryHelper.getNotificationDatetimeBegin(getEntry(), 0);
     }
 
     public long getDatetimeEnd() {
-        return getEntry().getLong(DBContract.NotificationEntry.ATTR_DATETIME_END);
+        return EntryHelper.getNotificationDatetimeEnd(getEntry(), 0);
     }
 }

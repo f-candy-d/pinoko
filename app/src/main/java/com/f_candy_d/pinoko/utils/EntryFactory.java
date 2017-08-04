@@ -91,7 +91,7 @@ public class EntryFactory {
         timeBlock.setTargetID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_TARGET_ID)));
         timeBlock.setDatetimeBegin(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_DATETIME_BEGIN)));
         timeBlock.setDatetimeEnd(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_DATETIME_END)));
-        timeBlock.setTimeTableID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_TIME_TABLE_ID)));
+        timeBlock.setTimeTableID(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_TIME_TABLE_ID)));
 
         return timeBlock.getEntry();
     }
