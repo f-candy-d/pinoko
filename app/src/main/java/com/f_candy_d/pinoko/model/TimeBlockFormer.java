@@ -139,6 +139,11 @@ public class TimeBlockFormer extends EntryFormer {
     }
 
     @Override
+    public String getIdColumnName() {
+        return DBContract.TimeBlockEntry.ATTR_ID;
+    }
+
+    @Override
     public Set<String> getAttributeNames() {
         return new HashSet<>(Arrays.asList(DBContract.TimeBlockEntry.getColumnNames()));
     }

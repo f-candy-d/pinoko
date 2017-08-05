@@ -49,6 +49,11 @@ public class CourseFormer extends EntryFormer {
     }
 
     @Override
+    public String getIdColumnName() {
+        return DBContract.CourseEntry.ATTR_ID;
+    }
+
+    @Override
     String getEntryAffiliation() {
         return getTableName();
     }

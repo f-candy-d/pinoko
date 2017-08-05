@@ -1,6 +1,7 @@
 package com.f_candy_d.pinoko.model;
 
 import android.content.ContentValues;
+import android.location.Location;
 
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.EntryHelper;
@@ -40,6 +41,11 @@ public class LocationFormer extends EntryFormer {
         contentValues.put(DBContract.LocationEntry.ATTR_NOTE, getNote());
 
         return contentValues;
+    }
+
+    @Override
+    public String getIdColumnName() {
+        return DBContract.LocationEntry.ATTR_ID;
     }
 
     @Override

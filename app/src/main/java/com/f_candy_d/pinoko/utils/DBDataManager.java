@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteAbortException;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -105,31 +106,37 @@ public class DBDataManager {
         final long[] ids = new long[entries.size()];
         int index = 0;
 
-        for (Savable entry : entries) {
-            if (entry.isSavable()) {
-                ids[index] = mDatabase.insert(entry.getTableName(), null, entry.toContentValues(false));
-            } else {
-                ids[index] = DBContract.NULL_ID;
+        mDatabase.beginTransaction();
+        try {
+            for (Savable entry : entries) {
+                if (entry.isSavable()) {
+                    ids[index] = mDatabase.insert(entry.getTableName(), null, entry.toContentValues(false));
+                } else {
+                    ids[index] = DBContract.NULL_ID;
+                }
+                ++index;
             }
-            ++index;
+            mDatabase.setTransactionSuccessful();
+        } finally {
+            mDatabase.endTransaction();
         }
 
         return ids;
     }
 
-    public ArrayList<Entry> selectAllOf(@NonNull final String tableName) {
+    public ArrayList<Entry> selectAllOf(@NonNull final String table) {
         if (!isOpen()) {
             throw new IllegalStateException("DB is not open");
         }
 
         final ArrayList<Entry> results = new ArrayList<>();
         // Select all rows in the database
-        Cursor cursor = mDatabase.query(false, tableName, null, null, null, null, null, null, null);
+        Cursor cursor = mDatabase.query(false, table, null, null, null, null, null, null, null);
         boolean isEOF = cursor.moveToFirst();
         Entry entry;
 
         while (isEOF) {
-            entry = EntryFactory.makeBasicEntry(tableName, cursor);
+            entry = EntryFactory.makeBasicEntry(table, cursor);
             if (entry != null) {
                 results.add(entry);
             }
@@ -257,33 +264,23 @@ public class DBDataManager {
         return select(query, entryAffiliation);
     }
 
-    public ArrayList<Savable> update(final Collection<Savable> entries) {
-        if (!isOpen()) {
-            throw new IllegalStateException("DB is not open");
-        }
-
-        ArrayList<Savable> failed = new ArrayList<>();
-
-        for (Savable entry : entries) {
-            if (entry.isSavable()) {
-                mDatabase.update(entry.getTableName(), entry.toContentValues(false), null, null);
-            } else {
-                failed.add(entry);
-            }
-        }
-
-        return failed;
-    }
-
-    public boolean update(final Savable entry) {
+    public boolean update(@NonNull final Savable entry) {
         if (!isOpen()) {
             throw new IllegalStateException("DB is not open");
         }
 
         if (entry.isSavable()) {
-            mDatabase.update(entry.getTableName(), entry.toContentValues(false), null, null);
-            return true;
+            ContentValues contentValues = entry.toContentValues(true);
+            SQLWhere.CondExpr equalToId = new SQLWhere.CondExpr();
+            equalToId.l(entry.getIdColumnName()).equalTo().r(contentValues.getAsLong(entry.getIdColumnName()));
+
+            if (entry.isSavable()) {
+                mDatabase.update(entry.getTableName(), contentValues, equalToId.toString(), null);
+                return true;
+            }
         }
+
         return false;
     }
+
 }

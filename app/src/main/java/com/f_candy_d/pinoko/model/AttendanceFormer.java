@@ -83,6 +83,11 @@ public class AttendanceFormer extends EntryFormer {
     }
 
     @Override
+    public String getIdColumnName() {
+        return DBContract.AttendanceEntry.ATTR_ID;
+    }
+
+    @Override
     public Set<String> getAttributeNames() {
         return new HashSet<>(Arrays.asList(DBContract.AttendanceEntry.getColumnNames()));
     }

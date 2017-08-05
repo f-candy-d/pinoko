@@ -207,6 +207,7 @@ public class MainActivity extends AppCompatActivity
             Log.d("mylog", "saved -> " + String.valueOf(id));
         }
         Log.d("mylog", "--------------------------------------------------------");
+
         dbDataManager.close();
     }
 

@@ -113,6 +113,11 @@ public class NotificationFormer extends EntryFormer {
     }
 
     @Override
+    public String getIdColumnName() {
+        return DBContract.NotificationEntry.ATTR_ID;
+    }
+
+    @Override
     String getEntryAffiliation() {
         return getTableName();
     }

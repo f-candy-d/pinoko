@@ -28,6 +28,11 @@ public class AssignmentFormer extends EntryFormer {
     }
 
     @Override
+    public String getIdColumnName() {
+        return DBContract.AssignmentEntry.ATTR_NAME;
+    }
+
+    @Override
     String getEntryAffiliation() {
         return getTableName();
     }

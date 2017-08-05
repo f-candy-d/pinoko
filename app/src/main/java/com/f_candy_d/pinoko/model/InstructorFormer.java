@@ -56,6 +56,11 @@ public class InstructorFormer extends EntryFormer {
     }
 
     @Override
+    public String getIdColumnName() {
+        return DBContract.InstructorEntry.ATTR_ID;
+    }
+
+    @Override
     void formatAttributes() {
         if (!has(DBContract.InstructorEntry.ATTR_ID)) {
             setID(DBContract.NULL_ID);

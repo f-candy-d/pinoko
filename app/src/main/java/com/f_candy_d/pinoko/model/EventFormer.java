@@ -1,6 +1,7 @@
 package com.f_candy_d.pinoko.model;
 
 
+import android.app.usage.UsageEvents;
 import android.content.ContentValues;
 
 import com.f_candy_d.pinoko.utils.DBContract;
@@ -47,6 +48,11 @@ public class EventFormer extends EntryFormer {
     @Override
     String getEntryAffiliation() {
         return getTableName();
+    }
+
+    @Override
+    public String getIdColumnName() {
+        return DBContract.EventEntry.ATTR_ID;
     }
 
     @Override
