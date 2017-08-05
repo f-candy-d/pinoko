@@ -23,6 +23,8 @@ import com.f_candy_d.pinoko.model.NotificationFormer;
 import com.f_candy_d.pinoko.model.TimeBlockFormer;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.DBDataManager;
+import com.f_candy_d.pinoko.utils.EntryHelper;
+import com.f_candy_d.pinoko.utils.SQLQuery;
 import com.f_candy_d.pinoko.utils.SQLWhere;
 import com.f_candy_d.pinoko.utils.Savable;
 
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity
 //        exprTest();
 //        sqlWhereTest();
         selectTest();
+        updateTest();
     }
 
     @Override
@@ -287,13 +290,6 @@ public class MainActivity extends AppCompatActivity
         condExprL.l("id_g").graterThanOrEqualTo().r(10);
         condExprR.l("name").equalTo().r("smith");
         logicExpr.l(condExprL).and().r(condExprR);
-
-//        SQLWhere sqlWhere = new SQLWhere(new String[]{
-//                DBContract.COL_ID, DBContract.COL_CATEGORY, DBContract.COL_DATETIME_END},
-//                new String[]{
-//                        DBContract.CourseEntry.TABLE_NAME, DBContract.AssignmentEntry.TABLE_NAME},
-//                logicExpr);
-
         SQLWhere sqlWhere = new SQLWhere(condExprL);
 
 
@@ -307,14 +303,15 @@ public class MainActivity extends AppCompatActivity
         SQLWhere.CondExpr notifiIDCond = new SQLWhere.CondExpr().l(DBContract.CourseEntry.ATTR_ID).equalTo().r(DBContract.NotificationEntry.ATTR_TARGET_ID);
         SQLWhere.LogicExpr innerLogicExpr = new SQLWhere.LogicExpr().l(locIdCond).and().r(instIdCond);
         SQLWhere.LogicExpr logicExpr = new SQLWhere.LogicExpr().l(innerLogicExpr).and().r(notifiIDCond);
-        SQLWhere where = new SQLWhere(logicExpr);
-        ArrayList<Entry> results = dataManager.select(null, new String[] {
+        SQLQuery query = new SQLQuery();
+        query.putTables(
                 DBContract.CourseEntry.TABLE_NAME,
                 DBContract.LocationEntry.TABLE_NAME,
                 DBContract.InstructorEntry.TABLE_NAME,
-                DBContract.NotificationEntry.TABLE_NAME}, where, "testEntry");
+                DBContract.NotificationEntry.TABLE_NAME);
+        query.setSelection(logicExpr);
 
-        Log.d("mylog", "Query ==> " + where.toString());
+        ArrayList<Entry> results = dataManager.select(query, "testEntry");
 
         for (Entry entry : results) {
             Log.d("mylog", "--------------------------------------------------------");
@@ -322,5 +319,28 @@ public class MainActivity extends AppCompatActivity
             Log.d("mylog", entry.toString());
             Log.d("mylog", "--------------------------------------------------------");
         }
+    }
+
+    private void updateTest() {
+        DBDataManager dataManager = new DBDataManager(this, DBDataManager.Mode.WRITE_APPEND);
+        ArrayList<Entry> entries = dataManager.selectWhereColumnIs(DBContract.CourseEntry.TABLE_NAME, DBContract.CourseEntry.ATTR_ID, 1, null);
+        if (entries.size() != 0) {
+            Entry entry = entries.get(0);
+            Log.d("mylog", "BEFORE UPDATING --------------------------------------------------");
+            Log.d("mylog", "#### " + entry.getAffiliation());
+            Log.d("mylog", entry.toString());
+            Log.d("mylog", "AFTER UPDATING --------------------------------------------------------");
+
+            EntryHelper.setCourseName(entry, "updated name");
+            EntryHelper.setCourseNote(entry, "updated note");
+            EntryHelper.setCourseLength(entry, 10000);
+
+            dataManager.update(new CourseFormer(entry));
+            Log.d("mylog", "#### " + entry.getAffiliation());
+            Log.d("mylog", entry.toString());
+            Log.d("mylog", "-----------------------------------------------------------------------");
+        }
+
+        dataManager.close();
     }
 }

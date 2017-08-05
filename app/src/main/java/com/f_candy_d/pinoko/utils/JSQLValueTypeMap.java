@@ -1,5 +1,6 @@
 package com.f_candy_d.pinoko.utils;
 
+import android.support.annotation.NonNull;
 import android.util.Pair;
 
 import java.util.HashMap;

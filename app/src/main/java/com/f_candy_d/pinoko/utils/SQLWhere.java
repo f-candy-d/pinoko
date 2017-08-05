@@ -212,8 +212,7 @@ public class SQLWhere {
             if (this.left != null && this.right != null && this.operator != null) {
                 return this.left + SPACE + this.operator.toString() + SPACE + this.right;
             }
-
-            throw new IllegalStateException("There isn't enough arguments!");
+            return null;
         }
     }
 
@@ -351,8 +350,7 @@ public class SQLWhere {
             if (this.operand != null && this.operator != null) {
                 return this.operand + SPACE + this.operator.toString(this.args);
             }
-
-            throw new IllegalStateException("Operator or Operand is null!");
+            return null;
         }
     }
 

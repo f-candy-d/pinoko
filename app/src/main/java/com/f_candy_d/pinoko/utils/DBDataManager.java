@@ -1,15 +1,19 @@
 package com.f_candy_d.pinoko.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteAbortException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.f_candy_d.pinoko.model.Entry;
 import com.f_candy_d.pinoko.model.NotificationFormer;
 import com.f_candy_d.pinoko.model.TimeBlockFormer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by daichi on 7/30/17.
@@ -93,35 +97,34 @@ public class DBDataManager {
         return DBContract.NULL_ID;
     }
 
-    public long[] insert(final ArrayList<Savable> entries) {
+    public long[] insert(final Collection<Savable> entries) {
         if (!isOpen() || (mMode != Mode.WRITE_APPEND && mMode != Mode.WRITE_TRUNCATE)) {
             throw new IllegalStateException("DB is not open or its mode is not a write-mode");
         }
 
         final long[] ids = new long[entries.size()];
+        int index = 0;
 
-        Savable entry;
-        for (int i = 0; i < entries.size(); ++i) {
-            entry = entries.get(i);
+        for (Savable entry : entries) {
             if (entry.isSavable()) {
-                ids[i] = mDatabase.insert(entry.getTableName(), null, entry.toContentValues(false));
+                ids[index] = mDatabase.insert(entry.getTableName(), null, entry.toContentValues(false));
             } else {
-                ids[i] = DBContract.NULL_ID;
+                ids[index] = DBContract.NULL_ID;
             }
+            ++index;
         }
 
         return ids;
     }
 
-    public ArrayList<Entry> selectAllOf(final String tableName) {
+    public ArrayList<Entry> selectAllOf(@NonNull final String tableName) {
         if (!isOpen()) {
             throw new IllegalStateException("DB is not open");
         }
 
         final ArrayList<Entry> results = new ArrayList<>();
         // Select all rows in the database
-        final String query = SQLGrammar.sqlSelect(null, new String[]{tableName}, null);
-        final Cursor cursor = mDatabase.rawQuery(query, null);
+        Cursor cursor = mDatabase.query(false, tableName, null, null, null, null, null, null, null);
         boolean isEOF = cursor.moveToFirst();
         Entry entry;
 
@@ -137,17 +140,25 @@ public class DBDataManager {
         return results;
     }
 
-    public ArrayList<Entry> select(String[] requests,
-                                   @NonNull final String[] tables,
-                                   @NonNull final SQLWhere where,
-                                   @NonNull final String entryAffiliation) {
+    public ArrayList<Entry> select(@NonNull final SQLQuery query, @NonNull final String entryAffiliation) {
         if (!isOpen()) {
             throw new IllegalStateException("DB is not open");
         }
 
         ArrayList<Entry> results = new ArrayList<>();
-        Cursor cursor = mDatabase.rawQuery(SQLGrammar.sqlSelect(requests, tables, where), null);
+        Cursor cursor = mDatabase.query(
+                query.distinct(),
+                query.tables(),
+                query.columns(),
+                query.selection(),
+                query.selectionArgs(),
+                query.groupBy(),
+                query.having(),
+                query.orderBy(),
+                query.limit());
+
         boolean isEOF = cursor.moveToFirst();
+        String[] requests = query.columns();
         Entry entry;
         JSQLValueTypeMap.JavaValueType type;
 
@@ -208,5 +219,71 @@ public class DBDataManager {
 
         cursor.close();
         return results;
+    }
+
+    /**
+     * Generate a simple selection query like: SELECT * FROM table WHERE column = is;
+     */
+    public ArrayList<Entry> selectWhereColumnIs(@NonNull String table, @NonNull String column, int is, String entryAffiliation) {
+        SQLQuery query = new SQLQuery();
+        query.putTables(table);
+        SQLWhere.CondExpr columnIs = new SQLWhere.CondExpr(column, SQLWhere.CondExpr.CondOp.EQ, is);
+        query.setSelection(columnIs);
+        if (entryAffiliation == null) {
+            entryAffiliation = table;
+        }
+        return select(query, entryAffiliation);
+    }
+
+    public ArrayList<Entry> selectWhereColumnIs(@NonNull String table, @NonNull String column, String is, String entryAffiliation) {
+        SQLQuery query = new SQLQuery();
+        query.putTables(table);
+        SQLWhere.CondExpr columnIs = new SQLWhere.CondExpr(column, SQLWhere.CondExpr.CondOp.EQ, is);
+        query.setSelection(columnIs);
+        if (entryAffiliation == null) {
+            entryAffiliation = table;
+        }
+        return select(query, entryAffiliation);
+    }
+
+    public ArrayList<Entry> selectWhereColumnIs(@NonNull String table, @NonNull String column, long is, String entryAffiliation) {
+        SQLQuery query = new SQLQuery();
+        query.putTables(table);
+        SQLWhere.CondExpr columnIs = new SQLWhere.CondExpr(column, SQLWhere.CondExpr.CondOp.EQ, is);
+        query.setSelection(columnIs);
+        if (entryAffiliation == null) {
+            entryAffiliation = table;
+        }
+        return select(query, entryAffiliation);
+    }
+
+    public ArrayList<Savable> update(final Collection<Savable> entries) {
+        if (!isOpen()) {
+            throw new IllegalStateException("DB is not open");
+        }
+
+        ArrayList<Savable> failed = new ArrayList<>();
+
+        for (Savable entry : entries) {
+            if (entry.isSavable()) {
+                mDatabase.update(entry.getTableName(), entry.toContentValues(false), null, null);
+            } else {
+                failed.add(entry);
+            }
+        }
+
+        return failed;
+    }
+
+    public boolean update(final Savable entry) {
+        if (!isOpen()) {
+            throw new IllegalStateException("DB is not open");
+        }
+
+        if (entry.isSavable()) {
+            mDatabase.update(entry.getTableName(), entry.toContentValues(false), null, null);
+            return true;
+        }
+        return false;
     }
 }

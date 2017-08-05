@@ -1,5 +1,6 @@
 package com.f_candy_d.pinoko.utils;
 
+import android.content.ContentValues;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -66,6 +67,16 @@ public class SQLGrammar {
         return "";
     }
 
+    public static String sqlSet(@NonNull final ContentValues contentValues) {
+        if (0 < contentValues.size()) {
+            String[] keys = contentValues.keySet().toArray(new String[]{});
+            String set = "SET " + keys[0] + " = ";
+        }
+
+        // Return an empty string
+        return "";
+    }
+
     public static String sqlSelect(final String[] requests,
                                    @NonNull final String[] tables,
                                    final SQLWhere where) {
@@ -79,5 +90,19 @@ public class SQLGrammar {
         }
 
         return select + " " + sqlFrom(tables) + " " + sqlWhere(where) + ";";
+    }
+
+//    public static String sqlUpdate()
+
+    private String toSqlLiteral(@NonNull final String columnName,
+                                @NonNull final ContentValues contentValues,
+                                @NonNull final JSQLValueTypeMap typeMap) {
+        final JSQLValueTypeMap.JavaValueType jType = typeMap.getJavaValueType(columnName);
+        switch (jType) {
+            case STRING: return "'" + contentValues.getAsString(columnName) + "'";
+            case INT: return contentValues.getAsInteger(columnName).toString();
+            case LONG: return contentValues.getAsLong(columnName).toString();
+        }
+        return null;
     }
 }
