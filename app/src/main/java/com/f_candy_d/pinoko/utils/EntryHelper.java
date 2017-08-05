@@ -1,8 +1,6 @@
 package com.f_candy_d.pinoko.utils;
 
 
-import android.location.Location;
-
 import com.f_candy_d.pinoko.model.Entry;
 import com.f_candy_d.pinoko.model.NotificationFormer;
 import com.f_candy_d.pinoko.model.TimeBlockFormer;
@@ -43,64 +41,28 @@ public class EntryHelper {
         entry.set(DBContract.CourseEntry.ATTR_NAME, name);
     }
 
-    public static long getCourseLocationIdA(final Entry entry) {
-        return entry.getLong(DBContract.CourseEntry.ATTR_LOCATION_ID_A);
+    public static long getCourseLocationId(final Entry entry) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_LOCATION_ID);
     }
 
-    public static long getCourseLocationIdA(final Entry entry, final long def) {
-        return entry.getLong(DBContract.CourseEntry.ATTR_LOCATION_ID_A, def);
+    public static long getCourseLocationId(final Entry entry, final long def) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_LOCATION_ID, def);
     }
 
-    public static void setCourseLocationIdA(final Entry entry, final long locId) {
-        entry.set(DBContract.CourseEntry.ATTR_LOCATION_ID_A, locId);
+    public static void setCourseLocationId(final Entry entry, final long locId) {
+        entry.set(DBContract.CourseEntry.ATTR_LOCATION_ID, locId);
     }
 
-    public static long getCourseLocationIdB(final Entry entry) {
-        return entry.getLong(DBContract.CourseEntry.ATTR_LOCATION_ID_B);
+    public static long getCourseInstructorId(final Entry entry) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID);
     }
 
-    public static long getCourseLocationIdB(final Entry entry, final long def) {
-        return entry.getLong(DBContract.CourseEntry.ATTR_LOCATION_ID_B, def);
+    public static long getCourseInstructorId(final Entry entry, final long def) {
+        return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID);
     }
 
-    public static void setCourseLocationIdB(final Entry entry, final long locId) {
-        entry.set(DBContract.CourseEntry.ATTR_LOCATION_ID_B, locId);
-    }
-
-    public static long getCourseInstructorIdA(final Entry entry) {
-        return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A);
-    }
-
-    public static long getCourseInstructorIdA(final Entry entry, final long def) {
-        return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A);
-    }
-
-    public static void setCourseInstructorIdA(final Entry entry, final long instId) {
-        entry.set(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A, instId);
-    }
-
-    public static long getCourseInstructorIdB(final Entry entry) {
-        return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_B);
-    }
-
-    public static long getCourseInstructorIdB(final Entry entry, final long def) {
-        return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_B);
-    }
-
-    public static void setCourseInstructorIdB(final Entry entry, final long instId) {
-        entry.set(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_B, instId);
-    }
-
-    public static long getCourseInstructorIdC(final Entry entry) {
-        return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_C);
-    }
-
-    public static long getCourseInstructorIdC(final Entry entry, final long def) {
-        return entry.getLong(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_C);
-    }
-
-    public static void setCourseInstructorIdC(final Entry entry, final long instId) {
-        entry.set(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_C, instId);
+    public static void setCourseInstructorId(final Entry entry, final long instId) {
+        entry.set(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID, instId);
     }
 
     public static int getCourseLength(final Entry entry) {

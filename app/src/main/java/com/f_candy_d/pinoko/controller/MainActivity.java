@@ -132,11 +132,8 @@ public class MainActivity extends AppCompatActivity
         ArrayList<Savable> entries = new ArrayList<>();
         CourseFormer course = CourseFormer.createWithEntry();
         course.setName("course")
-                .setLocationIDA(1)
-                .setLocationIDB(2)
-                .setInstructorIDA(1)
-                .setInstructorIDB(4)
-                .setInstructorIDC(5)
+                .setLocationId(1)
+                .setInstructorId(1)
                 .setLength(6)
                 .setNote("course note");
 
@@ -308,8 +305,8 @@ public class MainActivity extends AppCompatActivity
 
     private void selectTest() {
         DBDataManager dataManager = new DBDataManager(this, DBDataManager.Mode.WRITE_APPEND);
-        SQLQuery.CondExpr locIdCond = new SQLQuery.CondExpr().l(DBContract.CourseEntry.ATTR_LOCATION_ID_A).equalTo().r(DBContract.LocationEntry.ATTR_ID);
-        SQLQuery.CondExpr instIdCond = new SQLQuery.CondExpr().l(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A).equalTo().r(DBContract.InstructorEntry.ATTR_ID);
+        SQLQuery.CondExpr locIdCond = new SQLQuery.CondExpr().l(DBContract.CourseEntry.ATTR_LOCATION_ID).equalTo().r(DBContract.LocationEntry.ATTR_ID);
+        SQLQuery.CondExpr instIdCond = new SQLQuery.CondExpr().l(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID).equalTo().r(DBContract.InstructorEntry.ATTR_ID);
         SQLQuery.CondExpr notifiIDCond = new SQLQuery.CondExpr().l(DBContract.CourseEntry.ATTR_ID).equalTo().r(DBContract.NotificationEntry.ATTR_TARGET_ID);
         SQLQuery.LogicExpr innerWhere = new SQLQuery.LogicExpr().l(locIdCond).and().r(instIdCond);
         SQLQuery.LogicExpr where = new SQLQuery.LogicExpr().l(innerWhere).and().r(notifiIDCond);

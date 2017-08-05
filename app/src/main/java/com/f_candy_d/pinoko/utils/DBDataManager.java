@@ -147,12 +147,12 @@ public class DBDataManager {
         boolean isEOF = cursor.moveToFirst();
         String[] requests = cursor.getColumnNames();
         Entry entry;
-        DBContract.ValueType type;
+        JSQLValueTypeMap.JavaValueType type;
 
         while (isEOF) {
             entry = new Entry(entryAffiliation);
             for (String request : requests) {
-                type = DBContract.ATTR_VALUE_TYPE_MAP.get(request);
+                type = DBContract.ATTR_VALUE_TYPE_MAP.getJavaValueType(request);
                 switch (type) {
                     case STRING: {
                         entry.set(request, cursor.getString(cursor.getColumnIndexOrThrow(request)));

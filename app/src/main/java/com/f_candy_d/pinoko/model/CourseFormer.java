@@ -30,8 +30,6 @@ public class CourseFormer extends EntryFormer {
     @Override
     public boolean isSavable() {
         return (getName() != null &&
-                DBContract.MIN_AVAILABLE_ID <= getLocationIDA() &&
-                DBContract.MIN_AVAILABLE_ID <= getInstructorIDA() &&
                 0 <= getLength());
     }
 
@@ -42,11 +40,8 @@ public class CourseFormer extends EntryFormer {
             contentValues.put(DBContract.CourseEntry.ATTR_ID, getID());
         }
         contentValues.put(DBContract.CourseEntry.ATTR_NAME, getName());
-        contentValues.put(DBContract.CourseEntry.ATTR_LOCATION_ID_A, getLocationIDA());
-        contentValues.put(DBContract.CourseEntry.ATTR_LOCATION_ID_B, getLocationIDB());
-        contentValues.put(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A, getInstructorIDA());
-        contentValues.put(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_B, getInstructorIDB());
-        contentValues.put(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_C, getInstructorIDC());
+        contentValues.put(DBContract.CourseEntry.ATTR_LOCATION_ID, getLocationId());
+        contentValues.put(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID, getInstructorId());
         contentValues.put(DBContract.CourseEntry.ATTR_LENGTH, getLength());
         contentValues.put(DBContract.CourseEntry.ATTR_NOTE, getNote());
 
@@ -71,20 +66,11 @@ public class CourseFormer extends EntryFormer {
         if (!has(DBContract.CourseEntry.ATTR_NAME)) {
             setName(getEntry().getDefaultStringValue());
         }
-        if (!has(DBContract.CourseEntry.ATTR_LOCATION_ID_A)) {
-            setLocationIDA(DBContract.NULL_ID);
+        if (!has(DBContract.CourseEntry.ATTR_LOCATION_ID)) {
+            setLocationId(DBContract.NULL_ID);
         }
-        if (!has(DBContract.CourseEntry.ATTR_LOCATION_ID_B)) {
-            setLocationIDB(DBContract.NULL_ID);
-        }
-        if (!has(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A)) {
-            setInstructorIDA(DBContract.NULL_ID);
-        }
-        if (!has(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_B)) {
-            setInstructorIDB(DBContract.NULL_ID);
-        }
-        if (!has(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_C)) {
-            setInstructorIDC(DBContract.NULL_ID);
+        if (!has(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID)) {
+            setInstructorId(DBContract.NULL_ID);
         }
         if (!has(DBContract.CourseEntry.ATTR_LENGTH)) {
             setLength(getEntry().getDefaultIntValue());
@@ -109,28 +95,13 @@ public class CourseFormer extends EntryFormer {
         return this;
     }
 
-    public CourseFormer setLocationIDA(final long id) {
-        EntryHelper.setCourseLocationIdA(getEntry(), id);
+    public CourseFormer setLocationId(final long id) {
+        EntryHelper.setCourseLocationId(getEntry(), id);
         return this;
     }
 
-    public CourseFormer setLocationIDB(final long id) {
-        EntryHelper.setCourseLocationIdB(getEntry(), id);
-        return this;
-    }
-
-    public CourseFormer setInstructorIDA(final long  id) {
-        EntryHelper.setCourseInstructorIdA(getEntry(), id);
-        return this;
-    }
-
-    public CourseFormer setInstructorIDB(final long id) {
-        EntryHelper.setCourseInstructorIdB(getEntry(), id);
-        return this;
-    }
-
-    public CourseFormer setInstructorIDC(final long id) {
-        EntryHelper.setCourseInstructorIdC(getEntry(), id);
+    public CourseFormer setInstructorId(final long  id) {
+        EntryHelper.setCourseInstructorId(getEntry(), id);
         return this;
     }
 
@@ -152,24 +123,12 @@ public class CourseFormer extends EntryFormer {
         return EntryHelper.getCourseName(getEntry(), null);
     }
 
-    public long getLocationIDA() {
-        return EntryHelper.getCourseLocationIdA(getEntry(), DBContract.NULL_ID);
+    public long getLocationId() {
+        return EntryHelper.getCourseLocationId(getEntry(), DBContract.NULL_ID);
     }
 
-    public long getLocationIDB() {
-        return EntryHelper.getCourseLocationIdB(getEntry(), DBContract.NULL_ID);
-    }
-
-    public long getInstructorIDA() {
-        return EntryHelper.getCourseInstructorIdA(getEntry(), DBContract.NULL_ID);
-    }
-
-    public long getInstructorIDB() {
-        return EntryHelper.getCourseInstructorIdB(getEntry(), DBContract.NULL_ID);
-    }
-
-    public long getInstructorIDC() {
-        return EntryHelper.getCourseInstructorIdC(getEntry(), DBContract.NULL_ID);
+    public long getInstructorId() {
+        return EntryHelper.getCourseInstructorId(getEntry(), DBContract.NULL_ID);
     }
 
     public int getLength() {

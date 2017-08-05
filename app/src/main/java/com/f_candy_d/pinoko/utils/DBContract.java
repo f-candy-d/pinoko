@@ -1,5 +1,8 @@
 package com.f_candy_d.pinoko.utils;
 
+import com.f_candy_d.pinoko.model.CourseFormer;
+
+import java.sql.Time;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,10 +17,9 @@ public class DBContract {
     public static final int MIN_AVAILABLE_ID = 1;
     public static final int VERSION = 1;
     public static final String DATABASE_NAME = "pinoko_database.db";
-    public static final String SQL_CREATE_TABLE_IF_NOT_EXISTS = "CREATE TABLE IF NOT EXISTS ";
 
     /**
-     * Column names
+     * Basic Column names
      */
     public static final String COL_ID = "ID";
     public static final String COL_TARGET_ID = "TargetID";
@@ -38,103 +40,68 @@ public class DBContract {
     public static final String COL_ABSENT = "Absent";
 
     /**
-     * Value types of each columns
+     * Mapping each column names to a value type that used in program and that used in SQLite
      */
-    public static final String TYPE_ID_PK = " INTEGER PRIMARY KEY";
-    public static final String TYPE_ID = " INTEGER";
-    public static final String TYPE_NAME = " TEXT";
-    public static final String TYPE_LENGTH = " INTEGER";
-    public static final String TYPE_NOTE = " TEXT";
-    public static final String TYPE_LAB = " TEXT";
-    public static final String TYPE_MAIL = " TEXT";
-    public static final String TYPE_PHONE_NUMBER = " TEXT";
-    public static final String TYPE_TYPE = " INTEGER";
-    public static final String TYPE_CATEGORY = " INTEGER";
-    public static final String TYPE_DATETIME_BEGIN = " INTEGER";
-    public static final String TYPE_DATETIME_END = " INTEGER";
-    public static final String TYPE_IS_DONE = " INTEGER";
-    public static final String TYPE_PRESENT = " INTEGER";
-    public static final String TYPE_LATE = " INTEGER";
-    public static final String TYPE_ABSENT = " INTEGER";
-
-    /**
-     * SQL grammars
-     */
-    public static final String NOT_NULL = " NOT NULL";
-    public static final String C_S = ",";
-
-    /**
-     * Value types
-     */
-    public enum ValueType {
-        STRING,
-        INT,
-        LONG,
-        BOOLEAN,
-        TB_TYPE,
-        TB_CATEGORY,
-        NOTIF_TYPE,
-        NOTIF_CATEGORY
-    }
-
-    public static final Map<String, ValueType> ATTR_VALUE_TYPE_MAP =
-            Collections.unmodifiableMap(new HashMap<String, ValueType>() {{
-                // Course Entry
-                put(CourseEntry.ATTR_ID, ValueType.LONG);
-                put(CourseEntry.ATTR_NAME, ValueType.STRING);
-                put(CourseEntry.ATTR_LOCATION_ID_A, ValueType.LONG);
-                put(CourseEntry.ATTR_LOCATION_ID_B, ValueType.LONG);
-                put(CourseEntry.ATTR_INSTRUCTOR_ID_A, ValueType.LONG);
-                put(CourseEntry.ATTR_INSTRUCTOR_ID_B, ValueType.LONG);
-                put(CourseEntry.ATTR_INSTRUCTOR_ID_C, ValueType.LONG);
-                put(CourseEntry.ATTR_LENGTH, ValueType.LONG);
-                put(CourseEntry.ATTR_NOTE, ValueType.STRING);
+    public static final JSQLValueTypeMap ATTR_VALUE_TYPE_MAP;
+    static {
+        ATTR_VALUE_TYPE_MAP = new JSQLValueTypeMap();
+        // Course Entry
+        ATTR_VALUE_TYPE_MAP
+                .put(CourseEntry.ATTR_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_PK)
+                .put(CourseEntry.ATTR_NAME, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT_NOT_NULL)
+                .put(CourseEntry.ATTR_LOCATION_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER)
+                .put(CourseEntry.ATTR_INSTRUCTOR_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER)
+                .put(CourseEntry.ATTR_LENGTH, JSQLValueTypeMap.JavaValueType.INT, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(CourseEntry.ATTR_NOTE, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT)
                 // Location Entry
-                put(LocationEntry.ATTR_ID, ValueType.LONG);
-                put(LocationEntry.ATTR_NAME, ValueType.STRING);
-                put(LocationEntry.ATTR_NOTE, ValueType.STRING);
+                .put(LocationEntry.ATTR_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_PK)
+                .put(LocationEntry.ATTR_NAME, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT_NOT_NULL)
+                .put(LocationEntry.ATTR_NOTE, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT)
                 // Instructor Entry
-                put(InstructorEntry.ATTR_ID, ValueType.LONG);
-                put(InstructorEntry.ATTR_NAME, ValueType.STRING);
-                put(InstructorEntry.ATTR_LAB, ValueType.STRING);
-                put(InstructorEntry.ATTR_MAIL, ValueType.STRING);
-                put(InstructorEntry.ATTR_PHONE_NUMBER, ValueType.STRING);
-                put(InstructorEntry.ATTR_NOTE, ValueType.STRING);
+                .put(InstructorEntry.ATTR_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_PK)
+                .put(InstructorEntry.ATTR_NAME, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT_NOT_NULL)
+                .put(InstructorEntry.ATTR_LAB, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT)
+                .put(InstructorEntry.ATTR_MAIL, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT)
+                .put(InstructorEntry.ATTR_PHONE_NUMBER, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT)
+                .put(InstructorEntry.ATTR_NOTE, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT)
                 // TimeBlock Entry
-                put(TimeBlockEntry.ATTR_ID, ValueType.LONG);
-                put(TimeBlockEntry.ATTR_TYPE, ValueType.TB_TYPE);
-                put(TimeBlockEntry.ATTR_CATEGORY, ValueType.TB_CATEGORY);
-                put(TimeBlockEntry.ATTR_TARGET_ID, ValueType.LONG);
-                put(TimeBlockEntry.ATTR_DATETIME_BEGIN, ValueType.LONG);
-                put(TimeBlockEntry.ATTR_DATETIME_END, ValueType.LONG);
-                put(TimeBlockEntry.ATTR_TIME_TABLE_ID, ValueType.INT);
+                .put(TimeBlockEntry.ATTR_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_PK)
+                .put(TimeBlockEntry.ATTR_TYPE, JSQLValueTypeMap.JavaValueType.TB_TYPE, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(TimeBlockEntry.ATTR_CATEGORY, JSQLValueTypeMap.JavaValueType.TB_CATEGORY, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(TimeBlockEntry.ATTR_TARGET_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(TimeBlockEntry.ATTR_DATETIME_BEGIN, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(TimeBlockEntry.ATTR_DATETIME_END, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(TimeBlockEntry.ATTR_TIME_TABLE_ID, JSQLValueTypeMap.JavaValueType.INT, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
                 // Assignment Entry
-                put(AssignmentEntry.ATTR_ID, ValueType.LONG);
-                put(AssignmentEntry.ATTR_NAME, ValueType.STRING);
-                put(AssignmentEntry.ATTR_NOTE, ValueType.STRING);
-                put(AssignmentEntry.ATTR_IS_DONE, ValueType.BOOLEAN);
-                put(AssignmentEntry.ATTR_DEADLINE, ValueType.LONG);
+                .put(AssignmentEntry.ATTR_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_PK)
+                .put(AssignmentEntry.ATTR_NAME, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT_NOT_NULL)
+                .put(AssignmentEntry.ATTR_NOTE, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT)
+                .put(AssignmentEntry.ATTR_IS_DONE, JSQLValueTypeMap.JavaValueType.BOOLEAN, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(AssignmentEntry.ATTR_DEADLINE, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(AssignmentEntry.ATTR_TIME_BLOCK_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
                 // Event Entry
-                put(EventEntry.ATTR_ID, ValueType.LONG);
-                put(EventEntry.ATTR_NAME, ValueType.LONG);
-                put(EventEntry.ATTR_NOTE, ValueType.STRING);
+                .put(EventEntry.ATTR_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_PK)
+                .put(EventEntry.ATTR_NAME, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT_NOT_NULL)
+                .put(EventEntry.ATTR_NOTE, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT)
+                .put(EventEntry.ATTR_LOCATION_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER)
                 // Notification Entry
-                put(NotificationEntry.ATTR_ID, ValueType.LONG);
-                put(NotificationEntry.ATTR_NAME, ValueType.STRING);
-                put(NotificationEntry.ATTR_NOTE, ValueType.STRING);
-                put(NotificationEntry.ATTR_CATEGORY, ValueType.NOTIF_CATEGORY);
-                put(NotificationEntry.ATTR_TARGET_ID, ValueType.LONG);
-                put(NotificationEntry.ATTR_TYPE, ValueType.NOTIF_TYPE);
-                put(NotificationEntry.ATTR_IS_DONE, ValueType.BOOLEAN);
-                put(NotificationEntry.ATTR_DATETIME_BEGIN, ValueType.LONG);
-                put(NotificationEntry.ATTR_DATETIME_END, ValueType.LONG);
+                .put(NotificationEntry.ATTR_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_PK)
+                .put(NotificationEntry.ATTR_NAME, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT_NOT_NULL)
+                .put(NotificationEntry.ATTR_NOTE, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT)
+                .put(NotificationEntry.ATTR_CATEGORY, JSQLValueTypeMap.JavaValueType.NOTIF_CATEGORY, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(NotificationEntry.ATTR_TARGET_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER)
+                .put(NotificationEntry.ATTR_TYPE, JSQLValueTypeMap.JavaValueType.NOTIF_TYPE, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(NotificationEntry.ATTR_IS_DONE, JSQLValueTypeMap.JavaValueType.BOOLEAN, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(NotificationEntry.ATTR_DATETIME_BEGIN, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(NotificationEntry.ATTR_DATETIME_END, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
                 // Attendance Entry
-                put(AttendanceEntry.ATTR_ID, ValueType.LONG);
-                put(AttendanceEntry.ATTR_PRESENT, ValueType.INT);
-                put(AttendanceEntry.ATTR_LATE, ValueType.INT);
-                put(AttendanceEntry.ATTR_ABSENT, ValueType.INT);
-                put(AttendanceEntry.ATTR_NOTE, ValueType.INT);
-            }});
+                .put(AttendanceEntry.ATTR_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_PK)
+                .put(AttendanceEntry.ATTR_PRESENT, JSQLValueTypeMap.JavaValueType.INT, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(AttendanceEntry.ATTR_LATE, JSQLValueTypeMap.JavaValueType.INT, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(AttendanceEntry.ATTR_ABSENT, JSQLValueTypeMap.JavaValueType.INT, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(AttendanceEntry.ATTR_NOTE, JSQLValueTypeMap.JavaValueType.INT, JSQLValueTypeMap.SqlValueType.TEXT)
+                .put(AttendanceEntry.ATTR_TIME_BLOCK_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL);
+    }
 
     private DBContract() {}
 
@@ -151,8 +118,27 @@ public class DBContract {
         };
     }
 
-    public static int getTableCount() {
-        return getTableNames().length;
+    public static String[] getColumnNamesOf(final String tableName) {
+        switch (tableName) {
+            case CourseEntry.TABLE_NAME:
+                return CourseEntry.getColumnNames();
+            case LocationEntry.TABLE_NAME:
+                return LocationEntry.getColumnNames();
+            case InstructorEntry.TABLE_NAME:
+                return InstructorEntry.getColumnNames();
+            case TimeBlockEntry.TABLE_NAME:
+                return TimeBlockEntry.getColumnNames();
+            case AssignmentEntry.TABLE_NAME:
+                return AssignmentEntry.getColumnNames();
+            case EventEntry.TABLE_NAME:
+                return EventEntry.getColumnNames();
+            case NotificationEntry.TABLE_NAME:
+                return NotificationEntry.getColumnNames();
+            case AttendanceEntry.TABLE_NAME:
+                return AttendanceEntry.getColumnNames();
+            default:
+                return null;
+        }
     }
 
     public static class CourseEntry {
@@ -161,36 +147,17 @@ public class DBContract {
 
         public static final String ATTR_ID              = PREFIX + COL_ID;
         public static final String ATTR_NAME            = PREFIX + COL_NAME;               // Not null
-        public static final String ATTR_LOCATION_ID_A   = LocationEntry.ATTR_ID + "_A";    // Not null
-        public static final String ATTR_LOCATION_ID_B   = LocationEntry.ATTR_ID + "_B";
-        public static final String ATTR_INSTRUCTOR_ID_A = InstructorEntry.ATTR_ID + "_A";  // Not null
-        public static final String ATTR_INSTRUCTOR_ID_B = InstructorEntry.ATTR_ID + "_B";
-        public static final String ATTR_INSTRUCTOR_ID_C = InstructorEntry.ATTR_ID + "_C";
+        public static final String ATTR_LOCATION_ID     = PREFIX + LocationEntry.ATTR_ID;    // Not null
+        public static final String ATTR_INSTRUCTOR_ID   = PREFIX + InstructorEntry.ATTR_ID;  // Not null
         public static final String ATTR_LENGTH          = PREFIX + COL_LENGTH;            // Not null
         public static final String ATTR_NOTE            = PREFIX + COL_NOTE;
-
-        public static final String SQL_CREATE_TABLE =
-                SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                + ATTR_ID              + TYPE_ID_PK             + C_S
-                + ATTR_NAME            + TYPE_NAME   + NOT_NULL + C_S
-                + ATTR_LOCATION_ID_A   + TYPE_ID     + NOT_NULL + C_S
-                + ATTR_LOCATION_ID_B   + TYPE_ID                + C_S
-                + ATTR_INSTRUCTOR_ID_A + TYPE_ID     + NOT_NULL + C_S
-                + ATTR_INSTRUCTOR_ID_B + TYPE_ID                + C_S
-                + ATTR_INSTRUCTOR_ID_C + TYPE_ID                + C_S
-                + ATTR_LENGTH          + TYPE_LENGTH            + C_S
-                + ATTR_NOTE            + TYPE_NOTE
-                + ");";
 
         public static String[] getColumnNames() {
             return new String[] {
                     ATTR_ID,
                     ATTR_NAME,
-                    ATTR_LOCATION_ID_A,
-                    ATTR_LOCATION_ID_B,
-                    ATTR_INSTRUCTOR_ID_A,
-                    ATTR_INSTRUCTOR_ID_B,
-                    ATTR_INSTRUCTOR_ID_C,
+                    ATTR_LOCATION_ID,
+                    ATTR_INSTRUCTOR_ID,
                     ATTR_LENGTH,
                     ATTR_NOTE
             };
@@ -204,13 +171,6 @@ public class DBContract {
         public static final String ATTR_ID   = PREFIX + COL_ID;
         public static final String ATTR_NAME = PREFIX + COL_NAME; // Not null
         public static final String ATTR_NOTE = PREFIX + COL_NOTE;
-
-        public static final String SQL_CREATE_TABLE =
-                SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                        + ATTR_ID   + TYPE_ID_PK            + C_S
-                        + ATTR_NAME + TYPE_NAME  + NOT_NULL + C_S
-                        + ATTR_NOTE + TYPE_NOTE
-                        + ");";
 
         public static String[] getColumnNames() {
             return new String[] {
@@ -231,16 +191,6 @@ public class DBContract {
         public static final String ATTR_MAIL         = PREFIX + COL_MAIL;
         public static final String ATTR_PHONE_NUMBER = PREFIX + COL_PHONE_NUMBER;
         public static final String ATTR_NOTE         = PREFIX + COL_NOTE;
-
-        public static final String SQL_CREATE_TABLE =
-                SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                        + ATTR_ID           + TYPE_ID_PK                   + C_S
-                        + ATTR_NAME         + TYPE_NAME         + NOT_NULL + C_S
-                        + ATTR_LAB          + TYPE_LAB                     + C_S
-                        + ATTR_MAIL         + TYPE_MAIL                    + C_S
-                        + ATTR_PHONE_NUMBER + TYPE_PHONE_NUMBER            + C_S
-                        + ATTR_NOTE         + TYPE_NOTE
-                        + ");";
 
         public static String[] getColumnNames() {
             return new String[] {
@@ -266,17 +216,6 @@ public class DBContract {
         public static final String ATTR_DATETIME_END   = PREFIX + COL_DATETIME_END;   // Not null
         public static final String ATTR_TIME_TABLE_ID  = PREFIX + COL_TIME_TABLE_ID;  // Not null
 
-        public static final String SQL_CREATE_TABLE =
-                SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                        + ATTR_ID             + TYPE_ID_PK                     + C_S
-                        + ATTR_TYPE           + TYPE_TYPE           + NOT_NULL + C_S
-                        + ATTR_CATEGORY       + TYPE_CATEGORY       + NOT_NULL + C_S
-                        + ATTR_TARGET_ID      + TYPE_ID                        + C_S
-                        + ATTR_DATETIME_BEGIN + TYPE_DATETIME_BEGIN + NOT_NULL + C_S
-                        + ATTR_DATETIME_END   + TYPE_DATETIME_END   + NOT_NULL + C_S
-                        + ATTR_TIME_TABLE_ID  + TYPE_ID             + NOT_NULL
-                        + ");";
-
         public static String[] getColumnNames() {
             return new String[] {
                     ATTR_ID,
@@ -296,20 +235,10 @@ public class DBContract {
 
         public static final String ATTR_ID            = PREFIX + COL_ID;
         public static final String ATTR_NAME          = PREFIX + COL_NAME;           // Not null
-        public static final String ATTR_TIME_BLOCK_ID = TimeBlockEntry.ATTR_ID;
+        public static final String ATTR_TIME_BLOCK_ID = PREFIX + TimeBlockEntry.ATTR_ID;
         public static final String ATTR_NOTE          = PREFIX + COL_NOTE;
         public static final String ATTR_IS_DONE       = PREFIX + COL_IS_DONE;        // Not null
         public static final String ATTR_DEADLINE      = PREFIX + COL_DATETIME_BEGIN;
-
-        public static final String SQL_CREATE_TABLE =
-                SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                        + ATTR_ID            + TYPE_ID_PK                     + C_S
-                        + ATTR_NAME          + TYPE_NAME           + NOT_NULL + C_S
-                        + ATTR_TIME_BLOCK_ID + TYPE_ID                        + C_S
-                        + ATTR_NOTE          + TYPE_NOTE                      + C_S
-                        + ATTR_IS_DONE       + TYPE_IS_DONE        + NOT_NULL + C_S
-                        + ATTR_DEADLINE      + TYPE_DATETIME_BEGIN
-                        + ");";
 
         public static String[] getColumnNames() {
             return new String[] {
@@ -329,16 +258,8 @@ public class DBContract {
 
         public static final String ATTR_ID          = PREFIX + COL_ID;
         public static final String ATTR_NAME        = PREFIX + COL_NAME;     // Not null
-        public static final String ATTR_LOCATION_ID = LocationEntry.ATTR_ID;
+        public static final String ATTR_LOCATION_ID = PREFIX + LocationEntry.ATTR_ID;
         public static final String ATTR_NOTE        = PREFIX + COL_NOTE;
-
-        public static final String SQL_CREATE_TABLE =
-                SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                        + ATTR_ID          + TYPE_ID_PK           + C_S
-                        + ATTR_NAME        + TYPE_NAME + NOT_NULL + C_S
-                        + ATTR_LOCATION_ID + TYPE_ID              + C_S
-                        + ATTR_NOTE        + TYPE_NOTE
-                        + ");";
 
         public static String[] getColumnNames() {
             return new String[] {
@@ -364,19 +285,6 @@ public class DBContract {
         public static final String ATTR_DATETIME_BEGIN = PREFIX + COL_DATETIME_BEGIN; // Not null
         public static final String ATTR_DATETIME_END   = PREFIX + COL_DATETIME_END;   // Not null
 
-        public static final String SQL_CREATE_TABLE =
-                SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                        + ATTR_ID             + TYPE_ID_PK                     + C_S
-                        + ATTR_NAME           + TYPE_NAME           + NOT_NULL + C_S
-                        + ATTR_NOTE           + TYPE_NOTE                      + C_S
-                        + ATTR_CATEGORY       + TYPE_CATEGORY       + NOT_NULL + C_S
-                        + ATTR_TARGET_ID      + TYPE_ID                        + C_S
-                        + ATTR_TYPE           + TYPE_TYPE           + NOT_NULL + C_S
-                        + ATTR_IS_DONE        + TYPE_IS_DONE        + NOT_NULL + C_S
-                        + ATTR_DATETIME_BEGIN + TYPE_DATETIME_BEGIN + NOT_NULL + C_S
-                        + ATTR_DATETIME_END   + TYPE_DATETIME_END   + NOT_NULL
-                        + ");";
-
         public static String[] getColumnNames() {
             return new String[] {
                     ATTR_ID,
@@ -397,21 +305,11 @@ public class DBContract {
         public static final String PREFIX = "att";
 
         public static final String ATTR_ID            = PREFIX + COL_ID;
-        public static final String ATTR_TIME_BLOCK_ID = TimeBlockEntry.ATTR_ID; // Not null
+        public static final String ATTR_TIME_BLOCK_ID = PREFIX + TimeBlockEntry.ATTR_ID; // Not null
         public static final String ATTR_PRESENT       = PREFIX + COL_PRESENT;   // Not null
         public static final String ATTR_LATE          = PREFIX + COL_LATE;      // Not null
         public static final String ATTR_ABSENT        = PREFIX + COL_ABSENT;    // Not null
         public static final String ATTR_NOTE          = PREFIX + COL_NOTE;
-
-        public static final String SQL_CREATE_TABLE =
-                SQL_CREATE_TABLE_IF_NOT_EXISTS + TABLE_NAME + " ("
-                        + ATTR_ID            + TYPE_ID_PK              + C_S
-                        + ATTR_TIME_BLOCK_ID + TYPE_ID      + NOT_NULL + C_S
-                        + ATTR_PRESENT       + TYPE_PRESENT + NOT_NULL + C_S
-                        + ATTR_LATE          + TYPE_LATE    + NOT_NULL + C_S
-                        + ATTR_ABSENT        + TYPE_ABSENT  + NOT_NULL + C_S
-                        + ATTR_NOTE          + TYPE_NOTE
-                        + ");";
 
         public static String[] getColumnNames() {
             return new String[] {

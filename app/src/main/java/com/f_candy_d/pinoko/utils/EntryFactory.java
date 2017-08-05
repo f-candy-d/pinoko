@@ -2,7 +2,6 @@ package com.f_candy_d.pinoko.utils;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContentResolverCompat;
 
 import com.f_candy_d.pinoko.model.AssignmentFormer;
 import com.f_candy_d.pinoko.model.AttendanceFormer;
@@ -52,11 +51,8 @@ public class EntryFactory {
         course.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_NAME)));
         course.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_NOTE)));
         course.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_ID)));
-        course.setLocationIDA(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_LOCATION_ID_A)));
-        course.setLocationIDB(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_LOCATION_ID_B)));
-        course.setInstructorIDA(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_A)));
-        course.setInstructorIDB(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_B)));
-        course.setInstructorIDC(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID_C)));
+        course.setLocationId(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_LOCATION_ID)));
+        course.setInstructorId(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID)));
         course.setLength(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_LENGTH)));
 
         return course.getEntry();

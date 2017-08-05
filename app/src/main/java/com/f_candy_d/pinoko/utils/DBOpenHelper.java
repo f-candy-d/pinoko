@@ -25,14 +25,15 @@ public class DBOpenHelper extends SQLiteOpenHelper {
     }
 
     public void createTables(final SQLiteDatabase db) {
-        db.execSQL(DBContract.NotificationEntry.SQL_CREATE_TABLE);
-        db.execSQL(DBContract.EventEntry.SQL_CREATE_TABLE);
-        db.execSQL(DBContract.AssignmentEntry.SQL_CREATE_TABLE);
-        db.execSQL(DBContract.LocationEntry.SQL_CREATE_TABLE);
-        db.execSQL(DBContract.CourseEntry.SQL_CREATE_TABLE);
-        db.execSQL(DBContract.InstructorEntry.SQL_CREATE_TABLE);
-        db.execSQL(DBContract.TimeBlockEntry.SQL_CREATE_TABLE);
-        db.execSQL(DBContract.AttendanceEntry.SQL_CREATE_TABLE);
+        String[] columnNames;
+        for (String tableName : DBContract.getTableNames()) {
+            columnNames = DBContract.getColumnNamesOf(tableName);
+            if (columnNames != null) {
+                db.execSQL(SQLGrammar.sqlCreateTable(tableName, columnNames, DBContract.ATTR_VALUE_TYPE_MAP));
+            } else {
+                throw new NullPointerException("Creating table(" + tableName + ") failed -> This table has no column");
+            }
+        }
     }
 
     public void createTables() {
