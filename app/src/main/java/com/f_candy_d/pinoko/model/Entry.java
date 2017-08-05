@@ -60,9 +60,9 @@ public class Entry {
         for (String attr : mAttributes.keySet()) {
             value = mAttributes.get(attr);
             if (value != null) {
-                values.add("#" + attr + " :: " + value.toString());
+                values.add(attr + " :: " + value.toString());
             } else {
-                values.add("#" + attr + " :: NULL");
+                values.add(attr + " :: NULL");
             }
         }
 

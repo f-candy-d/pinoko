@@ -38,8 +38,8 @@ public class JSQLValueTypeMap {
         BOOLEAN,
         TB_TYPE,
         TB_CATEGORY,
-        NOTIF_TYPE,
-        NOTIF_CATEGORY
+        NOTIFI_TYPE,
+        NOTIFI_CATEGORY
     }
 
     private Map<String, Pair<JavaValueType, SqlValueType>> mTypeMap;
@@ -67,7 +67,7 @@ public class JSQLValueTypeMap {
     }
 
     public JSQLValueTypeMap put(final String key, final JavaValueType javaType, final SqlValueType sqlType) {
-        mTypeMap.put(key, new Pair<JavaValueType, SqlValueType>(javaType, sqlType));
+        mTypeMap.put(key, new Pair<>(javaType, sqlType));
         return this;
     }
 

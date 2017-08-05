@@ -1,12 +1,5 @@
 package com.f_candy_d.pinoko.utils;
 
-import com.f_candy_d.pinoko.model.CourseFormer;
-
-import java.sql.Time;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by daichi on 7/30/17.
  */
@@ -17,27 +10,6 @@ public class DBContract {
     public static final int MIN_AVAILABLE_ID = 1;
     public static final int VERSION = 1;
     public static final String DATABASE_NAME = "pinoko_database.db";
-
-    /**
-     * Basic Column names
-     */
-    public static final String COL_ID = "ID";
-    public static final String COL_TARGET_ID = "TargetID";
-    public static final String COL_TIME_TABLE_ID = "TimeTableID";
-    public static final String COL_NAME = "Name";
-    public static final String COL_LENGTH = "Length";
-    public static final String COL_NOTE = "Note";
-    public static final String COL_LAB = "Lab";
-    public static final String COL_MAIL = "Mail";
-    public static final String COL_PHONE_NUMBER = "PhoneNumber";
-    public static final String COL_TYPE = "Type";
-    public static final String COL_CATEGORY = "Category";
-    public static final String COL_DATETIME_BEGIN = "DatetimeBegin";
-    public static final String COL_DATETIME_END = "DateTimeEnd";
-    public static final String COL_IS_DONE = "IsDone";
-    public static final String COL_PRESENT = "Present";
-    public static final String COL_LATE = "Late";
-    public static final String COL_ABSENT = "Absent";
 
     /**
      * Mapping each column names to a value type that used in program and that used in SQLite
@@ -88,9 +60,9 @@ public class DBContract {
                 .put(NotificationEntry.ATTR_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_PK)
                 .put(NotificationEntry.ATTR_NAME, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT_NOT_NULL)
                 .put(NotificationEntry.ATTR_NOTE, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT)
-                .put(NotificationEntry.ATTR_CATEGORY, JSQLValueTypeMap.JavaValueType.NOTIF_CATEGORY, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(NotificationEntry.ATTR_CATEGORY, JSQLValueTypeMap.JavaValueType.NOTIFI_CATEGORY, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
                 .put(NotificationEntry.ATTR_TARGET_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER)
-                .put(NotificationEntry.ATTR_TYPE, JSQLValueTypeMap.JavaValueType.NOTIF_TYPE, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(NotificationEntry.ATTR_TYPE, JSQLValueTypeMap.JavaValueType.NOTIFI_TYPE, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
                 .put(NotificationEntry.ATTR_IS_DONE, JSQLValueTypeMap.JavaValueType.BOOLEAN, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
                 .put(NotificationEntry.ATTR_DATETIME_BEGIN, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
                 .put(NotificationEntry.ATTR_DATETIME_END, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
@@ -145,12 +117,12 @@ public class DBContract {
         public static final String TABLE_NAME = "course";
         public static final String PREFIX = "cour";
 
-        public static final String ATTR_ID              = PREFIX + COL_ID;
-        public static final String ATTR_NAME            = PREFIX + COL_NAME;               // Not null
-        public static final String ATTR_LOCATION_ID     = PREFIX + LocationEntry.ATTR_ID;    // Not null
-        public static final String ATTR_INSTRUCTOR_ID   = PREFIX + InstructorEntry.ATTR_ID;  // Not null
-        public static final String ATTR_LENGTH          = PREFIX + COL_LENGTH;            // Not null
-        public static final String ATTR_NOTE            = PREFIX + COL_NOTE;
+        public static final String ATTR_ID              = PREFIX + "Id";
+        public static final String ATTR_NAME            = PREFIX + "Name";
+        public static final String ATTR_LOCATION_ID     = PREFIX + LocationEntry.ATTR_ID;
+        public static final String ATTR_INSTRUCTOR_ID   = PREFIX + InstructorEntry.ATTR_ID;
+        public static final String ATTR_LENGTH          = PREFIX + "Length";
+        public static final String ATTR_NOTE            = PREFIX + "Note";
 
         public static String[] getColumnNames() {
             return new String[] {
@@ -168,9 +140,9 @@ public class DBContract {
         public static final String TABLE_NAME = "location";
         public static final String PREFIX = "loc";
 
-        public static final String ATTR_ID   = PREFIX + COL_ID;
-        public static final String ATTR_NAME = PREFIX + COL_NAME; // Not null
-        public static final String ATTR_NOTE = PREFIX + COL_NOTE;
+        public static final String ATTR_ID   = PREFIX + "Id";
+        public static final String ATTR_NAME = PREFIX + "Name";
+        public static final String ATTR_NOTE = PREFIX + "Note";
 
         public static String[] getColumnNames() {
             return new String[] {
@@ -185,12 +157,12 @@ public class DBContract {
         public static final String TABLE_NAME = "instructor";
         public static final String PREFIX = "inst";
 
-        public static final String ATTR_ID           = PREFIX + COL_ID;
-        public static final String ATTR_NAME         = PREFIX + COL_NAME;          // Not null
-        public static final String ATTR_LAB          = PREFIX + COL_LAB;
-        public static final String ATTR_MAIL         = PREFIX + COL_MAIL;
-        public static final String ATTR_PHONE_NUMBER = PREFIX + COL_PHONE_NUMBER;
-        public static final String ATTR_NOTE         = PREFIX + COL_NOTE;
+        public static final String ATTR_ID           = PREFIX + "Id";
+        public static final String ATTR_NAME         = PREFIX + "Name";
+        public static final String ATTR_LAB          = PREFIX + "Lab";
+        public static final String ATTR_MAIL         = PREFIX + "Mail";
+        public static final String ATTR_PHONE_NUMBER = PREFIX + "PhoneNumber";
+        public static final String ATTR_NOTE         = PREFIX + "Note";
 
         public static String[] getColumnNames() {
             return new String[] {
@@ -208,13 +180,13 @@ public class DBContract {
         public static final String TABLE_NAME = "timeBlock";
         public static final String PREFIX = "tb";
 
-        public static final String ATTR_ID             = PREFIX + COL_ID;
-        public static final String ATTR_TYPE           = PREFIX + COL_TYPE;           // Not null
-        public static final String ATTR_CATEGORY       = PREFIX + COL_CATEGORY;       // Not null
-        public static final String ATTR_TARGET_ID      = PREFIX + COL_TARGET_ID;
-        public static final String ATTR_DATETIME_BEGIN = PREFIX + COL_DATETIME_BEGIN; // Not null
-        public static final String ATTR_DATETIME_END   = PREFIX + COL_DATETIME_END;   // Not null
-        public static final String ATTR_TIME_TABLE_ID  = PREFIX + COL_TIME_TABLE_ID;  // Not null
+        public static final String ATTR_ID             = PREFIX + "Id";
+        public static final String ATTR_TYPE           = PREFIX + "Type";
+        public static final String ATTR_CATEGORY       = PREFIX + "Category";
+        public static final String ATTR_TARGET_ID      = PREFIX + "TargetId";
+        public static final String ATTR_DATETIME_BEGIN = PREFIX + "DatetimeBegin";
+        public static final String ATTR_DATETIME_END   = PREFIX + "DatetimeEnd";
+        public static final String ATTR_TIME_TABLE_ID  = PREFIX + "TimeTableId";
 
         public static String[] getColumnNames() {
             return new String[] {
@@ -233,12 +205,12 @@ public class DBContract {
         public static final String TABLE_NAME = "assignment";
         public static final String PREFIX = "ass";
 
-        public static final String ATTR_ID            = PREFIX + COL_ID;
-        public static final String ATTR_NAME          = PREFIX + COL_NAME;           // Not null
+        public static final String ATTR_ID            = PREFIX + "Id";
+        public static final String ATTR_NAME          = PREFIX + "Name";
         public static final String ATTR_TIME_BLOCK_ID = PREFIX + TimeBlockEntry.ATTR_ID;
-        public static final String ATTR_NOTE          = PREFIX + COL_NOTE;
-        public static final String ATTR_IS_DONE       = PREFIX + COL_IS_DONE;        // Not null
-        public static final String ATTR_DEADLINE      = PREFIX + COL_DATETIME_BEGIN;
+        public static final String ATTR_NOTE          = PREFIX + "Note";
+        public static final String ATTR_IS_DONE       = PREFIX + "IsDone";
+        public static final String ATTR_DEADLINE      = PREFIX + "Deadline";
 
         public static String[] getColumnNames() {
             return new String[] {
@@ -256,10 +228,10 @@ public class DBContract {
         public static final String TABLE_NAME = "event";
         public static final String PREFIX = "eve";
 
-        public static final String ATTR_ID          = PREFIX + COL_ID;
-        public static final String ATTR_NAME        = PREFIX + COL_NAME;     // Not null
+        public static final String ATTR_ID          = PREFIX + "Id";
+        public static final String ATTR_NAME        = PREFIX + "Name";
         public static final String ATTR_LOCATION_ID = PREFIX + LocationEntry.ATTR_ID;
-        public static final String ATTR_NOTE        = PREFIX + COL_NOTE;
+        public static final String ATTR_NOTE        = PREFIX + "Note";
 
         public static String[] getColumnNames() {
             return new String[] {
@@ -275,15 +247,15 @@ public class DBContract {
         public static final String TABLE_NAME = "notification";
         public static final String PREFIX = "notifi";
 
-        public static final String ATTR_ID             = PREFIX + COL_ID;
-        public static final String ATTR_NAME           = PREFIX + COL_NAME;           // Not null
-        public static final String ATTR_NOTE           = PREFIX + COL_NOTE;
-        public static final String ATTR_CATEGORY       = PREFIX + COL_CATEGORY;       // Not null
-        public static final String ATTR_TARGET_ID      = PREFIX + COL_TARGET_ID;
-        public static final String ATTR_TYPE           = PREFIX + COL_TYPE;           // Not null
-        public static final String ATTR_IS_DONE        = PREFIX + COL_IS_DONE;        // Not null
-        public static final String ATTR_DATETIME_BEGIN = PREFIX + COL_DATETIME_BEGIN; // Not null
-        public static final String ATTR_DATETIME_END   = PREFIX + COL_DATETIME_END;   // Not null
+        public static final String ATTR_ID             = PREFIX + "Id";
+        public static final String ATTR_NAME           = PREFIX + "Name";
+        public static final String ATTR_NOTE           = PREFIX + "Note";
+        public static final String ATTR_CATEGORY       = PREFIX + "Category";
+        public static final String ATTR_TARGET_ID      = PREFIX + "TargetId";
+        public static final String ATTR_TYPE           = PREFIX + "Type";
+        public static final String ATTR_IS_DONE        = PREFIX + "IsDone";
+        public static final String ATTR_DATETIME_BEGIN = PREFIX + "DatetimeBegin";
+        public static final String ATTR_DATETIME_END   = PREFIX + "DatetimeEnd";
 
         public static String[] getColumnNames() {
             return new String[] {
@@ -304,12 +276,12 @@ public class DBContract {
         public static final String TABLE_NAME = "attendance";
         public static final String PREFIX = "att";
 
-        public static final String ATTR_ID            = PREFIX + COL_ID;
-        public static final String ATTR_TIME_BLOCK_ID = PREFIX + TimeBlockEntry.ATTR_ID; // Not null
-        public static final String ATTR_PRESENT       = PREFIX + COL_PRESENT;   // Not null
-        public static final String ATTR_LATE          = PREFIX + COL_LATE;      // Not null
-        public static final String ATTR_ABSENT        = PREFIX + COL_ABSENT;    // Not null
-        public static final String ATTR_NOTE          = PREFIX + COL_NOTE;
+        public static final String ATTR_ID            = PREFIX + "Id";
+        public static final String ATTR_TIME_BLOCK_ID = PREFIX + "TimeBlockId";
+        public static final String ATTR_PRESENT       = PREFIX + "Present";
+        public static final String ATTR_LATE          = PREFIX + "Late";
+        public static final String ATTR_ABSENT        = PREFIX + "Absent";
+        public static final String ATTR_NOTE          = PREFIX + "Note";
 
         public static String[] getColumnNames() {
             return new String[] {

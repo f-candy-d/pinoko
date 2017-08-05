@@ -120,8 +120,8 @@ public class DBDataManager {
 
         final ArrayList<Entry> results = new ArrayList<>();
         // Select all rows in the database
-        final SQLQuery query = new SQLQuery(null, new String[]{tableName}, null);
-        final Cursor cursor = mDatabase.rawQuery(query.toString(), null);
+        final String query = SQLGrammar.sqlSelect(null, new String[]{tableName}, null);
+        final Cursor cursor = mDatabase.rawQuery(query, null);
         boolean isEOF = cursor.moveToFirst();
         Entry entry;
 
@@ -137,17 +137,23 @@ public class DBDataManager {
         return results;
     }
 
-    public ArrayList<Entry> select(@NonNull final SQLQuery query, @NonNull final String entryAffiliation) {
+    public ArrayList<Entry> select(String[] requests,
+                                   @NonNull final String[] tables,
+                                   @NonNull final SQLWhere where,
+                                   @NonNull final String entryAffiliation) {
         if (!isOpen()) {
             throw new IllegalStateException("DB is not open");
         }
 
         ArrayList<Entry> results = new ArrayList<>();
-        Cursor cursor = mDatabase.rawQuery(query.toString(), null);
+        Cursor cursor = mDatabase.rawQuery(SQLGrammar.sqlSelect(requests, tables, where), null);
         boolean isEOF = cursor.moveToFirst();
-        String[] requests = cursor.getColumnNames();
         Entry entry;
         JSQLValueTypeMap.JavaValueType type;
+
+        if (requests == null) {
+            requests = cursor.getColumnNames();
+        }
 
         while (isEOF) {
             entry = new Entry(entryAffiliation);
@@ -185,12 +191,12 @@ public class DBDataManager {
                         entry.set(request, TimeBlockFormer.Category.from(categoryId));
                     }
 
-                    case NOTIF_TYPE: {
+                    case NOTIFI_TYPE: {
                         final int typeId = cursor.getInt(cursor.getColumnIndexOrThrow(request));
                         entry.set(request, NotificationFormer.Type.from(typeId));
                     }
 
-                    case NOTIF_CATEGORY: {
+                    case NOTIFI_CATEGORY: {
                         final int categoryId = cursor.getInt(cursor.getColumnIndexOrThrow(request));
                         entry.set(request, NotificationFormer.Category.from(categoryId));
                     }

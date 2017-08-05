@@ -23,7 +23,7 @@ import com.f_candy_d.pinoko.model.NotificationFormer;
 import com.f_candy_d.pinoko.model.TimeBlockFormer;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.DBDataManager;
-import com.f_candy_d.pinoko.utils.SQLQuery;
+import com.f_candy_d.pinoko.utils.SQLWhere;
 import com.f_candy_d.pinoko.utils.Savable;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
         saveTest();
         loadTest();
 //        exprTest();
-//        queryTest();
+//        sqlWhereTest();
         selectTest();
     }
 
@@ -222,9 +222,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void exprTest() {
-        SQLQuery.CondExpr condExprL = new SQLQuery.CondExpr();
-        SQLQuery.CondExpr condExprR = new SQLQuery.CondExpr();
-        SQLQuery.LogicExpr logicExpr = new SQLQuery.LogicExpr();
+        SQLWhere.CondExpr condExprL = new SQLWhere.CondExpr();
+        SQLWhere.CondExpr condExprR = new SQLWhere.CondExpr();
+        SQLWhere.LogicExpr logicExpr = new SQLWhere.LogicExpr();
 
 
         condExprL.l("id_g").graterThanOrEqualTo().r(10);
@@ -241,9 +241,9 @@ public class MainActivity extends AppCompatActivity
         logicExpr.right = null;
         Log.d("mylog", "L ONLY        ::::::::: " + logicExpr.toString());
 
-        SQLQuery.CondExpr condExprL2 = new SQLQuery.CondExpr();
-        SQLQuery.CondExpr condExprR2 = new SQLQuery.CondExpr();
-        SQLQuery.LogicExpr logicExpr2 = new SQLQuery.LogicExpr();
+        SQLWhere.CondExpr condExprL2 = new SQLWhere.CondExpr();
+        SQLWhere.CondExpr condExprR2 = new SQLWhere.CondExpr();
+        SQLWhere.LogicExpr logicExpr2 = new SQLWhere.LogicExpr();
 
         condExprL2.l("id_p").notEqualTo().r("id_q");
         condExprR2.l("sabori").lessThan().r(19);
@@ -254,12 +254,12 @@ public class MainActivity extends AppCompatActivity
         logicExpr.l(condExprL).and().r(logicExpr2);
         Log.d("mylog", "L && (L2 || R2)        ::::::::: " + logicExpr.toString());
 
-        SQLQuery.SpecExpr between = new SQLQuery.SpecExpr();
-        SQLQuery.SpecExpr notbetween = new SQLQuery.SpecExpr();
-        SQLQuery.SpecExpr like = new SQLQuery.SpecExpr();
-        SQLQuery.SpecExpr in = new SQLQuery.SpecExpr();
-        SQLQuery.SpecExpr isnull = new SQLQuery.SpecExpr();
-        SQLQuery.SpecExpr isnotnull = new SQLQuery.SpecExpr();
+        SQLWhere.SpecExpr between = new SQLWhere.SpecExpr();
+        SQLWhere.SpecExpr notbetween = new SQLWhere.SpecExpr();
+        SQLWhere.SpecExpr like = new SQLWhere.SpecExpr();
+        SQLWhere.SpecExpr in = new SQLWhere.SpecExpr();
+        SQLWhere.SpecExpr isnull = new SQLWhere.SpecExpr();
+        SQLWhere.SpecExpr isnotnull = new SQLWhere.SpecExpr();
 
         between.between("_id", 10, 20);
         notbetween.notBetween("_id", 100, 200);
@@ -280,45 +280,41 @@ public class MainActivity extends AppCompatActivity
         Log.d("mylog", "logicExpr2.l(logicExpr, true).and().r(between, true)  :::::::" + logicExpr2.toString());
     }
 
-    private void queryTest() {
-        SQLQuery.CondExpr condExprL = new SQLQuery.CondExpr();
-        SQLQuery.CondExpr condExprR = new SQLQuery.CondExpr();
-        SQLQuery.LogicExpr logicExpr = new SQLQuery.LogicExpr();
+    private void sqlWhereTest() {
+        SQLWhere.CondExpr condExprL = new SQLWhere.CondExpr();
+        SQLWhere.CondExpr condExprR = new SQLWhere.CondExpr();
+        SQLWhere.LogicExpr logicExpr = new SQLWhere.LogicExpr();
         condExprL.l("id_g").graterThanOrEqualTo().r(10);
         condExprR.l("name").equalTo().r("smith");
         logicExpr.l(condExprL).and().r(condExprR);
 
-//        SQLQuery query = new SQLQuery(new String[]{
+//        SQLWhere sqlWhere = new SQLWhere(new String[]{
 //                DBContract.COL_ID, DBContract.COL_CATEGORY, DBContract.COL_DATETIME_END},
 //                new String[]{
 //                        DBContract.CourseEntry.TABLE_NAME, DBContract.AssignmentEntry.TABLE_NAME},
 //                logicExpr);
 
-        SQLQuery query = new SQLQuery(null,
-                new String[]{
-                        DBContract.CourseEntry.TABLE_NAME, DBContract.AssignmentEntry.TABLE_NAME},
-                condExprL);
+        SQLWhere sqlWhere = new SQLWhere(condExprL);
 
 
-        Log.d("mylog", "QUERY =======> " + query.toString());
+        Log.d("mylog", "WHERE =======> " + sqlWhere.toString());
     }
 
     private void selectTest() {
         DBDataManager dataManager = new DBDataManager(this, DBDataManager.Mode.WRITE_APPEND);
-        SQLQuery.CondExpr locIdCond = new SQLQuery.CondExpr().l(DBContract.CourseEntry.ATTR_LOCATION_ID).equalTo().r(DBContract.LocationEntry.ATTR_ID);
-        SQLQuery.CondExpr instIdCond = new SQLQuery.CondExpr().l(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID).equalTo().r(DBContract.InstructorEntry.ATTR_ID);
-        SQLQuery.CondExpr notifiIDCond = new SQLQuery.CondExpr().l(DBContract.CourseEntry.ATTR_ID).equalTo().r(DBContract.NotificationEntry.ATTR_TARGET_ID);
-        SQLQuery.LogicExpr innerWhere = new SQLQuery.LogicExpr().l(locIdCond).and().r(instIdCond);
-        SQLQuery.LogicExpr where = new SQLQuery.LogicExpr().l(innerWhere).and().r(notifiIDCond);
-        SQLQuery query = new SQLQuery(null, new String[] {
+        SQLWhere.CondExpr locIdCond = new SQLWhere.CondExpr().l(DBContract.CourseEntry.ATTR_LOCATION_ID).equalTo().r(DBContract.LocationEntry.ATTR_ID);
+        SQLWhere.CondExpr instIdCond = new SQLWhere.CondExpr().l(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID).equalTo().r(DBContract.InstructorEntry.ATTR_ID);
+        SQLWhere.CondExpr notifiIDCond = new SQLWhere.CondExpr().l(DBContract.CourseEntry.ATTR_ID).equalTo().r(DBContract.NotificationEntry.ATTR_TARGET_ID);
+        SQLWhere.LogicExpr innerLogicExpr = new SQLWhere.LogicExpr().l(locIdCond).and().r(instIdCond);
+        SQLWhere.LogicExpr logicExpr = new SQLWhere.LogicExpr().l(innerLogicExpr).and().r(notifiIDCond);
+        SQLWhere where = new SQLWhere(logicExpr);
+        ArrayList<Entry> results = dataManager.select(null, new String[] {
                 DBContract.CourseEntry.TABLE_NAME,
                 DBContract.LocationEntry.TABLE_NAME,
                 DBContract.InstructorEntry.TABLE_NAME,
-                DBContract.NotificationEntry.TABLE_NAME},
-                where);
-        ArrayList<Entry> results = dataManager.select(query, "testEntry");
+                DBContract.NotificationEntry.TABLE_NAME}, where, "testEntry");
 
-        Log.d("mylog", "Query ==> " + query.toString());
+        Log.d("mylog", "Query ==> " + where.toString());
 
         for (Entry entry : results) {
             Log.d("mylog", "--------------------------------------------------------");

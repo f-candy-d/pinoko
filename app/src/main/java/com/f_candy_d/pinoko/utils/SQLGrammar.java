@@ -1,6 +1,7 @@
 package com.f_candy_d.pinoko.utils;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 /**
  * Created by daichi on 17/08/05.
@@ -42,10 +43,41 @@ public class SQLGrammar {
             }
         }
 
-        return createTable.concat(");");
+        return createTable + ");";
     }
 
-//    public static String sqlFrom() {}
+    public static String sqlFrom(final String[] tables) {
+        if (tables != null && tables.length != 0) {
+            return "FROM " + TextUtils.join(" JOIN ", tables);
+        } else {
+            // Return an empty string
+            return "";
+        }
+    }
 
-//    public static String sqlWhere() {}
+    public static String sqlWhere(final SQLWhere sqlWhere) {
+        if (sqlWhere != null) {
+            final String where = sqlWhere.toString();
+            if (where != null) {
+                return "WHERE " + where;
+            }
+        }
+        // Return an empty string
+        return "";
+    }
+
+    public static String sqlSelect(final String[] requests,
+                                   @NonNull final String[] tables,
+                                   final SQLWhere where) {
+
+        String select;
+        if (requests != null && requests.length != 0) {
+            select = "SELECT " + TextUtils.join(",", requests);
+        } else {
+            // Select all columns of tables in mFrom
+            select = "SELECT *";
+        }
+
+        return select + " " + sqlFrom(tables) + " " + sqlWhere(where) + ";";
+    }
 }

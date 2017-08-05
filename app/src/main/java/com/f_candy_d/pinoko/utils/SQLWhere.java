@@ -3,13 +3,12 @@ package com.f_candy_d.pinoko.utils;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by daichi on 17/08/03.
  */
 
-public class SQLQuery {
+public class SQLWhere {
 
     /**
      * The super class of expression classes
@@ -357,75 +356,26 @@ public class SQLQuery {
         }
     }
 
-    private ArrayList<String> mRequests;
-    private ArrayList<String> mFrom;
-    private Expr mWhere = null;
+    private Expr mExpression;
 
-    public SQLQuery() {
-        this(null, null, null);
+    public SQLWhere() {
+        this(null);
     }
 
-    public SQLQuery(final String[] requests, final String[] from, final Expr where) {
-        if (requests != null) {
-            mRequests = new ArrayList<>(Arrays.asList(requests));
-        } else {
-            mRequests = new ArrayList<>();
-        }
-
-        if (from != null) {
-            mFrom = new ArrayList<>(Arrays.asList(from));
-        } else {
-            mFrom = new ArrayList<>();
-        }
-
-        mWhere = where;
+    public SQLWhere(final Expr expression) {
+        mExpression = expression;
     }
 
-    public void setRequests(ArrayList<String> requests) {
-        mRequests = requests;
-    }
-
-    public ArrayList<String> getRequests() {
-        return mRequests;
-    }
-
-    public void addRequest(final String request) {
-        mRequests.add(request);
-    }
-
-    public void setFrom(ArrayList<String> from) {
-        mFrom = from;
-    }
-
-    public void addFrom(final String from) {
-        mFrom.add(from);
-    }
-
-    public void setWhere(Expr where) {
-        mWhere = where;
+    public void setExpression(Expr expression) {
+        mExpression = expression;
     }
 
     @Override
     public String toString() {
-        String select;
-        if (mRequests != null && mRequests.size() != 0) {
-            select = "SELECT " + TextUtils.join(",", mRequests);
+        if (mExpression != null) {
+            return mExpression.toString();
         } else {
-            // Select all columns of tables in mFrom
-            select = "SELECT *";
-        }
-
-        String from;
-        if (mFrom != null && mFrom.size() != 0) {
-            from = "FROM " + TextUtils.join(" JOIN ", mFrom);
-        } else {
-            throw new IllegalStateException("Give table names");
-        }
-
-        if (mWhere != null) {
-            return select + " " + from + " WHERE " + mWhere.toString() + ";";
-        } else {
-            return select + " " + from + ";";
+            return null;
         }
     }
 }
