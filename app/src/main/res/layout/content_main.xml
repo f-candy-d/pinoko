@@ -18,9 +18,14 @@
         <!--app:layout_constraintRight_toRightOf="parent"-->
         <!--app:layout_constraintTop_toTopOf="parent"/>-->
 
-    <include
-        layout="@layout/fragment_container"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+    <!--<include-->
+        <!--layout="@layout/fragment_container"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_width="344dp"/>-->
+    <com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager
+        android:id="@+id/view_pager_cm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 
 </android.support.constraint.ConstraintLayout>

@@ -1,6 +1,13 @@
 package com.f_candy_d.pinoko.controller;
 
+import android.animation.Animator;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,7 +17,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.OvershootInterpolator;
 
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.AssignmentFormer;
 import com.f_candy_d.pinoko.model.AttendanceFormer;
@@ -21,31 +35,61 @@ import com.f_candy_d.pinoko.model.InstructorFormer;
 import com.f_candy_d.pinoko.model.LocationFormer;
 import com.f_candy_d.pinoko.model.NotificationFormer;
 import com.f_candy_d.pinoko.model.TimeBlockFormer;
+import com.f_candy_d.pinoko.utils.AHBottomNavigationObserver;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.DBDataManager;
 import com.f_candy_d.pinoko.utils.EntryHelper;
 import com.f_candy_d.pinoko.utils.SQLQuery;
 import com.f_candy_d.pinoko.utils.SQLWhere;
 import com.f_candy_d.pinoko.utils.Savable;
+import com.f_candy_d.pinoko.view.CardListFragment;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        CardListFragment.OnFragmentInteractionListener,
+        AHBottomNavigationObserver.NotificationListener {
+
+    /**
+     * Fragment types.
+     * These values are used as position of AHBottomNavigation.
+     */
+    private static final int FRAGMENT_ONE_DAY_SCHEDULE = 0;
+    private static final int FRAGMENT_WEEKLY_SCHEDULE = 1;
+    private static final int FRAGMENT_ASSIGNMENTS = 2;
+    private static final int FRAGMENT_NOTIFICATIONS = 3;
+
+    private static final int VIEWPAGER_OFFSCREEN_LIMIT = 3;
+    private static final long FAB_ANIMATION_DURATION = 300;
+
+    // UI
+    private AHBottomNavigation mBottomNavigation;
+    private FloatingActionButton mFab;
+
+    // Misc
+    private AHBottomNavigationViewPager mViewPager;
+    private AHBottomNavigationVIewPagerAdapter mPagerAdapter;
+    private CardListFragment mCurrentFragment;
+    private AHBottomNavigationObserver mBottomNavigationObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        init();
         initUI();
         // TODO; Test code for DB
-        saveTest();
-        loadTest();
+//        saveTest();
+//        loadTest();
 //        exprTest();
 //        sqlWhereTest();
-        selectTest();
-        updateTest();
+//        selectTest();
+//        updateTest();
+
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.fragment_container, new CardListFragment(), null).commit();
     }
 
     @Override
@@ -105,22 +149,56 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void init() {
+        // ViewPager
+        ArrayList<CardListFragment> fragments = new ArrayList<>(4);
+
+        // Add fragments to the ViewPager
+        CardListFragment oneDayTTF = CardListFragment.newInstance(FRAGMENT_ONE_DAY_SCHEDULE);
+        fragments.add(FRAGMENT_ONE_DAY_SCHEDULE, oneDayTTF);
+
+        CardListFragment weeklyTTF = CardListFragment.newInstance(FRAGMENT_WEEKLY_SCHEDULE);
+        fragments.add(FRAGMENT_WEEKLY_SCHEDULE, weeklyTTF);
+
+        CardListFragment assignmentF = CardListFragment.newInstance(FRAGMENT_ASSIGNMENTS);
+        fragments.add(FRAGMENT_ASSIGNMENTS, assignmentF);
+
+        CardListFragment notificationF = CardListFragment.newInstance(FRAGMENT_NOTIFICATIONS);
+        fragments.add(FRAGMENT_NOTIFICATIONS, notificationF);
+
+        mViewPager = (AHBottomNavigationViewPager) findViewById(R.id.view_pager_cm);
+        mViewPager.setOffscreenPageLimit(VIEWPAGER_OFFSCREEN_LIMIT);
+        mPagerAdapter = new AHBottomNavigationVIewPagerAdapter(getSupportFragmentManager(), fragments);
+        mViewPager.setAdapter(mPagerAdapter);
+
+        // Default fragment
+        mViewPager.setCurrentItem(FRAGMENT_ONE_DAY_SCHEDULE, false);
+        mCurrentFragment = mPagerAdapter.getCurrentFragment();
+    }
+
     private void initUI() {
-        // Toolbar
+        /**
+         * Tool Bar
+         */
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Fab
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        /**
+         * Floating Action Button
+         */
+        mFab = (FloatingActionButton) findViewById(R.id.fab_abm);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+        mFab.setVisibility(View.INVISIBLE);
 
-        // NavigationDrawer
+        /**
+         * Navigation Drawer
+         */
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -129,6 +207,53 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        /**
+         * AH Bottom Navigation
+         */
+        mBottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation_abm);
+
+        // Create items
+        AHBottomNavigationItem item0 = new AHBottomNavigationItem(
+                "Today", R.drawable.ic_view_week, R.color.colorPrimary);
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem(
+                "Week", R.drawable.ic_view_week, R.color.colorPrimary);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(
+                "Assignments", R.drawable.ic_settings, R.color.colorAccent);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem(
+                "Notifications", R.drawable.ic_menu_gallery, R.color.colorAccent);
+
+        // Add items
+        mBottomNavigation.addItem(item0);
+        mBottomNavigation.addItem(item1);
+        mBottomNavigation.addItem(item2);
+        mBottomNavigation.addItem(item3);
+
+        // Enable the translation of the FloatingActionButton
+        mBottomNavigation.manageFloatingActionButtonBehavior(mFab);
+
+        // Change colors
+        mBottomNavigation.setAccentColor(getResources().getColor(R.color.colorPrimary));
+        mBottomNavigation.setInactiveColor(getResources().getColor(R.color.colorBottomNavigationInactive));
+
+        // Show item title always
+        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
+
+        // Set current item programmatically
+        mBottomNavigation.setCurrentItem(FRAGMENT_ONE_DAY_SCHEDULE, false);
+
+        // Notification
+        AHNotification notification = new AHNotification.Builder()
+                .setText("1")
+                .setBackgroundColor(ContextCompat.getColor(this, R.color.cardview_light_background))
+                .setTextColor(ContextCompat.getColor(this, R.color.cardview_dark_background))
+                .build();
+        mBottomNavigation.setNotification(notification, 3);
+
+        // Setup observer
+        int flags = AHBottomNavigationObserver.STATE | AHBottomNavigationObserver.TAB_SELECTION;
+        mBottomNavigationObserver = new AHBottomNavigationObserver(flags, mBottomNavigation);
+        mBottomNavigationObserver.setNotificationListener(this);
     }
 
     private void saveTest() {
@@ -344,4 +469,154 @@ public class MainActivity extends AppCompatActivity
 
         dataManager.close();
     }
+
+    @Override
+    public boolean onTabSelected(int position, boolean wasSelected) {
+        // Hide or show FAB
+        if (!wasSelected) {
+            if (position == FRAGMENT_ASSIGNMENTS || position == FRAGMENT_NOTIFICATIONS) {
+                // If FAB's visibility is VISIBLE, the previous position is 2 or 3.
+                // So the first thing we do is to hide FAB with animation,
+                // and then show it again.
+                // If FAB's visibility is GONE, the previous position is 0 or 1.
+                // In this case, simply show FAB with animation.
+                if (mFab.getVisibility() == View.VISIBLE) {
+                    hideFAB(true);
+                } else if (mFab.getVisibility() == View.INVISIBLE) {
+                    showFAB(false);
+                }
+                mFab.setTag(position);
+
+            } else {
+                hideFAB(false);
+            }
+        }
+
+        return onSwitchFragments(position, wasSelected);
+    }
+
+    @Override
+    public void onPositionChange(int y) {
+        // Nothing to do...
+    }
+
+    @Override
+    public void onNavigationStateChanged(AHBottomNavigationObserver.State state) {
+        if (mCurrentFragment == null) {
+            mCurrentFragment = mPagerAdapter.getCurrentFragment();
+        }
+
+        int id = mCurrentFragment.getFragmentId();
+        if (id == FRAGMENT_ASSIGNMENTS || id == FRAGMENT_NOTIFICATIONS) {
+            if (state == AHBottomNavigationObserver.State.SHOWN
+                    && mFab.getVisibility() == View.INVISIBLE) {
+                // Show FAB after BottomNavigation appeared
+                showFAB(false);
+
+            } else if (state == AHBottomNavigationObserver.State.HIDDEN
+                    && mFab.getVisibility() == View.VISIBLE) {
+                // Hide FAB after BottomNavigation disappeared
+                hideFAB(false);
+            }
+        }
+    }
+
+    @Override
+    public CardAdapter getAdapter(int fragmentId) {
+        return new WeeklyScheduleCardAdapter();
+    }
+
+    @Override
+    public RecyclerView.LayoutManager getLayoutManager(int fragmentId) {
+        return new LinearLayoutManager(this);
+    }
+
+    private boolean onSwitchFragments(final int position, final boolean wasSelected) {
+        // Avoid null pointer error
+        if (mCurrentFragment == null) {
+            mCurrentFragment = mPagerAdapter.getCurrentFragment();
+        }
+
+        if (wasSelected) {
+            mCurrentFragment.refresh();
+        } else {
+            switchFragments(position);
+        }
+
+        return true;
+    }
+
+    private void switchFragments(final int fragmentID) {
+        mViewPager.setCurrentItem(fragmentID, false);
+        mCurrentFragment = mPagerAdapter.getCurrentFragment();
+    }
+
+    private void showFAB(final boolean hideAfterAnim) {
+        // Show FAB with animation
+        mFab.setVisibility(View.VISIBLE);
+        mFab.setAlpha(0f);
+        mFab.setScaleX(0f);
+        mFab.setScaleY(0f);
+        mFab.animate().alpha(1).scaleX(1).scaleY(1).setDuration(FAB_ANIMATION_DURATION)
+                .setInterpolator(new OvershootInterpolator())
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        if (hideAfterAnim) {
+                            // Hide FAB again!
+                            hideFAB(false);
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).start();
+    }
+
+    private void hideFAB(final boolean showAfterAnim) {
+        // Hide FAB with animation
+        mFab.animate().alpha(0).scaleX(0).scaleY(0).setDuration(FAB_ANIMATION_DURATION)
+                .setInterpolator(new LinearOutSlowInInterpolator())
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mFab.setVisibility(View.INVISIBLE);
+                        if (showAfterAnim) {
+                            // Show FAB again!
+                            showFAB(false);
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        mFab.setVisibility(View.INVISIBLE);
+                        if (showAfterAnim) {
+                            showFAB(false);
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).start();
+    }
+
 }
