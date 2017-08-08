@@ -1,9 +1,9 @@
-package com.f_candy_d.pinoko.model;
+package com.f_candy_d.pinoko.utils;
 
 import android.content.ContentValues;
 
-import com.f_candy_d.pinoko.utils.DBContract;
-import com.f_candy_d.pinoko.utils.EntryHelper;
+import com.f_candy_d.pinoko.DayOfWeek;
+import com.f_candy_d.pinoko.model.Entry;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -84,7 +84,8 @@ public class TimeBlockFormer extends EntryFormer {
         return (getType() != Type.NULL_TYPE &&
                 getCategory() != Category.NULL_CATEGORY &&
                 0 < getDatetimeBegin() &&
-                getDatetimeBegin() <= getDatetimeEnd());
+                getDatetimeBegin() <= getDatetimeEnd() &&
+                getDayOfWeek() != DayOfWeek.NULL_VALUE);
     }
 
     @Override
@@ -99,6 +100,7 @@ public class TimeBlockFormer extends EntryFormer {
         contentValues.put(DBContract.TimeBlockEntry.ATTR_DATETIME_BEGIN, getDatetimeBegin());
         contentValues.put(DBContract.TimeBlockEntry.ATTR_DATETIME_END, getDatetimeEnd());
         contentValues.put(DBContract.TimeBlockEntry.ATTR_TIME_TABLE_ID, getTimeTableID());
+        contentValues.put(DBContract.TimeBlockEntry.ATTR_DAY_OF_WEEK, getDayOfWeek().toInt());
 
         return contentValues;
     }
@@ -135,6 +137,9 @@ public class TimeBlockFormer extends EntryFormer {
         }
         if (!has(DBContract.TimeBlockEntry.ATTR_TIME_TABLE_ID)) {
             setTimeTableID(DBContract.NULL_ID);
+        }
+        if (!has(DBContract.TimeBlockEntry.ATTR_DAY_OF_WEEK)) {
+            setDayOfWeek(DayOfWeek.NULL_VALUE);
         }
     }
 
@@ -183,6 +188,11 @@ public class TimeBlockFormer extends EntryFormer {
         return this;
     }
 
+    public TimeBlockFormer setDayOfWeek(final DayOfWeek dayOfWeek) {
+        EntryHelper.setTimeBlockDayOfWeek(getEntry(), dayOfWeek);
+        return this;
+    }
+
     public long getID() {
         return EntryHelper.getTimeBlockId(getEntry(), DBContract.NULL_ID);
     }
@@ -209,5 +219,9 @@ public class TimeBlockFormer extends EntryFormer {
 
     public long getTimeTableID() {
         return EntryHelper.getTimeBlockTimeTableId(getEntry());
+    }
+
+    public DayOfWeek getDayOfWeek() {
+        return EntryHelper.getTimeBlockDayOfWeek(getEntry());
     }
 }

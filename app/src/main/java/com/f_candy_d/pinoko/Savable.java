@@ -1,4 +1,4 @@
-package com.f_candy_d.pinoko.utils;
+package com.f_candy_d.pinoko;
 
 import android.content.ContentValues;
 

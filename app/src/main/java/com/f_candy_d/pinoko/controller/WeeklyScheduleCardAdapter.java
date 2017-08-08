@@ -1,5 +1,7 @@
 package com.f_candy_d.pinoko.controller;
 
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,5 +38,10 @@ public class WeeklyScheduleCardAdapter extends CardAdapter {
     @Override
     public void onBindViewHolder(MyCH.BaseCardHolder holder, int position) {
 
+    }
+
+    @Override
+    public RecyclerView.LayoutManager getParentLayoutManager() {
+        return new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
     }
 }

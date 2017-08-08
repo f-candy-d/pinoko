@@ -40,7 +40,8 @@ public class JSQLValueTypeMap {
         TB_TYPE,
         TB_CATEGORY,
         NOTIFI_TYPE,
-        NOTIFI_CATEGORY
+        NOTIFI_CATEGORY,
+        DAY_OF_WEEK
     }
 
     private Map<String, Pair<JavaValueType, SqlValueType>> mTypeMap;

@@ -3,6 +3,8 @@ package com.f_candy_d.pinoko.utils;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Created by daichi on 17/08/05.
@@ -98,11 +100,24 @@ public class SQLQuery {
         }
     }
 
+    public void setColumns(final String[] columns) {
+        if (columns != null) {
+            mColumns = new ArrayList<>(Arrays.asList(columns));
+        }
+    }
+
     public void setSelection(SQLWhere selection) {
         mSelection = selection;
     }
 
     public void setSelection(SQLWhere.Expr selection) {
         mSelection = new SQLWhere(selection);
+    }
+
+    public void clear() {
+        mDistinct = false;
+        mTables.clear();
+        mColumns.clear();
+        mSelection = null;
     }
 }

@@ -283,7 +283,7 @@ public class SQLWhere {
             this.args = new ArrayList<>(2);
         }
 
-        public void between(final String operand, final int min, final int max) {
+        public void between(final String operand, final long min, final long max) {
             this.operator = SpecOp.BETWEEN;
             this.operand = operand;
             this.args.clear();
@@ -291,7 +291,7 @@ public class SQLWhere {
             this.args.add(String.valueOf(max));
         }
 
-        public void notBetween(final String operand, final int min, final int max) {
+        public void notBetween(final String operand, final long min, final long max) {
             this.operator = SpecOp.NOT_BETWEEN;
             this.operand = operand;
             this.args.clear();

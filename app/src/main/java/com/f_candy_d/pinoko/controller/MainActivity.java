@@ -6,8 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,30 +19,32 @@ import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
+import com.f_candy_d.pinoko.DayOfWeek;
 import com.f_candy_d.pinoko.R;
-import com.f_candy_d.pinoko.model.AssignmentFormer;
-import com.f_candy_d.pinoko.model.AttendanceFormer;
-import com.f_candy_d.pinoko.model.CourseFormer;
+import com.f_candy_d.pinoko.model.OneDayTimeTable;
+import com.f_candy_d.pinoko.utils.AssignmentFormer;
+import com.f_candy_d.pinoko.utils.AttendanceFormer;
+import com.f_candy_d.pinoko.utils.CourseFormer;
 import com.f_candy_d.pinoko.model.Entry;
-import com.f_candy_d.pinoko.model.EventFormer;
-import com.f_candy_d.pinoko.model.InstructorFormer;
-import com.f_candy_d.pinoko.model.LocationFormer;
-import com.f_candy_d.pinoko.model.NotificationFormer;
-import com.f_candy_d.pinoko.model.TimeBlockFormer;
+import com.f_candy_d.pinoko.utils.EventFormer;
+import com.f_candy_d.pinoko.utils.InstructorFormer;
+import com.f_candy_d.pinoko.utils.LocationFormer;
+import com.f_candy_d.pinoko.utils.NotificationFormer;
+import com.f_candy_d.pinoko.utils.TimeBlockFormer;
 import com.f_candy_d.pinoko.utils.AHBottomNavigationObserver;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.DBDataManager;
 import com.f_candy_d.pinoko.utils.EntryHelper;
 import com.f_candy_d.pinoko.utils.SQLQuery;
 import com.f_candy_d.pinoko.utils.SQLWhere;
-import com.f_candy_d.pinoko.utils.Savable;
+import com.f_candy_d.pinoko.Savable;
 import com.f_candy_d.pinoko.view.CardListFragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -78,18 +78,16 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        init();
-        initUI();
         // TODO; Test code for DB
-//        saveTest();
-//        loadTest();
+        saveTest();
+        loadTest();
 //        exprTest();
 //        sqlWhereTest();
 //        selectTest();
 //        updateTest();
 
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.fragment_container, new CardListFragment(), null).commit();
+        init();
+        initUI();
     }
 
     @Override
@@ -174,6 +172,9 @@ public class MainActivity extends AppCompatActivity
         // Default fragment
         mViewPager.setCurrentItem(FRAGMENT_ONE_DAY_SCHEDULE, false);
         mCurrentFragment = mPagerAdapter.getCurrentFragment();
+
+        // TODO; test code
+        OneDayTimeTable oneDayTimeTable = new OneDayTimeTable(4, DayOfWeek.WEDNESDAY, this);
     }
 
     private void initUI() {
@@ -276,14 +277,32 @@ public class MainActivity extends AppCompatActivity
                 .setPhoneNumber("phoneNumber")
                 .setNote("instructor note");
 
+        Calendar today = Calendar.getInstance();
+        long b1 = today.getTimeInMillis();
+        today.add(Calendar.HOUR_OF_DAY, 2);
+        long e1 = today.getTimeInMillis();
+        today.add(Calendar.HOUR_OF_DAY, 3);
+        long b2 = today.getTimeInMillis();
+        today.add(Calendar.HOUR_OF_DAY, 2);
+        long e2 = today.getTimeInMillis();
+
         TimeBlockFormer timeBlock = TimeBlockFormer.createWithEntry();
         timeBlock.setType(TimeBlockFormer.Type.EVERYDAY)
                 .setCategory(TimeBlockFormer.Category.COURSE)
                 .setTargetID(1)
-                .setDatetimeBegin(2000)
-                .setDatetimeEnd(3000)
-                .setTimeTableID(4);
+                .setDatetimeBegin(b1)
+                .setDatetimeEnd(e1)
+                .setTimeTableID(4)
+                .setDayOfWeek(DayOfWeek.WEDNESDAY);
 
+        TimeBlockFormer timeBlock2 = TimeBlockFormer.createWithEntry();
+        timeBlock2.setType(TimeBlockFormer.Type.ONE_DAY)
+                .setCategory(TimeBlockFormer.Category.EVENT)
+                .setTargetID(1)
+                .setDatetimeBegin(b2)
+                .setDatetimeEnd(e2)
+                .setTimeTableID(4)
+                .setDayOfWeek(DayOfWeek.WEDNESDAY);
 
         AssignmentFormer assignment = AssignmentFormer.createWithEntry();
         assignment.setName("assignment")
@@ -319,10 +338,16 @@ public class MainActivity extends AppCompatActivity
         entries.add(location);
         entries.add(instructor);
         entries.add(timeBlock);
+        entries.add(timeBlock2);
         entries.add(assignment);
         entries.add(event);
         entries.add(notification);
         entries.add(attendance);
+
+        Log.d("mylog", "BEFORE SAVE ############################");
+        Log.d("mylog", timeBlock.getEntry().toString());
+        Log.d("mylog", "BEFORE SAVE ############################");
+        Log.d("mylog", timeBlock2.getEntry().toString());
 
         DBDataManager dbDataManager = new DBDataManager(this, DBDataManager.Mode.WRITE_TRUNCATE);
         long[] longs = dbDataManager.insert(entries);
@@ -524,11 +549,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public CardAdapter getAdapter(int fragmentId) {
         return new WeeklyScheduleCardAdapter();
-    }
-
-    @Override
-    public RecyclerView.LayoutManager getLayoutManager(int fragmentId) {
-        return new LinearLayoutManager(this);
     }
 
     private boolean onSwitchFragments(final int position, final boolean wasSelected) {

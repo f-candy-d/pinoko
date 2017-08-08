@@ -30,13 +30,13 @@ public class CardListFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         CardAdapter getAdapter(final int fragmentId);
-        RecyclerView.LayoutManager getLayoutManager(final int fragmentId);
     }
 
     private static final String ARG_FRAGMENT_ID = "fragmentId";
 
     private OnFragmentInteractionListener mListener;
     private int mFragmentId;
+    private RecyclerView mRecyclerView;
 
     public static CardListFragment newInstance(final int fragmentId) {
         CardListFragment fragment = new CardListFragment();
@@ -80,9 +80,10 @@ public class CardListFragment extends Fragment {
     }
 
     private void initUI(@NonNull final View view) {
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.card_list_fcl);
-        recyclerView.setLayoutManager(mListener.getLayoutManager(mFragmentId));
-        recyclerView.setAdapter(mListener.getAdapter(mFragmentId));
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.card_list_fcl);
+        CardAdapter adapter = mListener.getAdapter(mFragmentId);
+        mRecyclerView.setLayoutManager(adapter.getParentLayoutManager());
+        mRecyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -92,7 +93,7 @@ public class CardListFragment extends Fragment {
     }
 
     public void refresh() {
-
+        mRecyclerView.smoothScrollToPosition(0);
     }
 
     public int getFragmentId() {

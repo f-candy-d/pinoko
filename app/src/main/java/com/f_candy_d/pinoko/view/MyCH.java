@@ -42,6 +42,18 @@ public class MyCH {
                 }
             });
         }
+
+        public void bind(final int position, final OnCardClickListener clickListener) {
+            mOnCardClickListener = clickListener;
+            mItemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnCardClickListener != null) {
+                        mOnCardClickListener.onCardClick(position, null);
+                    }
+                }
+            });
+        }
     }
 
     /**

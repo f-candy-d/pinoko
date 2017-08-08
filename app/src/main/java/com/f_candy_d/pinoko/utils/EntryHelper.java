@@ -1,9 +1,8 @@
 package com.f_candy_d.pinoko.utils;
 
 
+import com.f_candy_d.pinoko.DayOfWeek;
 import com.f_candy_d.pinoko.model.Entry;
-import com.f_candy_d.pinoko.model.NotificationFormer;
-import com.f_candy_d.pinoko.model.TimeBlockFormer;
 
 import java.io.Serializable;
 
@@ -243,6 +242,19 @@ public class EntryHelper {
 
     public static void setTimeBlockCategory(final Entry entry, TimeBlockFormer.Category category) {
         entry.set(DBContract.TimeBlockEntry.ATTR_CATEGORY, category);
+    }
+
+    public static DayOfWeek getTimeBlockDayOfWeek(final Entry entry) {
+        final Serializable value = entry.getEnum(DBContract.TimeBlockEntry.ATTR_DAY_OF_WEEK);
+        if (value instanceof DayOfWeek) {
+            return (DayOfWeek) value;
+        } else {
+            throw new ClassCastException("The object for key TimeBlockEntry.ATTR_DAY_OF_WEEK is not a instance of DayOfWeek");
+        }
+    }
+
+    public static void setTimeBlockDayOfWeek(final Entry entry, DayOfWeek dayOfWeek) {
+        entry.set(DBContract.TimeBlockEntry.ATTR_DAY_OF_WEEK, dayOfWeek);
     }
 
     public static long getTimeBlockTargetId(final Entry entry) {

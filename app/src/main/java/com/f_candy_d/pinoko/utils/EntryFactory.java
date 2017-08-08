@@ -3,15 +3,7 @@ package com.f_candy_d.pinoko.utils;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 
-import com.f_candy_d.pinoko.model.AssignmentFormer;
-import com.f_candy_d.pinoko.model.AttendanceFormer;
-import com.f_candy_d.pinoko.model.CourseFormer;
 import com.f_candy_d.pinoko.model.Entry;
-import com.f_candy_d.pinoko.model.EventFormer;
-import com.f_candy_d.pinoko.model.InstructorFormer;
-import com.f_candy_d.pinoko.model.LocationFormer;
-import com.f_candy_d.pinoko.model.NotificationFormer;
-import com.f_candy_d.pinoko.model.TimeBlockFormer;
 
 /**
  * Created by daichi on 7/30/17.

@@ -1,10 +1,8 @@
-package com.f_candy_d.pinoko.model;
+package com.f_candy_d.pinoko.utils;
 
 import android.content.ContentValues;
-import android.location.Location;
 
-import com.f_candy_d.pinoko.utils.DBContract;
-import com.f_candy_d.pinoko.utils.EntryHelper;
+import com.f_candy_d.pinoko.model.Entry;
 
 import java.util.Arrays;
 import java.util.HashSet;

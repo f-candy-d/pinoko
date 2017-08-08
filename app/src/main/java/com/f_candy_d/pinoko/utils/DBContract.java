@@ -44,6 +44,7 @@ public class DBContract {
                 .put(TimeBlockEntry.ATTR_DATETIME_BEGIN, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
                 .put(TimeBlockEntry.ATTR_DATETIME_END, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
                 .put(TimeBlockEntry.ATTR_TIME_TABLE_ID, JSQLValueTypeMap.JavaValueType.INT, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(TimeBlockEntry.ATTR_DAY_OF_WEEK, JSQLValueTypeMap.JavaValueType.DAY_OF_WEEK, JSQLValueTypeMap.SqlValueType.INTEGER)
                 // Assignment Entry
                 .put(AssignmentEntry.ATTR_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_PK)
                 .put(AssignmentEntry.ATTR_NAME, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT_NOT_NULL)
@@ -187,6 +188,7 @@ public class DBContract {
         public static final String ATTR_DATETIME_BEGIN = PREFIX + "DatetimeBegin";
         public static final String ATTR_DATETIME_END   = PREFIX + "DatetimeEnd";
         public static final String ATTR_TIME_TABLE_ID  = PREFIX + "TimeTableId";
+        public static final String ATTR_DAY_OF_WEEK    = PREFIX + "DayOfWeek";
 
         public static String[] getColumnNames() {
             return new String[] {
@@ -196,7 +198,8 @@ public class DBContract {
                     ATTR_TARGET_ID,
                     ATTR_DATETIME_BEGIN,
                     ATTR_DATETIME_END,
-                    ATTR_TIME_TABLE_ID
+                    ATTR_TIME_TABLE_ID,
+                    ATTR_DAY_OF_WEEK
             };
         }
     }

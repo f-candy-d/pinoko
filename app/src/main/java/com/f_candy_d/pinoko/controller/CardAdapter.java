@@ -12,6 +12,12 @@ abstract public class CardAdapter extends RecyclerView.Adapter<MyCH.BaseCardHold
 
     private MyCH.OnCardClickListener mOnCardClickListener = null;
 
+    public CardAdapter() {}
+
+    public CardAdapter(final MyCH.OnCardClickListener onCardClickListener) {
+        mOnCardClickListener = onCardClickListener;
+    }
+
     public MyCH.OnCardClickListener getOnCardClickListener() {
         return mOnCardClickListener;
     }
@@ -19,4 +25,6 @@ abstract public class CardAdapter extends RecyclerView.Adapter<MyCH.BaseCardHold
     public void setOnCardClickListener(MyCH.OnCardClickListener onCardClickListener) {
         mOnCardClickListener = onCardClickListener;
     }
+
+    abstract public RecyclerView.LayoutManager getParentLayoutManager();
 }

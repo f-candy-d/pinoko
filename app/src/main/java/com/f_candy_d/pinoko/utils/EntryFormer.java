@@ -1,9 +1,10 @@
-package com.f_candy_d.pinoko.model;
+package com.f_candy_d.pinoko.utils;
 
 
 import android.support.annotation.NonNull;
 
-import com.f_candy_d.pinoko.utils.Savable;
+import com.f_candy_d.pinoko.model.Entry;
+import com.f_candy_d.pinoko.Savable;
 
 import java.util.Set;
 

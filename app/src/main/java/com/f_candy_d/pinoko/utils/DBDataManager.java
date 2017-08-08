@@ -3,15 +3,12 @@ package com.f_candy_d.pinoko.utils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteAbortException;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
+import com.f_candy_d.pinoko.DayOfWeek;
+import com.f_candy_d.pinoko.Savable;
 import com.f_candy_d.pinoko.model.Entry;
-import com.f_candy_d.pinoko.model.NotificationFormer;
-import com.f_candy_d.pinoko.model.TimeBlockFormer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,6 +36,14 @@ public class DBDataManager {
     public DBDataManager(@NonNull final Context context, @NonNull final Mode mode) {
         mContext = context;
         open(mode);
+    }
+
+    public void openAsReadable() {
+        open(Mode.READ);
+    }
+
+    public void openAsWritableAppend() {
+        open(Mode.WRITE_APPEND);
     }
 
     public void open(@NonNull final Mode mode) {
@@ -129,22 +134,9 @@ public class DBDataManager {
             throw new IllegalStateException("DB is not open");
         }
 
-        final ArrayList<Entry> results = new ArrayList<>();
-        // Select all rows in the database
-        Cursor cursor = mDatabase.query(false, table, null, null, null, null, null, null, null);
-        boolean isEOF = cursor.moveToFirst();
-        Entry entry;
-
-        while (isEOF) {
-            entry = EntryFactory.makeBasicEntry(table, cursor);
-            if (entry != null) {
-                results.add(entry);
-            }
-            isEOF = cursor.moveToNext();
-        }
-
-        cursor.close();
-        return results;
+        SQLQuery query = new SQLQuery();
+        query.putTables(table);
+        return select(query, table);
     }
 
     public ArrayList<Entry> select(@NonNull final SQLQuery query, @NonNull final String entryAffiliation) {
@@ -202,21 +194,31 @@ public class DBDataManager {
                     case TB_TYPE: {
                         final int typeId = cursor.getInt(cursor.getColumnIndexOrThrow(request));
                         entry.set(request, TimeBlockFormer.Type.from(typeId));
+                        break;
                     }
 
                     case TB_CATEGORY: {
                         final int categoryId = cursor.getInt(cursor.getColumnIndexOrThrow(request));
                         entry.set(request, TimeBlockFormer.Category.from(categoryId));
+                        break;
                     }
 
                     case NOTIFI_TYPE: {
                         final int typeId = cursor.getInt(cursor.getColumnIndexOrThrow(request));
                         entry.set(request, NotificationFormer.Type.from(typeId));
+                        break;
                     }
 
                     case NOTIFI_CATEGORY: {
                         final int categoryId = cursor.getInt(cursor.getColumnIndexOrThrow(request));
                         entry.set(request, NotificationFormer.Category.from(categoryId));
+                        break;
+                    }
+
+                    case DAY_OF_WEEK: {
+                        final int dayOfWeekId = cursor.getInt(cursor.getColumnIndexOrThrow(request));
+                        entry.set(request, DayOfWeek.from(dayOfWeekId));
+                        break;
                     }
                 }
             }
