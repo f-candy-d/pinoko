@@ -25,12 +25,14 @@ public class OneDayTimeTable {
     private final DayOfWeek mDayOfWeek;
     private DBDataManager mDataManager;
     private final int mTimeTableId;
+    private final Context mContext;
 
     public OneDayTimeTable(int timeTableId, @NonNull final DayOfWeek dayOfWeek, @NonNull final Context context) {
         mDayOfWeek = dayOfWeek;
         mTimeBlocks = new ArrayList<>();
         mDataManager = new DBDataManager(context);
         mTimeTableId = timeTableId;
+        mContext = context;
 
         construct();
     }
@@ -124,6 +126,8 @@ public class OneDayTimeTable {
         ArrayList<Entry> results = mDataManager.select(query, DBContract.TimeBlockEntry.TABLE_NAME);
         // Collect course or event entries
         ArrayList<Entry> contentEntries;
+        Event event;
+        Course course;
         for (Entry timeBlockEntry : results) {
             switch (EntryHelper.getTimeBlockCategory(timeBlockEntry)) {
                 case EVENT:
@@ -134,7 +138,10 @@ public class OneDayTimeTable {
                             DBContract.EventEntry.TABLE_NAME);
 
                     if (contentEntries.size() == 1) {
-                        addTimeBlock(new Event(contentEntries.get(0)));
+                        event = new Event(contentEntries.get(0), mContext);
+                        event.setDatetimeBegin(EntryHelper.getTimeBlockDatetimeBegin(timeBlockEntry));
+                        event.setDatetimeEnd(EntryHelper.getTimeBlockDatetimeEnd(timeBlockEntry));
+                        addTimeBlock(event);
                     }
                     break;
 
@@ -146,10 +153,17 @@ public class OneDayTimeTable {
                             DBContract.CourseEntry.TABLE_NAME);
 
                     if (contentEntries.size() == 1) {
-                        addTimeBlock(new Course(contentEntries.get(0)));
+                        course = new Course(contentEntries.get(0), mContext);
+                        course.setDatetimeBegin(EntryHelper.getTimeBlockDatetimeBegin(timeBlockEntry));
+                        course.setDatetimeEnd(EntryHelper.getNotificationDatetimeEnd(timeBlockEntry));
+                        addTimeBlock(course);
                     }
                     break;
             }
         }
+    }
+
+    public ArrayList<MergeableTimeBlock> getTimeBlocks() {
+        return mTimeBlocks;
     }
 }

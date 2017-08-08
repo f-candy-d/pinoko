@@ -17,6 +17,8 @@ public class MergeableTimeBlock<T extends MergeableTimeBlock.RequiresInterface> 
     public interface RequiresInterface {
         long getDatetimeBegin();
         long getDatetimeEnd();
+        void setDatetimeBegin(final long datetimeBegin);
+        void setDatetimeEnd(final long datetimeEnd);
         TimeBlockFormer.Category getCategory();
     }
 
@@ -75,6 +77,12 @@ public class MergeableTimeBlock<T extends MergeableTimeBlock.RequiresInterface> 
 
     public void addContent(@NonNull final T content) {
         mContents.add(content);
+        if (content.getDatetimeBegin() < mEarliestTime) {
+            mEarliestTime = content.getDatetimeBegin();
+        }
+        if (mLatestTime < content.getDatetimeEnd()) {
+            mLatestTime = content.getDatetimeEnd();
+        }
     }
 
     public long getEarliestTime() {

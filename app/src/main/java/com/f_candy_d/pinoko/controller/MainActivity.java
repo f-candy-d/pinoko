@@ -172,9 +172,6 @@ public class MainActivity extends AppCompatActivity
         // Default fragment
         mViewPager.setCurrentItem(FRAGMENT_ONE_DAY_SCHEDULE, false);
         mCurrentFragment = mPagerAdapter.getCurrentFragment();
-
-        // TODO; test code
-        OneDayTimeTable oneDayTimeTable = new OneDayTimeTable(4, DayOfWeek.WEDNESDAY, this);
     }
 
     private void initUI() {
@@ -548,7 +545,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public CardAdapter getAdapter(int fragmentId) {
-        return new WeeklyScheduleCardAdapter();
+        if (fragmentId == FRAGMENT_ONE_DAY_SCHEDULE) {
+            // TODO; test code
+            OneDayTimeTable oneDayTimeTable = new OneDayTimeTable(4, DayOfWeek.WEDNESDAY, this);
+            return new DayScheduleCardAdapter(oneDayTimeTable, this);
+        } else {
+            return new WeeklyScheduleCardAdapter();
+        }
     }
 
     private boolean onSwitchFragments(final int position, final boolean wasSelected) {
