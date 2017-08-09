@@ -77,8 +77,8 @@ public class EntryFactory {
         timeBlock.setType(TimeBlockFormer.Type.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_TYPE))));
         timeBlock.setCategory(TimeBlockFormer.Category.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_CATEGORY))));
         timeBlock.setTargetID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_TARGET_ID)));
-        timeBlock.setDatetimeBegin(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_DATETIME_BEGIN)));
-        timeBlock.setDatetimeEnd(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_DATETIME_END)));
+        timeBlock.setDatetimeBegin(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_DATETIME_BEGIN)));
+        timeBlock.setDatetimeEnd(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_DATETIME_END)));
         timeBlock.setTimeTableID(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.TimeBlockEntry.ATTR_TIME_TABLE_ID)));
 
         return timeBlock.getEntry();
@@ -115,8 +115,8 @@ public class EntryFactory {
         notification.setCategory(NotificationFormer.Category.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_CATEGORY))));
         notification.setTargetID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_TARGET_ID)));
         notification.setType(NotificationFormer.Type.from(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_TYPE))));
-        notification.setDatetimeBegin(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_DATETIME_BEGIN)));
-        notification.setDatetimeEnd(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_DATETIME_END)));
+        notification.setDatetimeBegin(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_DATETIME_BEGIN)));
+        notification.setDatetimeEnd(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_DATETIME_END)));
         final int isDone = cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.NotificationEntry.ATTR_IS_DONE));
         notification.setIsDone(isDone != 0);
 

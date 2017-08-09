@@ -1,6 +1,7 @@
 package com.f_candy_d.pinoko.controller;
 
 import android.animation.Animator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,7 +24,10 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.f_candy_d.pinoko.DayOfWeek;
+import com.f_candy_d.pinoko.EntryObjectType;
 import com.f_candy_d.pinoko.R;
+import com.f_candy_d.pinoko.model.Course;
+import com.f_candy_d.pinoko.model.MergeableTimeBlock;
 import com.f_candy_d.pinoko.model.OneDayTimeTable;
 import com.f_candy_d.pinoko.utils.AssignmentFormer;
 import com.f_candy_d.pinoko.utils.AttendanceFormer;
@@ -652,8 +656,12 @@ public class MainActivity extends AppCompatActivity
 
     private void onFabClicked(final int bottomNavigationTabPos) {
         switch (bottomNavigationTabPos) {
+
             case FRAGMENT_ONE_DAY_SCHEDULE:
-                Log.d("mylog", "EEEEEEEEEEEEEEEEEEEEEEEEEE");
+                Intent intent = EditEntryObjectActivity.createIntent(EntryObjectType.MERGABLE_TIME_BLOCK);
+                intent.setClass(this, EditEntryObjectActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 }

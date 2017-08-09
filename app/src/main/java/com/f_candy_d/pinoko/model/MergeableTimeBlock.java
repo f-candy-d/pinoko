@@ -1,12 +1,15 @@
 package com.f_candy_d.pinoko.model;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.f_candy_d.pinoko.DayOfWeek;
+import com.f_candy_d.pinoko.EntryObjectType;
 import com.f_candy_d.pinoko.utils.DBContract;
+import com.f_candy_d.pinoko.utils.DBDataManager;
 import com.f_candy_d.pinoko.utils.EntryHelper;
 import com.f_candy_d.pinoko.utils.TimeBlockFormer;
 
@@ -140,9 +143,14 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
         mCategory = EntryHelper.getTimeBlockCategory(entry);
         mTargetId = EntryHelper.getTimeBlockTargetId(entry, DBContract.NULL_ID);
         mDatetimeBegin = EntryHelper.getTimeBlockDatetimeBegin(entry, mDatetimeBegin);
-        mDatetimeEnd = EntryHelper.getNotificationDatetimeEnd(entry, mDatetimeEnd);
+        mDatetimeEnd = EntryHelper.getTimeBlockDatetimeEnd(entry, mDatetimeEnd);
         mTimeTableId = EntryHelper.getTimeBlockTimeTableId(entry);
         mDayOfWeek = EntryHelper.getTimeBlockDayOfWeek(entry);
+    }
+
+    @Override
+    public EntryObjectType getEntryObjectType() {
+        return EntryObjectType.MERGABLE_TIME_BLOCK;
     }
 
     /**

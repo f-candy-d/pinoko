@@ -7,11 +7,14 @@ import android.support.annotation.NonNull;
 import android.support.v4.util.LongSparseArray;
 import android.support.v7.view.menu.ExpandedMenuView;
 
+import com.f_candy_d.pinoko.EntryObjectType;
 import com.f_candy_d.pinoko.utils.DBContract;
+import com.f_candy_d.pinoko.utils.DBDataManager;
 import com.f_candy_d.pinoko.utils.EntryHelper;
 import com.f_candy_d.pinoko.utils.TimeBlockFormer;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -111,15 +114,48 @@ public class Event extends EntryObject {
         mNote = EntryHelper.getEventNote(entry, null);
     }
 
+    @Override
+    public EntryObjectType getEntryObjectType() {
+        return EntryObjectType.EVENT;
+    }
+
     /**
-     * Event's methods
+     * Class methods
      */
 
-    public Event() {}
+    public Event(final Entry entry) {}
 
-    public Event(final Entry entry) {
+    public Event(final Entry entry, final Context context) {
         if (entry != null) {
             construct(entry);
+            if (context != null) {
+                complementData(context);
+            }
+        }
+    }
+
+    public void complementData(@NonNull final Context context) {
+        DBDataManager dataManager = new DBDataManager(context, DBDataManager.Mode.READ);
+        if (dataManager.isOpen()) {
+            // Location
+            long[] locIds = new long[mLocations.size()];
+            for (int i = 0; i < mLocations.size(); ++i) {
+                locIds[i] = mLocations.keyAt(i);
+            }
+
+            ArrayList<Entry> results = dataManager.selectWhereIdIsIn(
+                    DBContract.LocationEntry.TABLE_NAME,
+                    locIds,
+                    DBContract.LocationEntry.TABLE_NAME);
+
+            mLocations.clear();
+            Location location;
+            for (Entry entry : results) {
+                location = new Location(entry);
+                mLocations.put(location.getId(), location);
+            }
+
+            dataManager.close();
         }
     }
 
@@ -146,4 +182,5 @@ public class Event extends EntryObject {
     public void setNote(String note) {
         mNote = note;
     }
+
 }

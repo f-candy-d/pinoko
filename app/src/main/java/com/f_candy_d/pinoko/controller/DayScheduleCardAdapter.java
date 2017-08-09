@@ -1,6 +1,7 @@
 package com.f_candy_d.pinoko.controller;
 
 import android.content.Context;
+import android.opengl.ETC1Util;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.Entry;
+import com.f_candy_d.pinoko.model.EntryObject;
 import com.f_candy_d.pinoko.model.Event;
 import com.f_candy_d.pinoko.model.MergeableTimeBlock;
 import com.f_candy_d.pinoko.model.OneDayTimeTable;
@@ -62,17 +64,17 @@ public class DayScheduleCardAdapter extends CardAdapter {
         final int viewType = getItemViewType(position);
         if (viewType == TimeBlockFormer.Category.COURSE.toInt()) {
             MyCH.CourseCardHolder courseCardHolder = (MyCH.CourseCardHolder) holder;
-            for (Object content : mDayTimeTable.getTimeBlocks().get(position).getContents()) {
-                if (content instanceof Course) {
-                    courseCardHolder.bind(position, null, ((Course) content));
+            if (mDayTimeTable.getTimeBlocks().get(position).hasContent()) {
+                if (mDayTimeTable.getTimeBlocks().get(position).getContent() instanceof Course) {
+                    courseCardHolder.bind(position, null, mDayTimeTable.getTimeBlocks().get(position));
                 }
             }
 
         } else if (viewType == TimeBlockFormer.Category.EVENT.toInt()) {
             MyCH.EventCardHolder eventCardHolder = (MyCH.EventCardHolder) holder;
-            for (Object content : mDayTimeTable.getTimeBlocks().get(position).getContents()) {
-                if (content instanceof Event) {
-                    eventCardHolder.bind(position, null, ((Event) content));
+            if (mDayTimeTable.getTimeBlocks().get(position).hasContent()) {
+                if (mDayTimeTable.getTimeBlocks().get(position).getContent() instanceof Event) {
+                    eventCardHolder.bind(position, null, mDayTimeTable.getTimeBlocks().get(position));
                 }
             }
         }

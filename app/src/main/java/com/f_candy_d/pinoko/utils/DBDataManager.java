@@ -230,6 +230,45 @@ public class DBDataManager {
         return results;
     }
 
+    public Entry selectWhereIdIs(@NonNull String table, long id, @NonNull String entryAffiliation) {
+        String[] columnNames = DBContract.getColumnNamesOf(table);
+        if (columnNames != null) {
+            SQLQuery query = new SQLQuery();
+            query.putTables(table);
+            query.setLimit(1);
+            SQLWhere.CondExpr idIs = new SQLWhere.CondExpr();
+
+            // DBContract.getColumnNamesOf(table)[0] is must be a id column
+            idIs.l(columnNames[0]).equalTo().r(id);
+
+            query.setSelection(idIs);
+            ArrayList<Entry> results = select(query, entryAffiliation);
+            if (results.size() == 1) {
+                return results.get(0);
+            }
+        }
+
+        return null;
+    }
+
+    public ArrayList<Entry> selectWhereIdIsIn(@NonNull String table, @NonNull long[] ids, @NonNull String entryAffiliation) {
+        String[] columnNames = DBContract.getColumnNamesOf(table);
+        if (columnNames != null) {
+            SQLQuery query = new SQLQuery();
+            query.putTables(table);
+            query.setLimit(1);
+            SQLWhere.SpecExpr idIsIn = new SQLWhere.SpecExpr();
+
+            // DBContract.getColumnNamesOf(table)[0] is must be a id column
+            idIsIn.in(columnNames[0], ids);
+
+            query.setSelection(idIsIn);
+            return select(query, entryAffiliation);
+        }
+
+        return null;
+    }
+
     /**
      * Generate a simple selection query like: SELECT * FROM table WHERE column = is;
      */

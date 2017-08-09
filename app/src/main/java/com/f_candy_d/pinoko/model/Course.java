@@ -1,14 +1,18 @@
 package com.f_candy_d.pinoko.model;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.util.LongSparseArray;
 
 import com.f_candy_d.pinoko.DayOfWeek;
+import com.f_candy_d.pinoko.EntryObjectType;
 import com.f_candy_d.pinoko.utils.DBContract;
+import com.f_candy_d.pinoko.utils.DBDataManager;
 import com.f_candy_d.pinoko.utils.EntryHelper;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
@@ -115,6 +119,11 @@ public class Course extends EntryObject {
     }
 
     @Override
+    public EntryObjectType getEntryObjectType() {
+        return EntryObjectType.COURSE;
+    }
+
+    @Override
     protected void construct(@NonNull Entry entry) {
         if ((mId = EntryHelper.getCourseId(entry, DBContract.NULL_ID)) == DBContract.NULL_ID) {
             throwExceptionForExpectedAttributeIsMissing(DBContract.CourseEntry.ATTR_ID);
@@ -143,11 +152,63 @@ public class Course extends EntryObject {
     }
 
     /**
-     * Course's methods
+     * Class methods
      */
     public Course(final Entry entry) {
+        this(entry, null);
+    }
+
+    public Course(final Entry entry, final Context context) {
         if (entry != null) {
             construct(entry);
+            if (context != null) {
+                complementData(context);
+            }
+        }
+    }
+
+    public void complementData(@NonNull final Context context) {
+        DBDataManager dataManager = new DBDataManager(context, DBDataManager.Mode.READ);
+        if (dataManager.isOpen()) {
+            // Instructor
+            long[] instIds = new long[mInstructors.size()];
+            for (int i = 0; i < mInstructors.size(); ++i) {
+                instIds[i] = mInstructors.keyAt(i);
+            }
+
+            ArrayList<Entry> results = dataManager.selectWhereIdIsIn(
+                    DBContract.InstructorEntry.TABLE_NAME,
+                    instIds,
+                    DBContract.InstructorEntry.TABLE_NAME);
+
+            Instructor instructor;
+            mInstructors.clear();
+            for (Entry entry : results) {
+                instructor = new Instructor(entry);
+                mInstructors.put(instructor.getId(), instructor);
+            }
+
+            results.clear();
+
+            // Location
+            long[] locIds = new long[mLocations.size()];
+            for (int i = 0; i < mLocations.size(); ++i) {
+                locIds[i] = mLocations.keyAt(i);
+            }
+
+            results = dataManager.selectWhereIdIsIn(
+                    DBContract.LocationEntry.TABLE_NAME,
+                    locIds,
+                    DBContract.LocationEntry.TABLE_NAME);
+
+            mLocations.clear();
+            Location location;
+            for (Entry entry : results) {
+                location = new Location(entry);
+                mLocations.put(location.getId(), location);
+            }
+
+            dataManager.close();
         }
     }
 

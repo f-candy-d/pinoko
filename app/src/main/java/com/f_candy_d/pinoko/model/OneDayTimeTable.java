@@ -38,9 +38,8 @@ public class OneDayTimeTable {
     }
 
     private <T extends EntryObject>
-    void addTimeBlock(@NonNull final T content) {
-        final MergeableTimeBlock<T> timeBlock =
-                new MergeableTimeBlock<>();
+    void addTimeBlock(@NonNull final Entry entry, @NonNull final T content) {
+        final MergeableTimeBlock<T> timeBlock = new MergeableTimeBlock<>(entry);
         timeBlock.setContent(content);
 
         mTimeBlocks.add(timeBlock);
@@ -112,42 +111,38 @@ public class OneDayTimeTable {
         mDataManager.openAsWritableAppend();
         ArrayList<Entry> results = mDataManager.select(query, DBContract.TimeBlockEntry.TABLE_NAME);
         // Collect course or event entries
-        ArrayList<Entry> contentEntries;
+        Entry contentEntry;
         Event event;
         Course course;
         for (Entry timeBlockEntry : results) {
             switch (EntryHelper.getTimeBlockCategory(timeBlockEntry)) {
                 case EVENT:
-                     contentEntries = mDataManager.selectWhereColumnIs(
-                            DBContract.EventEntry.TABLE_NAME,
-                            DBContract.EventEntry.ATTR_ID,
-                            EntryHelper.getTimeBlockTargetId(timeBlockEntry),
-                            DBContract.EventEntry.TABLE_NAME);
+                     contentEntry = mDataManager.selectWhereIdIs(
+                             DBContract.EventEntry.TABLE_NAME,
+                             EntryHelper.getTimeBlockTargetId(timeBlockEntry),
+                             DBContract.EventEntry.TABLE_NAME);
 
-                    if (contentEntries.size() == 1) {
-                        event = new Event(contentEntries.get(0), mContext);
-                        event.setDatetimeBegin(EntryHelper.getTimeBlockDatetimeBegin(timeBlockEntry));
-                        event.setDatetimeEnd(EntryHelper.getTimeBlockDatetimeEnd(timeBlockEntry));
-                        addTimeBlock(event);
+                    if (contentEntry != null) {
+                        event = new Event(contentEntry, mContext);
+                        addTimeBlock(timeBlockEntry, event);
                     }
                     break;
 
                 case COURSE:
-                    contentEntries = mDataManager.selectWhereColumnIs(
+                    contentEntry = mDataManager.selectWhereIdIs(
                             DBContract.CourseEntry.TABLE_NAME,
-                            DBContract.CourseEntry.ATTR_ID,
                             EntryHelper.getTimeBlockTargetId(timeBlockEntry),
                             DBContract.CourseEntry.TABLE_NAME);
 
-                    if (contentEntries.size() == 1) {
-                        course = new Course(contentEntries.get(0), mContext);
-                        course.setDatetimeBegin(EntryHelper.getTimeBlockDatetimeBegin(timeBlockEntry));
-                        course.setDatetimeEnd(EntryHelper.getNotificationDatetimeEnd(timeBlockEntry));
-                        addTimeBlock(course);
+                    if (contentEntry != null) {
+                        course = new Course(contentEntry, mContext);
+                        addTimeBlock(timeBlockEntry, course);
                     }
                     break;
             }
         }
+
+        mDataManager.close();
     }
 
     public ArrayList<MergeableTimeBlock> getTimeBlocks() {

@@ -12,16 +12,20 @@ import java.util.Collection;
 
 public class SQLQuery {
 
+    private static final int DEFAULT_LIMIT = -1;
+
     private boolean mDistinct;
     private ArrayList<String> mTables;
     private ArrayList<String> mColumns;
     private SQLWhere mSelection;
+    private int mLimit;
 
     public SQLQuery() {
         mDistinct = false;
         mTables = new ArrayList<>();
         mColumns = new ArrayList<>();
         mSelection = null;
+        mLimit = DEFAULT_LIMIT;
     }
 
     public boolean distinct() {
@@ -68,7 +72,9 @@ public class SQLQuery {
     }
 
     public String limit() {
-        // TODO; Coming soon...
+        if (mLimit != DEFAULT_LIMIT) {
+            return String.valueOf(mLimit);
+        }
         return null;
     }
 
@@ -119,5 +125,13 @@ public class SQLQuery {
         mTables.clear();
         mColumns.clear();
         mSelection = null;
+    }
+
+    public int getLimit() {
+        return mLimit;
+    }
+
+    public void setLimit(int limit) {
+        mLimit = limit;
     }
 }
