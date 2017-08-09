@@ -1,65 +1,117 @@
 package com.f_candy_d.pinoko.model;
 
-import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.util.LongSparseArray;
 
+import com.f_candy_d.pinoko.DayOfWeek;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.EntryHelper;
-import com.f_candy_d.pinoko.utils.TimeBlockFormer;
+
+import java.util.Arrays;
+import java.util.Calendar;
 
 /**
  * Created by daichi on 17/08/08.
  */
 
-public class Course extends EntryObject implements MergeableTimeBlock.RequiresInterface {
+public class Course extends EntryObject {
 
     private long mId;
     private String mName;
     private String mNote;
-    private LongSparseArray<Location> mLocations;
-    private LongSparseArray<Instructor> mInstructors;
+    private LongSparseArray<Location> mLocations = new LongSparseArray<>();
+    private LongSparseArray<Instructor> mInstructors = new LongSparseArray<>();
     private int mLength;
-    private long mDatetimeBegin;
-    private long mDatetimeEnd;
-    private Context mContext;
 
-    public Course(@NonNull final Context context) {
-        this(null, context);
+    /**
+     * region; Parcelable implementation
+     */
+
+    public static final Parcelable.Creator<Course> CREATOR =
+            new Creator<Course>() {
+                @Override
+                public Course createFromParcel(Parcel source) {
+                    return new Course(source);
+                }
+
+                @Override
+                public Course[] newArray(int size) {
+                    return new Course[size];
+                }
+            };
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public Course(final Entry entry, @NonNull final Context context) {
-        mLocations = new LongSparseArray<>();
-        mInstructors = new LongSparseArray<>();
-        mContext = context;
-        if (entry != null) {
-            construct(entry);
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(mId);
+        dest.writeString(mName);
+        dest.writeString(mNote);
+        dest.writeInt(mLength);
+
+        dest.writeInt(mLocations.size());
+        if (0 < mLocations.size()) {
+            Location[] locations = new Location[mLocations.size()];
+            for (int i = 0; i < mLocations.size(); ++i) {
+                locations[i] = mLocations.valueAt(i);
+            }
+
+            dest.writeParcelableArray(locations, flags);
+        }
+
+        dest.writeInt(mInstructors.size());
+        if (0 < mInstructors.size()) {
+            Instructor[] instructors = new Instructor[mInstructors.size()];
+            for (int i = 0; i < mInstructors.size(); ++i) {
+                instructors[i] = mInstructors.valueAt(i);
+            }
+
+            dest.writeParcelableArray(instructors, flags);
         }
     }
 
-    @Override
-    public long getDatetimeBegin() {
-        return mDatetimeBegin;
+    public Course(final Parcel in) {
+        mId = in.readLong();
+        mName = in.readString();
+        mNote = in.readString();
+        mLength = in.readInt();
+
+        int size = in.readInt();
+        if (0 < size) {
+            Location[] locations = (Location[]) in.readParcelableArray(Location.class.getClassLoader());
+            for (Location location : locations) {
+                mLocations.put(location.getId(), location);
+            }
+        }
+
+        size = in.readInt();
+        if (0 < size) {
+            Instructor[] instructors = (Instructor[]) in.readParcelableArray(Instructor.class.getClassLoader());
+            for (Instructor instructor : instructors) {
+                mInstructors.put(instructor.getId(), instructor);
+            }
+        }
     }
 
+    /**
+     * Abstract method implementation
+     */
     @Override
-    public long getDatetimeEnd() {
-        return mDatetimeEnd;
-    }
+    public Entry toEntry() {
+        Entry entry = new Entry(DBContract.CourseEntry.TABLE_NAME);
+        EntryHelper.setCourseId(entry, mId);
+        EntryHelper.setCourseName(entry, mName);
+        EntryHelper.setCourseNote(entry, mNote);
+        EntryHelper.setCourseLength(entry, mLength);
+        EntryHelper.setCourseInstructorId(entry, mInstructors.keyAt(0));
+        EntryHelper.setCourseLocationId(entry, mLocations.keyAt(0));
 
-    @Override
-    public void setDatetimeBegin(long datetimeBegin) {
-        mDatetimeBegin = datetimeBegin;
-    }
-
-    @Override
-    public void setDatetimeEnd(long datetimeEnd) {
-        mDatetimeEnd = datetimeEnd;
-    }
-
-    @Override
-    public TimeBlockFormer.Category getCategory() {
-        return TimeBlockFormer.Category.COURSE;
+        return entry;
     }
 
     @Override
@@ -88,6 +140,15 @@ public class Course extends EntryObject implements MergeableTimeBlock.RequiresIn
         mInstructors.put(id, null);
 
         mNote = EntryHelper.getCourseNote(entry, null);
+    }
+
+    /**
+     * Course's methods
+     */
+    public Course(final Entry entry) {
+        if (entry != null) {
+            construct(entry);
+        }
     }
 
     public long getId() {

@@ -219,7 +219,7 @@ public class EntryHelper {
     }
 
     public static TimeBlockFormer.Type getTimeBlockType(final Entry entry) {
-        final Serializable value = entry.getEnum(DBContract.TimeBlockEntry.ATTR_TYPE);
+        final Serializable value = entry.getSerializable(DBContract.TimeBlockEntry.ATTR_TYPE);
         if (value instanceof TimeBlockFormer.Type) {
             return (TimeBlockFormer.Type) value;
         } else {
@@ -232,7 +232,7 @@ public class EntryHelper {
     }
 
     public static TimeBlockFormer.Category getTimeBlockCategory(final Entry entry) {
-        final Serializable value = entry.getEnum(DBContract.TimeBlockEntry.ATTR_CATEGORY);
+        final Serializable value = entry.getSerializable(DBContract.TimeBlockEntry.ATTR_CATEGORY);
         if (value instanceof TimeBlockFormer.Category) {
             return (TimeBlockFormer.Category) value;
         } else {
@@ -245,7 +245,7 @@ public class EntryHelper {
     }
 
     public static DayOfWeek getTimeBlockDayOfWeek(final Entry entry) {
-        final Serializable value = entry.getEnum(DBContract.TimeBlockEntry.ATTR_DAY_OF_WEEK);
+        final Serializable value = entry.getSerializable(DBContract.TimeBlockEntry.ATTR_DAY_OF_WEEK);
         if (value instanceof DayOfWeek) {
             return (DayOfWeek) value;
         } else {
@@ -471,7 +471,7 @@ public class EntryHelper {
     }
 
     public static NotificationFormer.Category getNotificationCategory(final Entry entry) {
-        final Serializable value = entry.getEnum(DBContract.NotificationEntry.ATTR_CATEGORY);
+        final Serializable value = entry.getSerializable(DBContract.NotificationEntry.ATTR_CATEGORY);
         if (value instanceof NotificationFormer.Category) {
             return (NotificationFormer.Category) value;
         } else {
@@ -496,7 +496,7 @@ public class EntryHelper {
     }
 
     public static NotificationFormer.Type getNotificationType(final Entry entry) {
-        final Serializable value = entry.getEnum(DBContract.NotificationEntry.ATTR_TYPE);
+        final Serializable value = entry.getSerializable(DBContract.NotificationEntry.ATTR_TYPE);
         if (value instanceof NotificationFormer.Type) {
             return (NotificationFormer.Type) value;
         } else {

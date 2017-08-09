@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,6 +15,11 @@ import java.util.Set;
  */
 
 public class Entry {
+
+    /**
+     * Used in set(final String attr, final Entry value) & getEntry() methods
+     */
+    private static final String KEY_INNER_ENTRY_AFFILIATION = "keyInnerEntryAffiliation";
 
     private String mAffiliation;
     private Bundle mAttributes;
@@ -135,6 +141,26 @@ public class Entry {
         return this;
     }
 
+    public Entry set(final String attr, final Entry value) {
+        Bundle bundle = value.toBundle();
+        bundle.putString(KEY_INNER_ENTRY_AFFILIATION, value.getAffiliation());
+        mAttributes.putBundle(attr, value.toBundle());
+        return this;
+    }
+
+    public Entry set(final String attr, final Collection<Entry> values) {
+        Bundle[] bundles = new Bundle[values.size()];
+        int i = 0;
+        for (Entry entry : values) {
+            bundles[i] = entry.toBundle();
+            bundles[i].putString(KEY_INNER_ENTRY_AFFILIATION, entry.getAffiliation());
+            ++i;
+        }
+
+        mAttributes.putSerializable(attr, bundles);
+        return this;
+    }
+
     public String getString(final String attr) {
         return mAttributes.getString(attr, mDefaultStringValue);
     }
@@ -167,7 +193,47 @@ public class Entry {
         return mAttributes.getLong(attr, def);
     }
 
-    public Serializable getEnum(final String attr) {
+    public Serializable getSerializable(final String attr) {
         return mAttributes.getSerializable(attr);
+    }
+
+    public Entry getEntry(final String attr) {
+        return getEntry(attr, null);
+    }
+
+    public Entry getEntry(final String attr, final Entry def) {
+        Bundle bundle = mAttributes.getBundle(attr);
+        String affiliation;
+        if (bundle != null &&
+                (affiliation = bundle.getString(KEY_INNER_ENTRY_AFFILIATION)) != null) {
+
+            return new Entry(affiliation, bundle);
+        }
+        return def;
+    }
+
+    public ArrayList<Entry> getEntries(final String attr) {
+        return getEntries(attr, null);
+    }
+
+    public ArrayList<Entry> getEntries(final String attr, final ArrayList<Entry> def) {
+        Serializable value = mAttributes.getSerializable(attr);
+        if (value instanceof Bundle[]) {
+            Bundle[] bundles = (Bundle[]) value;
+            ArrayList<Entry> entries = new ArrayList<>(bundles.length);
+            Entry entry;
+            String affiliation;
+            for (Bundle bundle : bundles) {
+                if (bundle != null
+                        && (affiliation = bundle.getString(KEY_INNER_ENTRY_AFFILIATION)) != null) {
+                    entry = new Entry(affiliation, bundle);
+                    entries.add(entry);
+                }
+            }
+
+            return entries;
+        }
+
+        return def;
     }
 }

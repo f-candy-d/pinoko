@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity
 
         init();
         initUI();
+        initState();
     }
 
     @Override
@@ -168,10 +169,6 @@ public class MainActivity extends AppCompatActivity
         mViewPager.setOffscreenPageLimit(VIEWPAGER_OFFSCREEN_LIMIT);
         mPagerAdapter = new AHBottomNavigationVIewPagerAdapter(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(mPagerAdapter);
-
-        // Default fragment
-        mViewPager.setCurrentItem(FRAGMENT_ONE_DAY_SCHEDULE, false);
-        mCurrentFragment = mPagerAdapter.getCurrentFragment();
     }
 
     private void initUI() {
@@ -188,11 +185,10 @@ public class MainActivity extends AppCompatActivity
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                onFabClicked((Integer) view.getTag());
             }
         });
-        mFab.setVisibility(View.INVISIBLE);
+//        mFab.setVisibility(View.INVISIBLE);
 
         /**
          * Navigation Drawer
@@ -237,9 +233,6 @@ public class MainActivity extends AppCompatActivity
         // Show item title always
         mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
 
-        // Set current item programmatically
-        mBottomNavigation.setCurrentItem(FRAGMENT_ONE_DAY_SCHEDULE, false);
-
         // Notification
         AHNotification notification = new AHNotification.Builder()
                 .setText("1")
@@ -252,6 +245,15 @@ public class MainActivity extends AppCompatActivity
         int flags = AHBottomNavigationObserver.STATE | AHBottomNavigationObserver.TAB_SELECTION;
         mBottomNavigationObserver = new AHBottomNavigationObserver(flags, mBottomNavigation);
         mBottomNavigationObserver.setNotificationListener(this);
+    }
+
+    private void initState() {
+        mFab.setTag(FRAGMENT_ONE_DAY_SCHEDULE);
+        // Set current item programmatically
+        mBottomNavigation.setCurrentItem(FRAGMENT_ONE_DAY_SCHEDULE, false);
+        // Default fragment
+        mViewPager.setCurrentItem(FRAGMENT_ONE_DAY_SCHEDULE, false);
+        mCurrentFragment = mPagerAdapter.getCurrentFragment();
     }
 
     private void saveTest() {
@@ -276,11 +278,11 @@ public class MainActivity extends AppCompatActivity
 
         Calendar today = Calendar.getInstance();
         long b1 = today.getTimeInMillis();
-        today.add(Calendar.HOUR_OF_DAY, 2);
+        today.add(Calendar.HOUR, 2);
         long e1 = today.getTimeInMillis();
-        today.add(Calendar.HOUR_OF_DAY, 3);
+        today.add(Calendar.HOUR, 3);
         long b2 = today.getTimeInMillis();
-        today.add(Calendar.HOUR_OF_DAY, 2);
+        today.add(Calendar.HOUR, 2);
         long e2 = today.getTimeInMillis();
 
         TimeBlockFormer timeBlock = TimeBlockFormer.createWithEntry();
@@ -496,22 +498,28 @@ public class MainActivity extends AppCompatActivity
     public boolean onTabSelected(int position, boolean wasSelected) {
         // Hide or show FAB
         if (!wasSelected) {
-            if (position == FRAGMENT_ASSIGNMENTS || position == FRAGMENT_NOTIFICATIONS) {
-                // If FAB's visibility is VISIBLE, the previous position is 2 or 3.
-                // So the first thing we do is to hide FAB with animation,
-                // and then show it again.
-                // If FAB's visibility is GONE, the previous position is 0 or 1.
-                // In this case, simply show FAB with animation.
-                if (mFab.getVisibility() == View.VISIBLE) {
-                    hideFAB(true);
-                } else if (mFab.getVisibility() == View.INVISIBLE) {
-                    showFAB(false);
-                }
-                mFab.setTag(position);
-
+//            if (position == FRAGMENT_ASSIGNMENTS || position == FRAGMENT_NOTIFICATIONS) {
+//                // If FAB's visibility is VISIBLE, the previous position is 2 or 3.
+//                // So the first thing we do is to hide FAB with animation,
+//                // and then show it again.
+//                // If FAB's visibility is GONE, the previous position is 0 or 1.
+//                // In this case, simply show FAB with animation.
+//                if (mFab.getVisibility() == View.VISIBLE) {
+//                    hideFAB(true);
+//                } else if (mFab.getVisibility() == View.INVISIBLE) {
+//                    showFAB(false);
+//                }
+//                mFab.setTag(position);
+//
+//            } else {
+//                hideFAB(false);
+//            }
+            if (mFab.getVisibility() == View.VISIBLE) {
+                hideFAB(true);
             } else {
-                hideFAB(false);
+                showFAB(false);
             }
+            mFab.setTag(position);
         }
 
         return onSwitchFragments(position, wasSelected);
@@ -642,4 +650,10 @@ public class MainActivity extends AppCompatActivity
                 }).start();
     }
 
+    private void onFabClicked(final int bottomNavigationTabPos) {
+        switch (bottomNavigationTabPos) {
+            case FRAGMENT_ONE_DAY_SCHEDULE:
+                Log.d("mylog", "EEEEEEEEEEEEEEEEEEEEEEEEEE");
+        }
+    }
 }

@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.f_candy_d.pinoko.R;
+import com.f_candy_d.pinoko.model.Course;
+import com.f_candy_d.pinoko.model.Entry;
+import com.f_candy_d.pinoko.model.Event;
+import com.f_candy_d.pinoko.model.MergeableTimeBlock;
 import com.f_candy_d.pinoko.model.OneDayTimeTable;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.TimeBlockFormer;
@@ -55,6 +59,23 @@ public class DayScheduleCardAdapter extends CardAdapter {
 
     @Override
     public void onBindViewHolder(MyCH.BaseCardHolder holder, int position) {
+        final int viewType = getItemViewType(position);
+        if (viewType == TimeBlockFormer.Category.COURSE.toInt()) {
+            MyCH.CourseCardHolder courseCardHolder = (MyCH.CourseCardHolder) holder;
+            for (Object content : mDayTimeTable.getTimeBlocks().get(position).getContents()) {
+                if (content instanceof Course) {
+                    courseCardHolder.bind(position, null, ((Course) content));
+                }
+            }
+
+        } else if (viewType == TimeBlockFormer.Category.EVENT.toInt()) {
+            MyCH.EventCardHolder eventCardHolder = (MyCH.EventCardHolder) holder;
+            for (Object content : mDayTimeTable.getTimeBlocks().get(position).getContents()) {
+                if (content instanceof Event) {
+                    eventCardHolder.bind(position, null, ((Event) content));
+                }
+            }
+        }
 
     }
 

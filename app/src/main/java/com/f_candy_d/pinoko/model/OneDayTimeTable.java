@@ -37,24 +37,11 @@ public class OneDayTimeTable {
         construct();
     }
 
-    private <T extends MergeableTimeBlock.RequiresInterface>
+    private <T extends EntryObject>
     void addTimeBlock(@NonNull final T content) {
-        final Comparator<T> timeBlockSortComparator = new Comparator<T>() {
-            @Override
-            public int compare(T o1, T o2) {
-                if (o1.getDatetimeBegin() < o2.getDatetimeBegin()) {
-                    return -1;
-                } else if (o1.getDatetimeBegin() > o2.getDatetimeBegin()) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        };
-
         final MergeableTimeBlock<T> timeBlock =
-                new MergeableTimeBlock<T>(content.getCategory(), timeBlockSortComparator);
-        timeBlock.addContent(content);
+                new MergeableTimeBlock<>();
+        timeBlock.setContent(content);
 
         mTimeBlocks.add(timeBlock);
     }
@@ -63,10 +50,10 @@ public class OneDayTimeTable {
 //        sortAscendingAndAffiliationOrder();
 //        for (int i = 0; i < mCourseTimeBlocks.size() - 1; ++i) {
 //            if (mCourseTimeBlocks.get(i).getEntryAffiliation().equals(mCourseTimeBlocks.get(i + 1).getEntryAffiliation())
-//                    && mCourseTimeBlocks.get(i).getLatestTime() != mCourseTimeBlocks.get(i + 1).getEarliestTime()) {
+//                    && mCourseTimeBlocks.get(i).getDatetimeEnd() != mCourseTimeBlocks.get(i + 1).getDatetimeBegin()) {
 //                MergeableTimeBlock blankTimeBlock = makeBlankTimeBlock(
-//                        mCourseTimeBlocks.get(i).getLatestTime(),
-//                        mCourseTimeBlocks.get(i + 1).getEarliestTime());
+//                        mCourseTimeBlocks.get(i).getDatetimeEnd(),
+//                        mCourseTimeBlocks.get(i + 1).getDatetimeBegin());
 //
 //                mCourseTimeBlocks.add(i + 1, blankTimeBlock);
 //            }

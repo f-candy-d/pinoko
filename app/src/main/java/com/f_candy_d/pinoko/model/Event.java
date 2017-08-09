@@ -1,62 +1,96 @@
 package com.f_candy_d.pinoko.model;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.util.LongSparseArray;
+import android.support.v7.view.menu.ExpandedMenuView;
 
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.EntryHelper;
 import com.f_candy_d.pinoko.utils.TimeBlockFormer;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+
 /**
  * Created by daichi on 17/08/08.
  */
 
-public class Event extends EntryObject implements MergeableTimeBlock.RequiresInterface {
+public class Event extends EntryObject {
 
     private long mId;
     private String mName;
     private String mNote;
-    private LongSparseArray<Location> mLocations;
-    private long mDatetimeBegin;
-    private long mDatetimeEnd;
-    private final Context mContext;
+    private LongSparseArray<Location> mLocations = new LongSparseArray<>();
 
-    public Event(@NonNull final Context context) {
-        this(null, context);
+    /**
+     * region; Parcelable implementation
+     */
+
+    public static final Parcelable.Creator<Event> CREATOR =
+            new Creator<Event>() {
+                @Override
+                public Event createFromParcel(Parcel source) {
+                    return new Event(source);
+                }
+
+                @Override
+                public Event[] newArray(int size) {
+                    return new Event[size];
+                }
+            };
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public Event(final Entry entry, @NonNull final Context context) {
-        mLocations = new LongSparseArray<>();
-        mContext = context;
-        if (entry != null) {
-            construct(entry);
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(mId);
+        dest.writeString(mName);
+        dest.writeString(mNote);
+
+        dest.writeInt(mLocations.size());
+        if (0 < mLocations.size()) {
+            Location[] locations = new Location[mLocations.size()];
+            for (int i = 0; i < mLocations.size(); ++i) {
+                locations[i] = mLocations.valueAt(i);
+            }
+
+            dest.writeParcelableArray(locations, flags);
         }
     }
 
-    @Override
-    public long getDatetimeBegin() {
-        return mDatetimeBegin;
+    public Event(final Parcel in) {
+        mId = in.readLong();
+        mName = in.readString();
+        mNote = in.readString();
+
+        final int size = in.readInt();
+        if (0 < size) {
+            Location[] locations = (Location[]) in.readParcelableArray(Location.class.getClassLoader());
+            for (Location location : locations) {
+                mLocations.put(location.getId(), location);
+            }
+        }
     }
 
-    @Override
-    public long getDatetimeEnd() {
-        return mDatetimeEnd;
-    }
+    /**
+     * Abstract method implementation
+     */
 
     @Override
-    public TimeBlockFormer.Category getCategory() {
-        return TimeBlockFormer.Category.EVENT;
-    }
+    public Entry toEntry() {
+        Entry entry = new Entry(DBContract.EventEntry.TABLE_NAME);
+        EntryHelper.setEventId(entry, mId);
+        EntryHelper.setEventName(entry, mName);
+        EntryHelper.setEventNote(entry, mNote);
+        EntryHelper.setEventLocationId(entry, mLocations.keyAt(0));
 
-    @Override
-    public void setDatetimeBegin(long datetimeBegin) {
-        mDatetimeBegin = datetimeBegin;
-    }
-
-    @Override
-    public void setDatetimeEnd(long datetimeEnd) {
-        mDatetimeEnd = datetimeEnd;
+        return entry;
     }
 
     @Override
@@ -75,6 +109,18 @@ public class Event extends EntryObject implements MergeableTimeBlock.RequiresInt
         mLocations.put(id, null);
 
         mNote = EntryHelper.getEventNote(entry, null);
+    }
+
+    /**
+     * Event's methods
+     */
+
+    public Event() {}
+
+    public Event(final Entry entry) {
+        if (entry != null) {
+            construct(entry);
+        }
     }
 
     public long getId() {
@@ -99,9 +145,5 @@ public class Event extends EntryObject implements MergeableTimeBlock.RequiresInt
 
     public void setNote(String note) {
         mNote = note;
-    }
-
-    public Context getContext() {
-        return mContext;
     }
 }
