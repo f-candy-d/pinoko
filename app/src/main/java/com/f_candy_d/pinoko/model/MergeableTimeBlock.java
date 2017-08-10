@@ -3,6 +3,7 @@ package com.f_candy_d.pinoko.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.f_candy_d.pinoko.DayOfWeek;
 import com.f_candy_d.pinoko.utils.DBContract;
@@ -63,18 +64,14 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
         dest.writeLong(mDatetimeBegin);
         dest.writeLong(mDatetimeEnd);
         dest.writeInt(mTimeTableId);
-//        dest.writeSerializable(mType);
-//        dest.writeSerializable(mCategory);
-//        dest.writeSerializable(mDayOfWeek);
-        EnumSerializer.writeTo(mType, dest);
-        EnumSerializer.writeTo(mCategory, dest);
-        EnumSerializer.writeTo(mDayOfWeek, dest);
+        EnumSerializer.writeToParcel(mType, dest);
+        EnumSerializer.writeToParcel(mCategory, dest);
+        EnumSerializer.writeToParcel(mDayOfWeek, dest);
 
         if (mMerged == null || mMerged.size() == 0) {
             dest.writeInt(0);
         } else {
             dest.writeInt(mMerged.size());
-//            dest.writeSerializable(mMerged.get(0).getClass());
             dest.writeList(mMerged);
         }
 
@@ -87,26 +84,20 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
     }
 
     public MergeableTimeBlock(final Parcel in) {
-        mId = in.readInt();
+        mId = in.readLong();
         mTargetId = in.readLong();
         mDatetimeBegin = in.readLong();
         mDatetimeEnd = in.readLong();
         mTimeTableId = in.readInt();
-//        mType = (TimeBlockFormer.Type) in.readSerializable();
-//        mCategory = (TimeBlockFormer.Category) in.readSerializable();
-//        mDayOfWeek = (DayOfWeek) in.readSerializable();
-        mType = EnumSerializer.readFrom(TimeBlockFormer.Type.class, in);
-        mCategory = EnumSerializer.readFrom(TimeBlockFormer.Category.class, in);
-        mDayOfWeek = EnumSerializer.readFrom(DayOfWeek.class, in);
+        mType = EnumSerializer.readFromParcel(TimeBlockFormer.Type.class, in);
+        mCategory = EnumSerializer.readFromParcel(TimeBlockFormer.Category.class, in);
+        mDayOfWeek = EnumSerializer.readFromParcel(DayOfWeek.class, in);
 
         final int size = in.readInt();
         if (size == 0) {
             mMerged = null;
         }  else {
-//            mMerged = new ArrayList<>(size);
-//            Class<?> classType = (Class<?>) in.readSerializable();
-//            in.readList(mMerged, classType.getClassLoader());
-            mMerged = in.readArrayList(MergeableTimeBlock.class.getClassLoader());
+            mMerged = in.readArrayList(this.getClass().getClassLoader());
         }
 
         Class<?> classType = (Class<?>) in.readSerializable();

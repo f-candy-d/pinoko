@@ -697,7 +697,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void onCreatedNewCourseTimeBlock(MergeableTimeBlock<Course> timeBlock) {
-        Log.d("mylog", "onCreatedNewCourseTimeBlock(MergeableTimeBlock<Course> timeBlock)");
+        Log.d("mylog", "onCreatedNewCourseTimeBlock() ::" + timeBlock.toEntry().toString());
         // Save to the DB
         final long id = saveNewData(new TimeBlockFormer(timeBlock.toEntry()));
         timeBlock.setId(id);

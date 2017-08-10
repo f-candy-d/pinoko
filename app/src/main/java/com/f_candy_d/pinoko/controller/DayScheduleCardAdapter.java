@@ -97,7 +97,6 @@ public class DayScheduleCardAdapter extends CardAdapter {
         if (index == -1) {
             index = mDayTimeTable.addTimeBlock(timeBlock);
             notifyItemInserted(index);
-            Log.d("mylog", "insertNewTimeBlock()");
         }
     }
 }

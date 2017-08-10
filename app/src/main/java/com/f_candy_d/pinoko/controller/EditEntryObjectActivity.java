@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Course;
@@ -95,6 +96,7 @@ public class EditEntryObjectActivity extends AppCompatActivity
         Intent intent = new Intent();
         intent.putExtra(RESULT_ENTRY_OBJECT, timeBlock);
         finishEditing(intent, isCanceled);
+        Log.d("mylog", "onFinishEditing() ::" + timeBlock.toEntry().toString());
     }
 
 }

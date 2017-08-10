@@ -61,7 +61,6 @@ public class Course extends EntryObject {
                 locations.add(mLocations.valueAt(i));
             }
 
-//            dest.writeParcelableArray(locations, flags);
             dest.writeList(locations);
         }
 
@@ -72,7 +71,6 @@ public class Course extends EntryObject {
                 instructors.add(mInstructors.valueAt(i));
             }
 
-//            dest.writeParcelableArray(instructors, flags);
             dest.writeList(instructors);
         }
     }
@@ -85,7 +83,7 @@ public class Course extends EntryObject {
 
         int size = in.readInt();
         if (0 < size) {
-            ArrayList<Location> locations = (ArrayList<Location>) in.readArrayList(Location.class.getClassLoader());
+            ArrayList<Location> locations = in.readArrayList(this.getClass().getClassLoader());
             for (Location location : locations) {
                 mLocations.put(location.getId(), location);
             }
@@ -93,7 +91,7 @@ public class Course extends EntryObject {
 
         size = in.readInt();
         if (0 < size) {
-            ArrayList<Instructor> instructors = (ArrayList<Instructor>) in.readArrayList(Instructor.class.getClassLoader());
+            ArrayList<Instructor> instructors = in.readArrayList(this.getClass().getClassLoader());
             for (Instructor instructor : instructors) {
                 mInstructors.put(instructor.getId(), instructor);
             }
