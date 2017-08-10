@@ -5,6 +5,7 @@ import android.opengl.ETC1Util;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,5 +85,19 @@ public class DayScheduleCardAdapter extends CardAdapter {
     @Override
     public int getItemCount() {
         return mDayTimeTable.getTimeBlocks().size();
+    }
+
+    public OneDayTimeTable getDayTimeTable() {
+        return mDayTimeTable;
+    }
+
+    public void insertNewTimeBlock(@NonNull final MergeableTimeBlock timeBlock) {
+        int index = mDayTimeTable.getTimeBlocks().indexOf(timeBlock);
+        // Check whether the object is stored or not
+        if (index == -1) {
+            index = mDayTimeTable.addTimeBlock(timeBlock);
+            notifyItemInserted(index);
+            Log.d("mylog", "insertNewTimeBlock()");
+        }
     }
 }

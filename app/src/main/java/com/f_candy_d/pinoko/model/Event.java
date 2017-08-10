@@ -5,17 +5,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.util.LongSparseArray;
-import android.support.v7.view.menu.ExpandedMenuView;
 
-import com.f_candy_d.pinoko.EntryObjectType;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.DBDataManager;
 import com.f_candy_d.pinoko.utils.EntryHelper;
-import com.f_candy_d.pinoko.utils.TimeBlockFormer;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by daichi on 17/08/08.
@@ -112,11 +107,6 @@ public class Event extends EntryObject {
         mLocations.put(id, null);
 
         mNote = EntryHelper.getEventNote(entry, null);
-    }
-
-    @Override
-    public EntryObjectType getEntryObjectType() {
-        return EntryObjectType.EVENT;
     }
 
     /**

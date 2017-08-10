@@ -1,13 +1,100 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.f_candy_d.pinoko.view.EditTimeBlockFragment">
+              android:padding="16dp"
+              android:orientation="vertical"
+             tools:context="com.f_candy_d.pinoko.view.EditCourseTimeBlockFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:layout_height="wrap_content"
+        android:text="EDIT COURSE TIME BLOCK"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"/>
 
-</FrameLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Type"
+        android:layout_marginTop="44dp"
+        android:id="@+id/type_fectb"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Date [begin]"
+            android:layout_marginTop="20dp"
+            android:id="@+id/date_begin_fectb"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Time [begin]"
+            android:layout_marginTop="20dp"
+            android:id="@+id/time_begin_fectb"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Date [end]"
+            android:layout_marginTop="20dp"
+            android:id="@+id/date_end_fectb"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Time [end]"
+            android:layout_marginTop="20dp"
+            android:id="@+id/time_end_fectb"/>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Course"
+        android:layout_marginTop="20dp"
+        android:id="@+id/course_fectb"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Note..."
+        android:layout_marginTop="20dp"
+        android:id="@+id/note_fectb"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:layout_marginTop="20dp"
+            android:id="@+id/cancel_button_fectb"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:layout_marginTop="20dp"
+            android:id="@+id/ok_button_fectb"/>
+    </LinearLayout>
+
+</LinearLayout>

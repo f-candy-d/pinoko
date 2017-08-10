@@ -3,9 +3,7 @@ package com.f_candy_d.pinoko.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
 
-import com.f_candy_d.pinoko.EntryObjectType;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.EntryHelper;
 
@@ -93,11 +91,6 @@ public class Instructor extends EntryObject {
         EntryHelper.setInstructorNote(entry, mNote);
 
         return entry;
-    }
-
-    @Override
-    public EntryObjectType getEntryObjectType() {
-        return EntryObjectType.INSTRUCT;
     }
 
     /**

@@ -3,8 +3,8 @@ package com.f_candy_d.pinoko.controller;
 import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.util.Log;
@@ -24,7 +24,6 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.f_candy_d.pinoko.DayOfWeek;
-import com.f_candy_d.pinoko.EntryObjectType;
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.MergeableTimeBlock;
@@ -46,6 +45,7 @@ import com.f_candy_d.pinoko.utils.SQLQuery;
 import com.f_candy_d.pinoko.utils.SQLWhere;
 import com.f_candy_d.pinoko.Savable;
 import com.f_candy_d.pinoko.view.CardListFragment;
+import com.f_candy_d.pinoko.view.EditCourseTimeBlockFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -66,6 +66,9 @@ public class MainActivity extends AppCompatActivity
 
     private static final int VIEWPAGER_OFFSCREEN_LIMIT = 3;
     private static final long FAB_ANIMATION_DURATION = 300;
+
+    private static final int REQUEST_CODE_MAKE_NEW_COURSE_TIME_BLOCK = 1111;
+    private static final int REQUEST_CODE_MAKE_NEW_EVENT_TIME_BLOCK = 2222;
 
     // UI
     private AHBottomNavigation mBottomNavigation;
@@ -173,6 +176,10 @@ public class MainActivity extends AppCompatActivity
         mViewPager.setOffscreenPageLimit(VIEWPAGER_OFFSCREEN_LIMIT);
         mPagerAdapter = new AHBottomNavigationVIewPagerAdapter(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(mPagerAdapter);
+
+        for (TimeBlockFormer.Type type : TimeBlockFormer.Type.values()) {
+            Log.d("mylogQ", type.toString() + " :: ordinal=" + String.valueOf(type.ordinal()));
+        }
     }
 
     private void initUI() {
@@ -655,13 +662,62 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void onFabClicked(final int bottomNavigationTabPos) {
+        if (mCurrentFragment == null) {
+            mCurrentFragment = mPagerAdapter.getCurrentFragment();
+        }
+
         switch (bottomNavigationTabPos) {
 
             case FRAGMENT_ONE_DAY_SCHEDULE:
-                Intent intent = EditEntryObjectActivity.createIntent(EntryObjectType.MERGABLE_TIME_BLOCK);
+                DayScheduleCardAdapter adapter = (DayScheduleCardAdapter) mCurrentFragment.getAdapter();
+                Intent intent = EditEntryObjectActivity.createIntentWithArg(
+                        adapter.getDayTimeTable().getTimeTableId(),
+                        null,
+                        EditEntryObjectActivity.ViewType.EDIT_COURSE_TIME_BLOCK);
                 intent.setClass(this, EditEntryObjectActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_MAKE_NEW_COURSE_TIME_BLOCK);
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("mylog", "onActivityResult");
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_CODE_MAKE_NEW_COURSE_TIME_BLOCK:
+                if (resultCode == RESULT_OK) {
+                    final MergeableTimeBlock<Course> timeBlock
+                            = data.getExtras().getParcelable(EditEntryObjectActivity.RESULT_ENTRY_OBJECT);
+                    onCreatedNewCourseTimeBlock(timeBlock);
+                    break;
+                }
+        }
+    }
+
+    private void onCreatedNewCourseTimeBlock(MergeableTimeBlock<Course> timeBlock) {
+        Log.d("mylog", "onCreatedNewCourseTimeBlock(MergeableTimeBlock<Course> timeBlock)");
+        // Save to the DB
+        final long id = saveNewData(new TimeBlockFormer(timeBlock.toEntry()));
+        timeBlock.setId(id);
+
+        if (mCurrentFragment.getFragmentId() == FRAGMENT_ONE_DAY_SCHEDULE) {
+            // Reflect new data to the screen
+            ((DayScheduleCardAdapter) mCurrentFragment.getAdapter()).insertNewTimeBlock(timeBlock);
+        }
+//        (WeeklyScheduleCardAdapter)((CardListFragment) mPagerAdapter.getItem(FRAGMENT_WEEKLY_SCHEDULE)).getAdapter()
+    }
+
+    private long saveNewData(@NonNull final Savable newData) {
+        DBDataManager dataManager = new DBDataManager(this);
+        dataManager.openAsWritableAppend();
+        if (dataManager.isOpen()) {
+            final long id = dataManager.insert(newData);
+            dataManager.close();
+            return id;
+        }
+
+        return DBContract.NULL_ID;
     }
 }

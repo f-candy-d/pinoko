@@ -6,15 +6,11 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.util.LongSparseArray;
 
-import com.f_candy_d.pinoko.DayOfWeek;
-import com.f_candy_d.pinoko.EntryObjectType;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.DBDataManager;
 import com.f_candy_d.pinoko.utils.EntryHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 
 /**
  * Created by daichi on 17/08/08.
@@ -60,22 +56,24 @@ public class Course extends EntryObject {
 
         dest.writeInt(mLocations.size());
         if (0 < mLocations.size()) {
-            Location[] locations = new Location[mLocations.size()];
+            ArrayList<Location> locations = new ArrayList<>(mLocations.size());
             for (int i = 0; i < mLocations.size(); ++i) {
-                locations[i] = mLocations.valueAt(i);
+                locations.add(mLocations.valueAt(i));
             }
 
-            dest.writeParcelableArray(locations, flags);
+//            dest.writeParcelableArray(locations, flags);
+            dest.writeList(locations);
         }
 
         dest.writeInt(mInstructors.size());
         if (0 < mInstructors.size()) {
-            Instructor[] instructors = new Instructor[mInstructors.size()];
+            ArrayList<Instructor> instructors = new ArrayList<>(mInstructors.size());
             for (int i = 0; i < mInstructors.size(); ++i) {
-                instructors[i] = mInstructors.valueAt(i);
+                instructors.add(mInstructors.valueAt(i));
             }
 
-            dest.writeParcelableArray(instructors, flags);
+//            dest.writeParcelableArray(instructors, flags);
+            dest.writeList(instructors);
         }
     }
 
@@ -87,7 +85,7 @@ public class Course extends EntryObject {
 
         int size = in.readInt();
         if (0 < size) {
-            Location[] locations = (Location[]) in.readParcelableArray(Location.class.getClassLoader());
+            ArrayList<Location> locations = (ArrayList<Location>) in.readArrayList(Location.class.getClassLoader());
             for (Location location : locations) {
                 mLocations.put(location.getId(), location);
             }
@@ -95,7 +93,7 @@ public class Course extends EntryObject {
 
         size = in.readInt();
         if (0 < size) {
-            Instructor[] instructors = (Instructor[]) in.readParcelableArray(Instructor.class.getClassLoader());
+            ArrayList<Instructor> instructors = (ArrayList<Instructor>) in.readArrayList(Instructor.class.getClassLoader());
             for (Instructor instructor : instructors) {
                 mInstructors.put(instructor.getId(), instructor);
             }
@@ -116,11 +114,6 @@ public class Course extends EntryObject {
         EntryHelper.setCourseLocationId(entry, mLocations.keyAt(0));
 
         return entry;
-    }
-
-    @Override
-    public EntryObjectType getEntryObjectType() {
-        return EntryObjectType.COURSE;
     }
 
     @Override

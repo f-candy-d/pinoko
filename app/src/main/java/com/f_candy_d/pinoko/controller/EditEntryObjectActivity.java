@@ -6,32 +6,43 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.f_candy_d.pinoko.EntryObjectType;
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.EntryObject;
 import com.f_candy_d.pinoko.model.MergeableTimeBlock;
-import com.f_candy_d.pinoko.view.EditTimeBlockFragment;
+import com.f_candy_d.pinoko.view.EditCourseTimeBlockFragment;
 
-public class EditEntryObjectActivity extends AppCompatActivity {
+public class EditEntryObjectActivity extends AppCompatActivity
+        implements EditCourseTimeBlockFragment.MessageListener {
 
-    private static final String EXTRA_ENTRY_OBJECT = "entryObject";
-    private static final String EXTRA_ENTRY_OBJECT_TYPE = "entryObjectType";
-
-    private EntryObject mContent;
-    private EntryObjectType mContentType;
-
-    public static Intent createIntentWithArg(@NonNull final EntryObject entryObject) {
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_ENTRY_OBJECT, entryObject);
-        intent.putExtra(EXTRA_ENTRY_OBJECT_TYPE, entryObject.getEntryObjectType());
-
-        return intent;
+    public enum ViewType {
+        EDIT_COURSE_TIME_BLOCK,
+        EDIT_EVENT_TIME_BLOCK,
+        EDIT_COURSE,
+        EDIT_INSTRUCTOR,
+        EDIT_LOCATION
     }
 
-    public static Intent createIntent(@NonNull final EntryObjectType entryObjectType) {
+    private static final String EXTRA_ENTRY_OBJECT = "entryObject";
+    private static final String EXTRA_VIEW_TYPE = "viewType";
+    private static final String EXTRA_TIMETABLE_ID = "timeTableId";
+
+    public static final String RESULT_ENTRY_OBJECT = "resultEntryObject";
+
+    private static final int FAILED_TIMETABLE_ID = -1;
+
+    private EntryObject mContent;
+    private ViewType mViewType;
+    private int mTimeTableId;
+
+    public static Intent createIntentWithArg(final int timeTableId,
+                                             final EntryObject entryObject,
+                                             @NonNull final ViewType viewType) {
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_ENTRY_OBJECT_TYPE, entryObjectType);
+        intent.putExtra(EXTRA_TIMETABLE_ID, timeTableId);
+        intent.putExtra(EXTRA_ENTRY_OBJECT, entryObject);
+        intent.putExtra(EXTRA_VIEW_TYPE, viewType);
+
         return intent;
     }
 
@@ -42,7 +53,8 @@ public class EditEntryObjectActivity extends AppCompatActivity {
 
         final Intent intent = getIntent();
         mContent = intent.getParcelableExtra(EXTRA_ENTRY_OBJECT);
-        mContentType = (EntryObjectType) intent.getSerializableExtra(EXTRA_ENTRY_OBJECT_TYPE);
+        mViewType = (ViewType) intent.getSerializableExtra(EXTRA_VIEW_TYPE);
+        mTimeTableId = intent.getIntExtra(EXTRA_TIMETABLE_ID, FAILED_TIMETABLE_ID);
 
         launchFragment();
     }
@@ -50,14 +62,15 @@ public class EditEntryObjectActivity extends AppCompatActivity {
     private void launchFragment() {
         Fragment fragment = null;
 
-        switch (mContentType) {
-            case MERGABLE_TIME_BLOCK:
+        switch (mViewType) {
+            case EDIT_COURSE_TIME_BLOCK:
                 if (mContent != null) {
                     MergeableTimeBlock timeBlock = (MergeableTimeBlock) mContent;
-                        fragment = EditTimeBlockFragment.newInstance(timeBlock);
+                        fragment = EditCourseTimeBlockFragment
+                                .newInstance(timeBlock.getTimeTableId(), timeBlock);
 
                 } else {
-                    fragment = EditTimeBlockFragment.newInstance(null);
+                    fragment = EditCourseTimeBlockFragment.newInstance(mTimeTableId, null);
                 }
 
                 break;
@@ -68,4 +81,20 @@ public class EditEntryObjectActivity extends AppCompatActivity {
                     R.id.fragment_container, fragment, null).commit();
         }
     }
+
+    private void finishEditing(@NonNull final Intent result, final boolean isCanceled) {
+        setResult((isCanceled) ? RESULT_CANCELED : RESULT_OK, result);
+        finish();
+    }
+
+    /**
+     * region; EditCourseTimeBlockFragment.MessageListener implementation
+     */
+    @Override
+    public void onFinishEditing(MergeableTimeBlock<Course> timeBlock, boolean isCanceled) {
+        Intent intent = new Intent();
+        intent.putExtra(RESULT_ENTRY_OBJECT, timeBlock);
+        finishEditing(intent, isCanceled);
+    }
+
 }

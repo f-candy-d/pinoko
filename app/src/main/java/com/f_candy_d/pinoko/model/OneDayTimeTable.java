@@ -37,12 +37,18 @@ public class OneDayTimeTable {
         construct();
     }
 
-    private <T extends EntryObject>
-    void addTimeBlock(@NonNull final Entry entry, @NonNull final T content) {
+    private  <T extends EntryObject>
+    int addTimeBlock(@NonNull final Entry entry, @NonNull final T content) {
         final MergeableTimeBlock<T> timeBlock = new MergeableTimeBlock<>(entry);
         timeBlock.setContent(content);
 
         mTimeBlocks.add(timeBlock);
+        return mTimeBlocks.size() - 1;
+    }
+
+    public int addTimeBlock(@NonNull MergeableTimeBlock timeBlock) {
+        mTimeBlocks.add(timeBlock);
+        return mTimeBlocks.size() - 1;
     }
 
     public void fillSpace() {
@@ -147,5 +153,9 @@ public class OneDayTimeTable {
 
     public ArrayList<MergeableTimeBlock> getTimeBlocks() {
         return mTimeBlocks;
+    }
+
+    public int getTimeTableId() {
+        return mTimeTableId;
     }
 }

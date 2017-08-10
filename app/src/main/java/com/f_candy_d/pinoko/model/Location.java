@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import com.f_candy_d.pinoko.EntryObjectType;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.EntryHelper;
 
@@ -77,11 +76,6 @@ public class Location extends EntryObject {
         EntryHelper.setLocationNote(entry, mNote);
 
         return entry;
-    }
-
-    @Override
-    public EntryObjectType getEntryObjectType() {
-        return EntryObjectType.LOCATION;
     }
 
     /**
