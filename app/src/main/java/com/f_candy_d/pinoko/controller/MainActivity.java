@@ -25,6 +25,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.f_candy_d.pinoko.DayOfWeek;
 import com.f_candy_d.pinoko.R;
+import com.f_candy_d.pinoko.model.Assignment;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.Event;
 import com.f_candy_d.pinoko.model.MergeableTimeBlock;
@@ -558,12 +559,32 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public CardAdapter getAdapter(int fragmentId) {
-        if (fragmentId == FRAGMENT_ONE_DAY_SCHEDULE) {
-            // TODO; test code
-            DayTimeTable dayTimeTable = new DayTimeTable(mTimeTableId, DayOfWeek.WEDNESDAY, this);
-            return new DayScheduleCardAdapter(dayTimeTable, this);
-        } else {
-            return new WeeklyScheduleCardAdapter();
+        switch (fragmentId) {
+
+            case FRAGMENT_ONE_DAY_SCHEDULE:
+                // TODO; test code
+                DayTimeTable dayTimeTable = new DayTimeTable(mTimeTableId, DayOfWeek.WEDNESDAY, this);
+                return new DayScheduleCardAdapter(dayTimeTable, this);
+
+
+            case FRAGMENT_ASSIGNMENTS:
+                DBDataManager dataManager = new DBDataManager(this);
+                dataManager.openAsReadable();
+                ArrayList<Entry> results = dataManager.selectAllOf(DBContract.AssignmentEntry.TABLE_NAME);
+                ArrayList<Assignment> assignments;
+                if (results != null) {
+                     assignments = new ArrayList<>(results.size());
+                    for (Entry entry : results) {
+                        assignments.add(new Assignment(entry));
+                    }
+                } else {
+                    assignments = new ArrayList<>();
+                }
+                return new AssignmentCardAdapter(this, assignments);
+
+
+            default:
+                return new WeeklyScheduleCardAdapter();
         }
     }
 

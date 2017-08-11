@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.f_candy_d.pinoko.R;
+import com.f_candy_d.pinoko.model.Assignment;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.EntryObject;
 import com.f_candy_d.pinoko.model.Event;
@@ -142,6 +143,32 @@ public class MyCH {
                         + "end time :: " + timeBlock.getDatetimeEndAsString();
                 mTextView.setText(data);
             }
+        }
+    }
+
+    /**
+     * Assignment card view holder
+     */
+    public static class AssignmentCardHolder extends BaseCardHolder {
+        private TextView mTextView;
+
+        public AssignmentCardHolder(@NonNull final View view) {
+            super(view);
+            mTextView = (TextView) view.findViewById(R.id.meta_data_ac);
+        }
+
+        public void bind(final int position,
+                         OnCardClickListener cardClickListener,
+                         @NonNull Assignment assignment) {
+            super.bind(position, cardClickListener, assignment);
+            String data = "id :: " + String.valueOf(assignment.getId()) + "\n"
+                    + "name :: " + assignment.getName() + "\n"
+                    + "note :: " + assignment.getNote() + "\n"
+                    + "tb id :: " + String.valueOf(assignment.getTimeBlockId()) + "\n"
+                    + "deadline :: " + assignment.getDeadlineAsString()+ "\n"
+                    + "is done :: " + String.valueOf(assignment.isDone());
+
+            mTextView.setText(data);
         }
     }
 }

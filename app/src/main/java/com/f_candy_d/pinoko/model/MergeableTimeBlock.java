@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import com.f_candy_d.pinoko.DayOfWeek;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.EntryHelper;
-import com.f_candy_d.pinoko.utils.EnumSerializer;
+import com.f_candy_d.pinoko.utils.ParcelHelper;
 import com.f_candy_d.pinoko.utils.TimeBlockFormer;
 
 import java.util.ArrayList;
@@ -65,9 +65,9 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
         dest.writeLong(mDatetimeEnd);
         dest.writeInt(mTimeTableId);
         dest.writeSerializable(mBindType);
-        EnumSerializer.writeToParcel(mType, dest);
-        EnumSerializer.writeToParcel(mCategory, dest);
-        EnumSerializer.writeToParcel(mDayOfWeek, dest);
+        ParcelHelper.writeEnum(mType, dest);
+        ParcelHelper.writeEnum(mCategory, dest);
+        ParcelHelper.writeEnum(mDayOfWeek, dest);
 
         if (mMergedBlocks == null || mMergedBlocks.size() == 0) {
             dest.writeInt(0);
@@ -92,9 +92,9 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
         mDatetimeEnd = in.readLong();
         mTimeTableId = in.readInt();
         mBindType = (Class<T>) in.readSerializable();
-        mType = EnumSerializer.readFromParcel(TimeBlockFormer.Type.class, in);
-        mCategory = EnumSerializer.readFromParcel(TimeBlockFormer.Category.class, in);
-        mDayOfWeek = EnumSerializer.readFromParcel(DayOfWeek.class, in);
+        mType = ParcelHelper.readEnum(TimeBlockFormer.Type.class, in);
+        mCategory = ParcelHelper.readEnum(TimeBlockFormer.Category.class, in);
+        mDayOfWeek = ParcelHelper.readEnum(DayOfWeek.class, in);
 
         final int size = in.readInt();
         if (size == 0) {
