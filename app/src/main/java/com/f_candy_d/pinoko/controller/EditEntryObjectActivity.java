@@ -14,7 +14,7 @@ import com.f_candy_d.pinoko.model.MergeableTimeBlock;
 import com.f_candy_d.pinoko.view.EditCourseTimeBlockFragment;
 
 public class EditEntryObjectActivity extends AppCompatActivity
-        implements EditCourseTimeBlockFragment.MessageListener {
+        implements EditCourseTimeBlockFragment.MessageListener<MergeableTimeBlock<Course>> {
 
     public enum ViewType {
         EDIT_COURSE_TIME_BLOCK,
@@ -89,13 +89,12 @@ public class EditEntryObjectActivity extends AppCompatActivity
     }
 
     /**
-     * region; EditCourseTimeBlockFragment.MessageListener implementation
+     * region; EditCourseTimeBlockFragment.MessageListener<MergeableTimeBlock<Course>> implementation
      */
     @Override
-    public void onFinishEditing(MergeableTimeBlock<Course> timeBlock, boolean isCanceled) {
+    public void onFinishEditing(MergeableTimeBlock<Course> content, boolean isCanceled) {
         Intent intent = new Intent();
-        intent.putExtra(RESULT_ENTRY_OBJECT, timeBlock);
+        intent.putExtra(RESULT_ENTRY_OBJECT, content);
         finishEditing(intent, isCanceled);
     }
-
 }

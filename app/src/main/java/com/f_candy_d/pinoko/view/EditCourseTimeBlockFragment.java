@@ -29,11 +29,7 @@ import java.util.Calendar;
  * Use the {@link EditCourseTimeBlockFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EditCourseTimeBlockFragment extends Fragment {
-
-    public interface MessageListener {
-        void onFinishEditing(final MergeableTimeBlock<Course> timeBlock, final boolean isCanceled);
-    }
+public class EditCourseTimeBlockFragment extends EditEntryObjectFragment<MergeableTimeBlock<Course>> {
 
     private enum FieldErrorCode {
         INVALID_TIME,
@@ -42,7 +38,6 @@ public class EditCourseTimeBlockFragment extends Fragment {
         COURSE_IS_NULL
     }
 
-    private static final String ARG_CONTENT = "content";
     private static final String ARG_TIME_TABLE_ID = "timeTableId";
 
     // Filed data
@@ -54,8 +49,6 @@ public class EditCourseTimeBlockFragment extends Fragment {
 
     // Misc
     private int mTimeTableId;
-    @Nullable private MergeableTimeBlock<Course> mContent;
-    private MessageListener mMessageListener = null;
     private LayoutContentsSwitcher<TimeBlockFormer.Type> mLayoutContentsSwitcher;
 
     public EditCourseTimeBlockFragment() {
@@ -68,7 +61,6 @@ public class EditCourseTimeBlockFragment extends Fragment {
      *
      * @return A new instance of fragment EditCourseTimeBlockFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static EditCourseTimeBlockFragment newInstance(final int timeTableId,
                                                           final MergeableTimeBlock<Course> timeBlock) {
         EditCourseTimeBlockFragment fragment = new EditCourseTimeBlockFragment();
@@ -83,7 +75,8 @@ public class EditCourseTimeBlockFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mContent = getArguments().getParcelable(ARG_CONTENT);
+            final MergeableTimeBlock<Course> content = getArguments().getParcelable(ARG_CONTENT);
+            setContent(content);
             mTimeTableId = getArguments().getInt(ARG_TIME_TABLE_ID);
         }
     }
@@ -97,17 +90,6 @@ public class EditCourseTimeBlockFragment extends Fragment {
         initUI(view);
 
         return view;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof EditCourseTimeBlockFragment.MessageListener) {
-            mMessageListener = (EditCourseTimeBlockFragment.MessageListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement EditCourseTimeBlockFragment.MessageListener");
-        }
     }
 
     private void init() {
@@ -198,19 +180,20 @@ public class EditCourseTimeBlockFragment extends Fragment {
         if (!isCanceled) {
             FieldErrorCode[] errorCodes = isFieldValid();
             if (errorCodes.length == 0) {
-                if (mContent == null) {
-                    mContent = new MergeableTimeBlock<>();
+                if (getContent() == null) {
+//                    mContent = new MergeableTimeBlock<>();
+                    setContent(new MergeableTimeBlock<Course>());
                 }
 
-                mContent.setDatetimeBegin(mDateBegin.getTimeInMillis());
-                mContent.setDatetimeEnd(mDateEnd.getTimeInMillis());
-                mContent.setCategory(TimeBlockFormer.Category.COURSE);
-                mContent.setType(mType);
-                mContent.setDayOfWeek(mDayOfWeek);
-                mContent.setTargetId(mCourse.getId());
-                mContent.setContent(mCourse);
-                mContent.setTimeTableId(mTimeTableId);
-                mMessageListener.onFinishEditing(mContent, false);
+                getContent().setDatetimeBegin(mDateBegin.getTimeInMillis());
+                getContent().setDatetimeEnd(mDateEnd.getTimeInMillis());
+                getContent().setCategory(TimeBlockFormer.Category.COURSE);
+                getContent().setType(mType);
+                getContent().setDayOfWeek(mDayOfWeek);
+                getContent().setTargetId(mCourse.getId());
+                getContent().setContent(mCourse);
+                getContent().setTimeTableId(mTimeTableId);
+                getMessageListener().onFinishEditing(getContent(), false);
 
             } else {
                 // TODO; When the field is invalid...
@@ -218,7 +201,7 @@ public class EditCourseTimeBlockFragment extends Fragment {
             }
 
         } else {
-            mMessageListener.onFinishEditing(mContent, true);
+            getMessageListener().onFinishEditing(getContent(), true);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.f_candy_d.pinoko.view;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import com.f_candy_d.pinoko.model.EntryObject;
@@ -18,7 +19,7 @@ public class EditEntryObjectFragment<T extends EntryObject> extends Fragment {
     protected static final String ARG_CONTENT = "content";
 
     private MessageListener<T> mMessageListener = null;
-    private T mContent;
+    @Nullable private T mContent;
 
     public EditEntryObjectFragment() {}
 
@@ -33,7 +34,7 @@ public class EditEntryObjectFragment<T extends EntryObject> extends Fragment {
         }
     }
 
-    protected T getContent() {
+    @Nullable protected T getContent() {
         return mContent;
     }
 
