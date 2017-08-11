@@ -45,7 +45,6 @@ import com.f_candy_d.pinoko.utils.SQLQuery;
 import com.f_candy_d.pinoko.utils.SQLWhere;
 import com.f_candy_d.pinoko.Savable;
 import com.f_candy_d.pinoko.view.CardListFragment;
-import com.f_candy_d.pinoko.view.EditCourseTimeBlockFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -668,21 +667,20 @@ public class MainActivity extends AppCompatActivity
                 if (resultCode == RESULT_OK) {
                     final MergeableTimeBlock<Course> timeBlock
                             = data.getExtras().getParcelable(EditEntryObjectActivity.RESULT_ENTRY_OBJECT);
-                    onCreatedNewCourseTimeBlock(timeBlock);
+                    onNewCourseTimeBlockCreated(timeBlock);
                     break;
                 }
         }
     }
 
-    private void onCreatedNewCourseTimeBlock(MergeableTimeBlock<Course> timeBlock) {
-        Log.d("mylog", "onCreatedNewCourseTimeBlock() ::" + timeBlock.toEntry().toString());
+    private void onNewCourseTimeBlockCreated(MergeableTimeBlock<Course> timeBlock) {
         // Save to the DB
         final long id = saveNewData(new TimeBlockFormer(timeBlock.toEntry()));
         timeBlock.setId(id);
 
         if (mCurrentFragment.getFragmentId() == FRAGMENT_ONE_DAY_SCHEDULE) {
             // Reflect new data to the screen
-            ((DayScheduleCardAdapter) mCurrentFragment.getAdapter()).insertNewTimeBlock(timeBlock);
+            mCurrentFragment.getAdapter().insertData(timeBlock);
         }
     }
 

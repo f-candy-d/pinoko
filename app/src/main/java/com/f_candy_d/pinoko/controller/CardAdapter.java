@@ -1,7 +1,9 @@
 package com.f_candy_d.pinoko.controller;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
+import com.f_candy_d.pinoko.model.EntryObject;
 import com.f_candy_d.pinoko.view.MyCH;
 
 /**
@@ -27,4 +29,6 @@ abstract public class CardAdapter extends RecyclerView.Adapter<MyCH.BaseCardHold
     }
 
     abstract public RecyclerView.LayoutManager getParentLayoutManager();
+
+    abstract public void insertData(@NonNull final EntryObject content);
 }

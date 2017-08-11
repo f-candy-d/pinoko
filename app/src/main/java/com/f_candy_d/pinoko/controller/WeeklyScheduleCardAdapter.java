@@ -1,5 +1,6 @@
 package com.f_candy_d.pinoko.controller;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.f_candy_d.pinoko.R;
+import com.f_candy_d.pinoko.model.EntryObject;
 import com.f_candy_d.pinoko.view.MyCH;
 
 /**
@@ -43,5 +45,10 @@ public class WeeklyScheduleCardAdapter extends CardAdapter {
     @Override
     public RecyclerView.LayoutManager getParentLayoutManager() {
         return new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+    }
+
+    @Override
+    public void insertData(@NonNull EntryObject content) {
+
     }
 }

@@ -12,6 +12,7 @@ import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.EntryObject;
 import com.f_candy_d.pinoko.model.MergeableTimeBlock;
+import com.f_candy_d.pinoko.utils.ThrowExceptionHelper;
 import com.f_candy_d.pinoko.view.EditCourseTimeBlockFragment;
 
 public class EditEntryObjectActivity extends AppCompatActivity
@@ -73,7 +74,8 @@ public class EditEntryObjectActivity extends AppCompatActivity
                         fragment = EditCourseTimeBlockFragment
                                 .newInstance(timeBlock.getTimeTableId(), timeBlock);
                     } else {
-                        throwClassCastException(MergeableTimeBlock.class, mContent.getClass());
+                        ThrowExceptionHelper
+                                .throwClassCastException(MergeableTimeBlock.class, mContent.getClass());
                     }
 
                 } else {
@@ -92,12 +94,6 @@ public class EditEntryObjectActivity extends AppCompatActivity
     private void finishEditing(@NonNull final Intent result, final boolean isCanceled) {
         setResult((isCanceled) ? RESULT_CANCELED : RESULT_OK, result);
         finish();
-    }
-
-    private void throwClassCastException(@NonNull final Class<?> required, @NonNull final Class<?> passed) {
-        throw new ClassCastException(
-                "Required type is " + required.getName() + " , but "
-                        + passed.getClass().getName() + " was passed");
     }
 
     /**

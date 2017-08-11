@@ -18,6 +18,7 @@ import com.f_candy_d.pinoko.model.Event;
 import com.f_candy_d.pinoko.model.MergeableTimeBlock;
 import com.f_candy_d.pinoko.model.OneDayTimeTable;
 import com.f_candy_d.pinoko.utils.DBContract;
+import com.f_candy_d.pinoko.utils.ThrowExceptionHelper;
 import com.f_candy_d.pinoko.utils.TimeBlockFormer;
 import com.f_candy_d.pinoko.view.MyCH;
 
@@ -91,7 +92,14 @@ public class DayScheduleCardAdapter extends CardAdapter {
         return mDayTimeTable;
     }
 
-    public void insertNewTimeBlock(@NonNull final MergeableTimeBlock timeBlock) {
+    @Override
+    public void insertData(@NonNull EntryObject content) {
+        if (!(content instanceof MergeableTimeBlock)) {
+            ThrowExceptionHelper
+                    .throwClassCastException(MergeableTimeBlock.class, content.getClass());
+        }
+
+        MergeableTimeBlock timeBlock = (MergeableTimeBlock) content;
         int index = mDayTimeTable.getTimeBlocks().indexOf(timeBlock);
         // Check whether the object is stored or not
         if (index == -1) {
