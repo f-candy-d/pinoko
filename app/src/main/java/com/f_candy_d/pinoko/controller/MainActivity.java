@@ -45,6 +45,7 @@ import com.f_candy_d.pinoko.utils.SQLQuery;
 import com.f_candy_d.pinoko.utils.SQLWhere;
 import com.f_candy_d.pinoko.Savable;
 import com.f_candy_d.pinoko.view.CardListFragment;
+import com.f_candy_d.pinoko.view.SingleChoiceItemPickerFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -78,6 +79,24 @@ public class MainActivity extends AppCompatActivity
     private AHBottomNavigationVIewPagerAdapter mPagerAdapter;
     private CardListFragment mCurrentFragment;
     private AHBottomNavigationObserver mBottomNavigationObserver;
+    private final int mTimeTableId = 1;
+
+    // TODO; REMOVE THIS. THIS IS TEST CODE.
+    private enum FabAction {
+        ADD_NEW_COURSE_TIME_BLOCK("ADD COURSE"),
+        ADD_NEW_EVENT_TIME_BLOCK("ADD EVENT");
+
+        private final String mString;
+
+        FabAction(final String string) {
+            mString = string;
+        }
+
+        @Override
+        public String toString() {
+            return mString;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -301,7 +320,7 @@ public class MainActivity extends AppCompatActivity
                 .setTargetID(1)
                 .setDatetimeBegin(b2)
                 .setDatetimeEnd(e2)
-                .setTimeTableID(4)
+                .setTimeTableID(mTimeTableId)
                 .setDayOfWeek(DayOfWeek.WEDNESDAY);
 
         AssignmentFormer assignment = AssignmentFormer.createWithEntry();
@@ -543,7 +562,7 @@ public class MainActivity extends AppCompatActivity
     public CardAdapter getAdapter(int fragmentId) {
         if (fragmentId == FRAGMENT_ONE_DAY_SCHEDULE) {
             // TODO; test code
-            OneDayTimeTable oneDayTimeTable = new OneDayTimeTable(4, DayOfWeek.WEDNESDAY, this);
+            OneDayTimeTable oneDayTimeTable = new OneDayTimeTable(mTimeTableId, DayOfWeek.WEDNESDAY, this);
             return new DayScheduleCardAdapter(oneDayTimeTable, this);
         } else {
             return new WeeklyScheduleCardAdapter();
@@ -646,20 +665,37 @@ public class MainActivity extends AppCompatActivity
         switch (bottomNavigationTabPos) {
 
             case FRAGMENT_ONE_DAY_SCHEDULE:
-                DayScheduleCardAdapter adapter = (DayScheduleCardAdapter) mCurrentFragment.getAdapter();
-                Intent intent = EditEntryObjectActivity.createIntentWithArg(
-                        adapter.getDayTimeTable().getTimeTableId(),
-                        null,
-                        EditEntryObjectActivity.ViewType.EDIT_COURSE_TIME_BLOCK);
-                intent.setClass(this, EditEntryObjectActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_MAKE_NEW_COURSE_TIME_BLOCK);
+                // TODO; Test code
+                SingleChoiceItemPickerFragment<FabAction> picker =
+                        SingleChoiceItemPickerFragment.newInstance(
+                                FabAction.values(),
+                                FabAction.ADD_NEW_COURSE_TIME_BLOCK);
+
+                picker.setTitle("Do what ?");
+                picker.setEventListener(new SingleChoiceItemPickerFragment.EventListener<FabAction>() {
+                    @Override
+                    public void onItemSelected(SingleChoiceItemPickerFragment<FabAction> picker) {
+                        FabAction action = picker.getSelectedItem();
+                        if (action == FabAction.ADD_NEW_COURSE_TIME_BLOCK) {
+                            // Switch activities
+                            Intent intent = EditEntryObjectActivity.createIntentWithArg(
+                                    mTimeTableId,
+                                    null,
+                                    EditEntryObjectActivity.ViewType.EDIT_COURSE_TIME_BLOCK);
+                            intent.setClass(MainActivity.this, EditEntryObjectActivity.class);
+                            startActivityForResult(intent, REQUEST_CODE_MAKE_NEW_COURSE_TIME_BLOCK);
+                        }
+                    }
+                });
+
+                picker.show(this.getSupportFragmentManager(), null);
+
                 break;
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("mylog", "onActivityResult");
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {

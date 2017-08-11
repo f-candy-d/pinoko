@@ -16,4 +16,9 @@ public class ThrowExceptionHelper {
                 "Required type is " + required.getName() + " , but "
                         + passed.getClass().getName() + " was passed");
     }
+
+    public static void throwAtemptToAccessToEmptyArray() {
+        throw new IllegalStateException(
+                "Attempt to access to a null or empty array");
+    }
 }

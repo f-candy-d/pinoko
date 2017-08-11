@@ -22,6 +22,7 @@ import com.f_candy_d.pinoko.utils.LayoutContentsSwitcher;
 import com.f_candy_d.pinoko.utils.TimeBlockFormer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 /**
@@ -118,17 +119,17 @@ public class EditCourseTimeBlockFragment extends EditEntryObjectFragment<Mergeab
         typeBUtton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SelectTimeBlockTypeDialogFragment dialogFragment =
-                        SelectTimeBlockTypeDialogFragment.newInstance(mType);
-                dialogFragment.setEventListener(new SelectTimeBlockTypeDialogFragment.EventListener() {
-                    @Override
-                    public void onNegativeButtonClick(SelectTimeBlockTypeDialogFragment dialog) {
 
-                    }
-
+                SingleChoiceItemPickerFragment<TimeBlockFormer.Type> picker =
+                        SingleChoiceItemPickerFragment.newInstance(
+                                TimeBlockFormer.Type.values(),
+                                mType,
+                                new TimeBlockFormer.Type[]{TimeBlockFormer.Type.NULL_TYPE});
+                picker.setTitle("Select a type");
+                picker.setEventListener(new SingleChoiceItemPickerFragment.EventListener<TimeBlockFormer.Type>() {
                     @Override
-                    public void onPositivbeButtonClick(SelectTimeBlockTypeDialogFragment dialog) {
-                        TimeBlockFormer.Type selectedType = dialog.getSelectedType();
+                    public void onItemSelected(SingleChoiceItemPickerFragment<TimeBlockFormer.Type> picker) {
+                        TimeBlockFormer.Type selectedType = picker.getSelectedItem();
                         if (selectedType != mType) {
                             switchConfigLayoutContents(selectedType);
                             typeBUtton.setText(selectedType.toString());
@@ -136,7 +137,7 @@ public class EditCourseTimeBlockFragment extends EditEntryObjectFragment<Mergeab
                         }
                     }
                 });
-                dialogFragment.show(getActivity().getSupportFragmentManager(), null);
+                picker.show(getActivity().getSupportFragmentManager(), null);
             }
         });
 
@@ -397,23 +398,30 @@ public class EditCourseTimeBlockFragment extends EditEntryObjectFragment<Mergeab
         });
     }
 
-    private void setupConfigTimeAndDayOfWeekContents(@NonNull final ConfigTimeAndDayOfWeekContents layoutContents) {
-        setupConfigTimeContents(layoutContents.getConfigTimeContents());
+    private void setupConfigTimeAndDayOfWeekContents
+            (@NonNull final ConfigTimeAndDayOfWeekContents layoutContents) {
 
+        setupConfigTimeContents(layoutContents.getConfigTimeContents());
         // Select a day of the week button
         layoutContents.getDayOfWeekButton().setText(mDayOfWeek.toString());
         layoutContents.getDayOfWeekButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DowPickerFragment pickerFragment = DowPickerFragment.newInstance(mDayOfWeek);
-                pickerFragment.setEventListener(new DowPickerFragment.EventListener() {
+                SingleChoiceItemPickerFragment<DayOfWeek> picker =
+                        SingleChoiceItemPickerFragment.newInstance(
+                                DayOfWeek.values(),
+                                mDayOfWeek,
+                                new DayOfWeek[]{DayOfWeek.NULL_VALUE});
+
+                picker.setEventListener(new SingleChoiceItemPickerFragment.EventListener<DayOfWeek>() {
                     @Override
-                    public void onDayOfWeekSelected(DowPickerFragment picker) {
-                        mDayOfWeek = picker.getSelectedDayOfWeek();
+                    public void onItemSelected(SingleChoiceItemPickerFragment<DayOfWeek> picker) {
+                        mDayOfWeek = picker.getSelectedItem();
                         layoutContents.getDayOfWeekButton().setText(mDayOfWeek.toString());
                     }
                 });
-                pickerFragment.show(getActivity().getSupportFragmentManager(), null);
+                picker.setTitle("Select a day of the week");
+                picker.show(getActivity().getSupportFragmentManager(), null);
             }
         });
     }
