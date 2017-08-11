@@ -1,21 +1,15 @@
 package com.f_candy_d.pinoko.view;
 
-import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.TextView;
 
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Course;
-import com.f_candy_d.pinoko.model.Entry;
 import com.f_candy_d.pinoko.model.EntryObject;
 import com.f_candy_d.pinoko.model.Event;
 import com.f_candy_d.pinoko.model.MergeableTimeBlock;
-import com.f_candy_d.pinoko.utils.DBContract;
-
-import java.util.Calendar;
 
 /**
  * Created by daichi on 17/08/07.
@@ -86,10 +80,10 @@ public class MyCH {
 
         public void bind(int position,
                          OnCardClickListener clickListener,
-                         MergeableTimeBlock<Course> timeBlock) {
+                         @NonNull MergeableTimeBlock<?> timeBlock) {
 
             super.bind(position, clickListener, timeBlock);
-            Course course = timeBlock.getContent();
+            Course course = MergeableTimeBlock.getCastedContent(timeBlock, Course.class);
             if (course != null) {
                 String data = "id :: " + String.valueOf(course.getId()) + "\n"
                         + "name :: " + course.getName() + "\n"
@@ -123,10 +117,10 @@ public class MyCH {
 
         public void bind(int position,
                          OnCardClickListener clickListener,
-                         MergeableTimeBlock<Event> timeBlock) {
+                         @NonNull MergeableTimeBlock<?> timeBlock) {
 
             super.bind(position, clickListener, timeBlock);
-            Event event = timeBlock.getContent();
+            Event event = MergeableTimeBlock.getCastedContent(timeBlock, Event.class);
             if (event != null) {
                 String data = "id :: " + String.valueOf(event.getId()) + "\n"
                         + "name :: " + event.getName() + "\n"
@@ -141,11 +135,6 @@ public class MyCH {
                         + "end time :: " + timeBlock.getDatetimeEndAsString();
                 mTextView.setText(data);
             }
-        }
-
-        @Override
-        public void bind(int position, OnCardClickListener clickListener) {
-            bind(position, clickListener, null);
         }
     }
 }

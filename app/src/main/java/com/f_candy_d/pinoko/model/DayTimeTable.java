@@ -38,8 +38,8 @@ public class DayTimeTable {
     }
 
     private  <T extends EntryObject>
-    int addTimeBlock(@NonNull final Entry entry, @NonNull final T content) {
-        final MergeableTimeBlock<T> timeBlock = new MergeableTimeBlock<>(entry);
+    int addTimeBlock(@NonNull final Entry entry, @NonNull final T content, @NonNull final Class<T> tClass) {
+        final MergeableTimeBlock<T> timeBlock = new MergeableTimeBlock<>(tClass, entry);
         timeBlock.setContent(content);
 
         mTimeBlocks.add(timeBlock);
@@ -139,7 +139,7 @@ public class DayTimeTable {
 
                     if (contentEntry != null) {
                         event = new Event(contentEntry, mContext);
-                        addTimeBlock(timeBlockEntry, event);
+                        addTimeBlock(timeBlockEntry, event, Event.class);
                     }
                     break;
 
@@ -151,7 +151,7 @@ public class DayTimeTable {
 
                     if (contentEntry != null) {
                         course = new Course(contentEntry, mContext);
-                        addTimeBlock(timeBlockEntry, course);
+                        addTimeBlock(timeBlockEntry, course, Course.class);
                     }
                     break;
             }

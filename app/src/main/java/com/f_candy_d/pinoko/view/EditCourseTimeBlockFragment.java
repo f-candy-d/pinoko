@@ -182,7 +182,7 @@ public class EditCourseTimeBlockFragment extends EditEntryObjectFragment<Mergeab
             FieldErrorCode[] errorCodes = isFieldValid();
             if (errorCodes.length == 0) {
                 if (mContent == null) {
-                    mContent = new MergeableTimeBlock<>();
+                    mContent = new MergeableTimeBlock<>(Course.class);
                 }
 
                 mContent.setDatetimeBegin(mDateBegin.getTimeInMillis());
