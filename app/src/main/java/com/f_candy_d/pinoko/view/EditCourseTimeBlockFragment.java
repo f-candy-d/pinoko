@@ -45,16 +45,15 @@ public class EditCourseTimeBlockFragment extends Fragment {
     private static final String ARG_CONTENT = "content";
     private static final String ARG_TIME_TABLE_ID = "timeTableId";
 
-    // UI
-    private ViewGroup mContentsContainer;
-
-    // Misc
-    private int mTimeTableId;
+    // Filed data
     private TimeBlockFormer.Type mType;
     private Calendar mDateBegin;
     private Calendar mDateEnd;
     private Course mCourse;
     private DayOfWeek mDayOfWeek;
+
+    // Misc
+    private int mTimeTableId;
     @Nullable private MergeableTimeBlock<Course> mContent;
     private MessageListener mMessageListener = null;
     private LayoutContentsSwitcher<TimeBlockFormer.Type> mLayoutContentsSwitcher;
@@ -115,14 +114,14 @@ public class EditCourseTimeBlockFragment extends Fragment {
         mType = TimeBlockFormer.Type.WEEKLY;
         mDateBegin = Calendar.getInstance();
         mDateEnd = Calendar.getInstance();
-        mDayOfWeek = DayOfWeek.NULL_VALUE;
+        mDayOfWeek = DayOfWeek.from(mDateBegin.get(Calendar.DAY_OF_WEEK));
         mCourse = null;
     }
 
     private void initUI(@NonNull final View view) {
         //LayoutContents
-        mContentsContainer = (FrameLayout) view.findViewById(R.id.config_contents);
-        mLayoutContentsSwitcher = new LayoutContentsSwitcher<>(TimeBlockFormer.Type.class, mContentsContainer);
+        FrameLayout contentsContainer = (FrameLayout) view.findViewById(R.id.config_contents);
+        mLayoutContentsSwitcher = new LayoutContentsSwitcher<>(TimeBlockFormer.Type.class, contentsContainer);
         ConfigTimeAndDayOfWeekContents configTimeAndDayOfWeekContets = new ConfigTimeAndDayOfWeekContents();
         mLayoutContentsSwitcher.addLayout(TimeBlockFormer.Type.ONE_DAY, new ConfigDateAndTimeContents());
         mLayoutContentsSwitcher.addLayout(TimeBlockFormer.Type.EVERYDAY, new ConfigTimeContents());
@@ -418,6 +417,9 @@ public class EditCourseTimeBlockFragment extends Fragment {
 
     private void setupConfigTimeAndDayOfWeekContents(@NonNull final ConfigTimeAndDayOfWeekContents layoutContents) {
         setupConfigTimeContents(layoutContents.getConfigTimeContents());
+
+        // Select a day of the week button
+        layoutContents.getDayOfWeekButton().setText(mDayOfWeek.toString());
         layoutContents.getDayOfWeekButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
