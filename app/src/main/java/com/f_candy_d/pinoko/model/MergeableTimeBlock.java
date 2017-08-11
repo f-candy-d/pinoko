@@ -3,7 +3,6 @@ package com.f_candy_d.pinoko.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.f_candy_d.pinoko.DayOfWeek;
 import com.f_candy_d.pinoko.utils.DBContract;
@@ -23,7 +22,7 @@ import java.util.Comparator;
 public class MergeableTimeBlock<T extends EntryObject> extends EntryObject implements Parcelable {
 
     private T mContent = null;
-    private ArrayList<MergeableTimeBlock<T>> mMerged = null;
+    private ArrayList<MergeableTimeBlock<T>> mMergedBlocks = null;
 
     // Attributes
     private long mId;
@@ -68,11 +67,11 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
         EnumSerializer.writeToParcel(mCategory, dest);
         EnumSerializer.writeToParcel(mDayOfWeek, dest);
 
-        if (mMerged == null || mMerged.size() == 0) {
+        if (mMergedBlocks == null || mMergedBlocks.size() == 0) {
             dest.writeInt(0);
         } else {
-            dest.writeInt(mMerged.size());
-            dest.writeList(mMerged);
+            dest.writeInt(mMergedBlocks.size());
+            dest.writeList(mMergedBlocks);
         }
 
         if (mContent != null) {
@@ -95,9 +94,9 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
 
         final int size = in.readInt();
         if (size == 0) {
-            mMerged = null;
+            mMergedBlocks = null;
         }  else {
-            mMerged = in.readArrayList(this.getClass().getClassLoader());
+            mMergedBlocks = in.readArrayList(this.getClass().getClassLoader());
         }
 
         Class<?> classType = (Class<?>) in.readSerializable();
@@ -158,29 +157,29 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
         final long beginTime = timeBlock.getDatetimeBegin();
         final long endTime = timeBlock.getDatetimeEnd();
 
-        if ((mDatetimeBegin <= beginTime && beginTime <= mDatetimeEnd) ||
-                (mDatetimeBegin <= endTime && endTime <= mDatetimeEnd)) {
+        if ((mDatetimeBegin <= beginTime && beginTime < mDatetimeEnd) ||
+                (mDatetimeBegin < endTime && endTime <= mDatetimeEnd)) {
 
-            if (mMerged == null) {
-                mMerged = new ArrayList<>();
-                if (mContent != null) {
+            if (!hasBlocks()) {
+                mMergedBlocks = new ArrayList<>();
+                if (hasContent()) {
                     MergeableTimeBlock<T> tb = new MergeableTimeBlock<>(toEntry());
                     tb.setContent(mContent);
-                    mMerged.add(tb);
+                    mMergedBlocks.add(tb);
                     mContent = null;
                 }
             }
 
-            for (int i = 0; i < mMerged.size() + 1; ++i) {
+            for (int i = 0; i < mMergedBlocks.size() + 1; ++i) {
 
-                if (i == mMerged.size()) {
-                    mMerged.add(timeBlock);
+                if (i == mMergedBlocks.size()) {
+                    mMergedBlocks.add(timeBlock);
                     sort();
                     // Update
                     mDatetimeEnd = endTime;
 
-                } else if (beginTime < mMerged.get(i).getDatetimeBegin()) {
-                    mMerged.add(i, timeBlock);
+                } else if (beginTime < mMergedBlocks.get(i).getDatetimeBegin()) {
+                    mMergedBlocks.add(i, timeBlock);
                     // Update
                     if (i == 0) {
                         mDatetimeBegin = beginTime;
@@ -212,8 +211,8 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
         return mContent;
     }
 
-    public ArrayList<MergeableTimeBlock<T>> getMerged() {
-        return mMerged;
+    public ArrayList<MergeableTimeBlock<T>> getMergedBlocks() {
+        return mMergedBlocks;
     }
 
     public void setDatetimeBegin(long datetimeBegin) {
@@ -276,8 +275,10 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
         return (mContent != null);
     }
 
+    public boolean hasBlocks() { return (mMergedBlocks != null); }
+
     public void sort() {
-        if (mMerged != null) {
+        if (mMergedBlocks != null) {
             final Comparator<MergeableTimeBlock<T>> comparator =
                     new Comparator<MergeableTimeBlock<T>>() {
                         @Override
@@ -292,7 +293,7 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
                         }
                     };
 
-            Collections.sort(mMerged, comparator);
+            Collections.sort(mMergedBlocks, comparator);
         }
     }
 

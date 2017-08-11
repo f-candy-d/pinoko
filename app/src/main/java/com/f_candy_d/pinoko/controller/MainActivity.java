@@ -27,7 +27,7 @@ import com.f_candy_d.pinoko.DayOfWeek;
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.MergeableTimeBlock;
-import com.f_candy_d.pinoko.model.OneDayTimeTable;
+import com.f_candy_d.pinoko.model.DayTimeTable;
 import com.f_candy_d.pinoko.utils.AssignmentFormer;
 import com.f_candy_d.pinoko.utils.AttendanceFormer;
 import com.f_candy_d.pinoko.utils.CourseFormer;
@@ -562,8 +562,8 @@ public class MainActivity extends AppCompatActivity
     public CardAdapter getAdapter(int fragmentId) {
         if (fragmentId == FRAGMENT_ONE_DAY_SCHEDULE) {
             // TODO; test code
-            OneDayTimeTable oneDayTimeTable = new OneDayTimeTable(mTimeTableId, DayOfWeek.WEDNESDAY, this);
-            return new DayScheduleCardAdapter(oneDayTimeTable, this);
+            DayTimeTable dayTimeTable = new DayTimeTable(mTimeTableId, DayOfWeek.WEDNESDAY, this);
+            return new DayScheduleCardAdapter(dayTimeTable, this);
         } else {
             return new WeeklyScheduleCardAdapter();
         }

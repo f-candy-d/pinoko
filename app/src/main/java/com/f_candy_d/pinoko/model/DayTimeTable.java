@@ -19,7 +19,7 @@ import java.util.Comparator;
  * Created by daichi on 17/08/08.
  */
 
-public class OneDayTimeTable {
+public class DayTimeTable {
 
     private ArrayList<MergeableTimeBlock> mTimeBlocks;
     private final DayOfWeek mDayOfWeek;
@@ -27,7 +27,7 @@ public class OneDayTimeTable {
     private final int mTimeTableId;
     private final Context mContext;
 
-    public OneDayTimeTable(int timeTableId, @NonNull final DayOfWeek dayOfWeek, @NonNull final Context context) {
+    public DayTimeTable(int timeTableId, @NonNull final DayOfWeek dayOfWeek, @NonNull final Context context) {
         mDayOfWeek = dayOfWeek;
         mTimeBlocks = new ArrayList<>();
         mDataManager = new DBDataManager(context);
@@ -69,7 +69,16 @@ public class OneDayTimeTable {
         return null;
     }
 
-    private void mergeAllIfPossible() {
+    private void mergeAllBlocksIfPossible() {
+        for (int i = mTimeBlocks.size() - 1; 0 <= i; --i) {
+            for (int j = i - 1; 0 <= j; --j) {
+                // Consider this warning...
+                if (mTimeBlocks.get(j).mergeWith(mTimeBlocks.get(i)) == null) {
+                    mTimeBlocks.remove(i);
+                    break;
+                }
+            }
+        }
     }
 
     private void construct() {
@@ -158,4 +167,6 @@ public class OneDayTimeTable {
     public int getTimeTableId() {
         return mTimeTableId;
     }
+
+    private void sortBlocks() {}
 }

@@ -1,23 +1,19 @@
 package com.f_candy_d.pinoko.controller;
 
 import android.content.Context;
-import android.opengl.ETC1Util;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Course;
-import com.f_candy_d.pinoko.model.Entry;
 import com.f_candy_d.pinoko.model.EntryObject;
 import com.f_candy_d.pinoko.model.Event;
 import com.f_candy_d.pinoko.model.MergeableTimeBlock;
-import com.f_candy_d.pinoko.model.OneDayTimeTable;
-import com.f_candy_d.pinoko.utils.DBContract;
+import com.f_candy_d.pinoko.model.DayTimeTable;
 import com.f_candy_d.pinoko.utils.ThrowExceptionHelper;
 import com.f_candy_d.pinoko.utils.TimeBlockFormer;
 import com.f_candy_d.pinoko.view.MyCH;
@@ -29,9 +25,9 @@ import com.f_candy_d.pinoko.view.MyCH;
 public class DayScheduleCardAdapter extends CardAdapter {
 
     private final Context mContext;
-    private final OneDayTimeTable mDayTimeTable;
+    private final DayTimeTable mDayTimeTable;
 
-    public DayScheduleCardAdapter(@NonNull final OneDayTimeTable dayTimeTable,
+    public DayScheduleCardAdapter(@NonNull final DayTimeTable dayTimeTable,
                                   @NonNull final Context context) {
         mContext = context;
         mDayTimeTable = dayTimeTable;
@@ -88,7 +84,7 @@ public class DayScheduleCardAdapter extends CardAdapter {
         return mDayTimeTable.getTimeBlocks().size();
     }
 
-    public OneDayTimeTable getDayTimeTable() {
+    public DayTimeTable getDayTimeTable() {
         return mDayTimeTable;
     }
 
