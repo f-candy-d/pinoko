@@ -20,47 +20,10 @@
         android:layout_marginTop="44dp"
         android:id="@+id/type_fectb"/>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Date [begin]"
-            android:layout_marginTop="20dp"
-            android:id="@+id/date_begin_fectb"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Time [begin]"
-            android:layout_marginTop="20dp"
-            android:id="@+id/time_begin_fectb"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Date [end]"
-            android:layout_marginTop="20dp"
-            android:id="@+id/date_end_fectb"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Time [end]"
-            android:layout_marginTop="20dp"
-            android:id="@+id/time_end_fectb"/>
-    </LinearLayout>
+        android:id="@+id/config_contents"/>
 
     <Button
         android:layout_width="match_parent"
@@ -69,17 +32,11 @@
         android:layout_marginTop="20dp"
         android:id="@+id/course_fectb"/>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Note..."
-        android:layout_marginTop="20dp"
-        android:id="@+id/note_fectb"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="64dp">
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"

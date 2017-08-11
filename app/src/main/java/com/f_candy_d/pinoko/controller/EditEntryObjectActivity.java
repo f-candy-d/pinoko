@@ -96,7 +96,6 @@ public class EditEntryObjectActivity extends AppCompatActivity
         Intent intent = new Intent();
         intent.putExtra(RESULT_ENTRY_OBJECT, timeBlock);
         finishEditing(intent, isCanceled);
-        Log.d("mylog", "onFinishEditing() ::" + timeBlock.toEntry().toString());
     }
 
 }

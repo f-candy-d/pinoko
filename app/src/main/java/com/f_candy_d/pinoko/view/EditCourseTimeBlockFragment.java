@@ -2,24 +2,26 @@ package com.f_candy_d.pinoko.view;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.f_candy_d.pinoko.DayOfWeek;
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.MergeableTimeBlock;
+import com.f_candy_d.pinoko.utils.LayoutContentsSwitcher;
 import com.f_candy_d.pinoko.utils.TimeBlockFormer;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -33,11 +35,18 @@ public class EditCourseTimeBlockFragment extends Fragment {
         void onFinishEditing(final MergeableTimeBlock<Course> timeBlock, final boolean isCanceled);
     }
 
+    private enum FieldErrorCode {
+        INVALID_TIME,
+        INVALID_DATE,
+        INVALID_DOW,
+        COURSE_IS_NULL
+    }
+
     private static final String ARG_CONTENT = "content";
     private static final String ARG_TIME_TABLE_ID = "timeTableId";
 
     // UI
-    private EditText mNote;
+    private ViewGroup mContentsContainer;
 
     // Misc
     private int mTimeTableId;
@@ -45,8 +54,10 @@ public class EditCourseTimeBlockFragment extends Fragment {
     private Calendar mDateBegin;
     private Calendar mDateEnd;
     private Course mCourse;
+    private DayOfWeek mDayOfWeek;
     @Nullable private MergeableTimeBlock<Course> mContent;
     private MessageListener mMessageListener = null;
+    private LayoutContentsSwitcher<TimeBlockFormer.Type> mLayoutContentsSwitcher;
 
     public EditCourseTimeBlockFragment() {
         // Required empty public constructor
@@ -76,8 +87,6 @@ public class EditCourseTimeBlockFragment extends Fragment {
             mContent = getArguments().getParcelable(ARG_CONTENT);
             mTimeTableId = getArguments().getInt(ARG_TIME_TABLE_ID);
         }
-
-        init();
     }
 
     @Override
@@ -107,12 +116,25 @@ public class EditCourseTimeBlockFragment extends Fragment {
     }
 
     private void init() {
-        mType = TimeBlockFormer.Type.NULL_TYPE;
+        mType = TimeBlockFormer.Type.ONE_DAY;
         mDateBegin = Calendar.getInstance();
         mDateEnd = Calendar.getInstance();
+        mDayOfWeek = DayOfWeek.NULL_VALUE;
+        mCourse = null;
     }
 
     private void initUI(@NonNull final View view) {
+        //LayoutContents
+        mContentsContainer = (FrameLayout) view.findViewById(R.id.config_contents);
+        mLayoutContentsSwitcher = new LayoutContentsSwitcher<>(TimeBlockFormer.Type.class, mContentsContainer);
+        ConfigDateAndTimeContents configDateAndTimeContents = new ConfigDateAndTimeContents();
+        mLayoutContentsSwitcher.addLayout(TimeBlockFormer.Type.ONE_DAY, configDateAndTimeContents);
+        mLayoutContentsSwitcher.addLayout(TimeBlockFormer.Type.EVERYDAY, new ConfigTimeContents());
+        mLayoutContentsSwitcher.addLayout(TimeBlockFormer.Type.WEEKLY, new ConfigTimeAndDayOfWeekContents());
+        mLayoutContentsSwitcher.setCurrentLayout(TimeBlockFormer.Type.ONE_DAY);
+        // Setup initial contents
+        setupConfigDateAndTimeContents(configDateAndTimeContents);
+
         // Select time-block type button
         final Button typeBUtton = (Button) view.findViewById(R.id.type_fectb);
         typeBUtton.setText(mType.toString());
@@ -129,122 +151,15 @@ public class EditCourseTimeBlockFragment extends Fragment {
 
                     @Override
                     public void onPositivbeButtonClick(SelectTimeBlockTypeDialogFragment dialog) {
-                        mType = dialog.getSelectedType();
-                        typeBUtton.setText(mType.toString());
+                        TimeBlockFormer.Type selectedType = dialog.getSelectedType();
+                        if (selectedType != mType) {
+                            switchConfigLayoutContents(selectedType);
+                            typeBUtton.setText(selectedType.toString());
+                            mType = selectedType;
+                        }
                     }
                 });
                 dialogFragment.show(getActivity().getSupportFragmentManager(), null);
-            }
-        });
-
-        // Select begin date button
-        final Button dateBeginButton = (Button) view.findViewById(R.id.date_begin_fectb);
-        dateBeginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerFragment pickerFragment = DatePickerFragment.newInstance(
-                        mDateBegin.get(Calendar.YEAR),
-                        mDateBegin.get(Calendar.MONTH),
-                        mDateBegin.get(Calendar.DAY_OF_MONTH));
-                pickerFragment.setEventListener(new DatePickerFragment.EventListener() {
-                    @Override
-                    public void onDateSelected(DatePickerFragment picker) {
-                        int y = picker.getYear();
-                        int m = picker.getMonth();
-                        int d = picker.getDay();
-                        String message = "[BEGIN] " + String.valueOf(y) + " - "
-                                + String.valueOf(m) + " - "
-                                + String.valueOf(d);
-
-                        mDateBegin.set(Calendar.YEAR, y);
-                        mDateBegin.set(Calendar.MONTH, m);
-                        mDateBegin.set(Calendar.DAY_OF_MONTH, d);
-
-                        dateBeginButton.setText(message);
-                    }
-                });
-                pickerFragment.show(getActivity().getSupportFragmentManager(), null);
-            }
-        });
-
-        // Select begin time button
-        final Button timeBeginButton = (Button) view.findViewById(R.id.time_begin_fectb);
-        timeBeginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerFragment pickerFragment = TimePickerFragment.newInstance(
-                        mDateBegin.get(Calendar.HOUR_OF_DAY),
-                        mDateBegin.get(Calendar.MINUTE),
-                        true);
-                pickerFragment.setEventListener(new TimePickerFragment.EventListener() {
-                    @Override
-                    public void onTimeSelected(TimePickerFragment picker) {
-                        int h = picker.getHour();
-                        int m = picker.getMinute();
-                        String message = "[BEGIN] " + String.valueOf(h) + " : "
-                                + String.valueOf(m);
-
-                        mDateBegin.set(Calendar.HOUR_OF_DAY, h);
-                        mDateBegin.set(Calendar.MINUTE, m);
-                        timeBeginButton.setText(message);
-                    }
-                });
-                pickerFragment.show(getActivity().getSupportFragmentManager(), null);
-            }
-        });
-
-        // Select end date button
-        final Button dateEndButton = (Button) view.findViewById(R.id.date_end_fectb);
-        dateEndButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerFragment pickerFragment = DatePickerFragment.newInstance(
-                        mDateEnd.get(Calendar.YEAR),
-                        mDateEnd.get(Calendar.MONTH),
-                        mDateEnd.get(Calendar.DAY_OF_MONTH));
-                pickerFragment.setEventListener(new DatePickerFragment.EventListener() {
-                    @Override
-                    public void onDateSelected(DatePickerFragment picker) {
-                        int y = picker.getYear();
-                        int m = picker.getMonth();
-                        int d = picker.getDay();
-                        String message = "[END] " + String.valueOf(y) + " - "
-                                + String.valueOf(m) + " - "
-                                + String.valueOf(d);
-
-                        mDateEnd.set(Calendar.YEAR, y);
-                        mDateEnd.set(Calendar.MONTH, m);
-                        mDateEnd.set(Calendar.DAY_OF_MONTH, d);
-                        dateEndButton.setText(message);
-                    }
-                });
-                pickerFragment.show(getActivity().getSupportFragmentManager(), null);
-            }
-        });
-
-        // Select end time button
-        final Button timeEndButton = (Button) view.findViewById(R.id.time_end_fectb);
-        timeEndButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerFragment pickerFragment = TimePickerFragment.newInstance(
-                        mDateEnd.get(Calendar.HOUR_OF_DAY),
-                        mDateEnd.get(Calendar.MINUTE),
-                        true);
-                pickerFragment.setEventListener(new TimePickerFragment.EventListener() {
-                    @Override
-                    public void onTimeSelected(TimePickerFragment picker) {
-                        int h = picker.getHour();
-                        int m = picker.getMinute();
-                        String message = "[END] " + String.valueOf(h) + " : "
-                                + String.valueOf(m);
-
-                        mDateEnd.set(Calendar.HOUR_OF_DAY, h);
-                        mDateEnd.set(Calendar.MINUTE, m);
-                        timeEndButton.setText(message);
-                    }
-                });
-                pickerFragment.show(getActivity().getSupportFragmentManager(), null);
             }
         });
 
@@ -282,14 +197,12 @@ public class EditCourseTimeBlockFragment extends Fragment {
                 finishEditing(false);
             }
         });
-
-        // Edit note
-        mNote = (EditText) view.findViewById(R.id.note_fectb);
     }
 
     private void finishEditing(final boolean isCanceled) {
-        if (!isCanceled && isFieldValid()) {
-            if (isFieldValid()) {
+        if (!isCanceled) {
+            FieldErrorCode[] errorCodes = isFieldValid();
+            if (errorCodes.length == 0) {
                 if (mContent == null) {
                     mContent = new MergeableTimeBlock<>();
                 }
@@ -298,19 +211,329 @@ public class EditCourseTimeBlockFragment extends Fragment {
                 mContent.setDatetimeEnd(mDateEnd.getTimeInMillis());
                 mContent.setCategory(TimeBlockFormer.Category.COURSE);
                 mContent.setType(mType);
-                mContent.setDayOfWeek(DayOfWeek.from(mDateBegin.get(Calendar.DAY_OF_WEEK)));
+                mContent.setDayOfWeek(mDayOfWeek);
                 mContent.setTargetId(mCourse.getId());
                 mContent.setContent(mCourse);
                 mContent.setTimeTableId(mTimeTableId);
+                mMessageListener.onFinishEditing(mContent, false);
+
             } else {
                 // TODO; When the field is invalid...
+                Toast.makeText(getActivity(), "error # " + TextUtils.join(",", errorCodes), Toast.LENGTH_LONG).show();
             }
-        }
 
-        mMessageListener.onFinishEditing(mContent, isCanceled);
+        } else {
+            mMessageListener.onFinishEditing(mContent, true);
+        }
     }
 
-    private boolean isFieldValid() {
-        return true;
+    private FieldErrorCode[] isFieldValid() {
+        ArrayList<FieldErrorCode> errorCodes = new ArrayList<>();
+
+        if (mCourse == null) {
+            errorCodes.add(FieldErrorCode.COURSE_IS_NULL);
+        }
+        if (!isTimeValid()) {
+            errorCodes.add(FieldErrorCode.INVALID_TIME);
+        }
+
+        switch (mType) {
+            case ONE_DAY:
+                if (!isDateValid()) {
+                    errorCodes.add(FieldErrorCode.INVALID_DATE);
+                }
+                break;
+
+            case WEEKLY:
+                if (mDayOfWeek == DayOfWeek.NULL_VALUE) {
+                    errorCodes.add(FieldErrorCode.INVALID_DOW);
+                }
+                break;
+
+            case EVERYDAY:
+                break;
+
+            default:
+                throw new IllegalStateException();
+        }
+
+        return errorCodes.toArray(new FieldErrorCode[]{});
+    }
+
+    private boolean isTimeValid() {
+        final int bHour = mDateBegin.get(Calendar.HOUR_OF_DAY);
+        final int bMin = mDateBegin.get(Calendar.MINUTE);
+        final int eHour = mDateEnd.get(Calendar.HOUR_OF_DAY);
+        final int eMin = mDateEnd.get(Calendar.MINUTE);
+
+        return (bHour < eHour) || (bHour == eHour && bMin <= eMin);
+    }
+
+    private boolean isDateValid() {
+        Calendar date = Calendar.getInstance();
+        date.setTime(mDateBegin.getTime());
+        date.set(Calendar.HOUR_OF_DAY, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.MILLISECOND, 0);
+
+        final long bDate = date.getTimeInMillis();
+
+        date.setTime(mDateEnd.getTime());
+        date.set(Calendar.HOUR_OF_DAY, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.MILLISECOND, 0);
+
+        final long eDate = date.getTimeInMillis();
+
+        return (bDate <= eDate);
+    }
+
+    private void setupConfigDateAndTimeContents(@NonNull final ConfigDateAndTimeContents layoutContents) {
+        // Select begin date button
+        layoutContents.getBeginDateButton().setText(formatDate(
+                mDateBegin.get(Calendar.YEAR),
+                mDateBegin.get(Calendar.MONTH),
+                mDateBegin.get(Calendar.DAY_OF_MONTH)));
+        layoutContents.getBeginDateButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerFragment pickerFragment = DatePickerFragment.newInstance(
+                        mDateBegin.get(Calendar.YEAR),
+                        mDateBegin.get(Calendar.MONTH),
+                        mDateBegin.get(Calendar.DAY_OF_MONTH));
+                pickerFragment.setEventListener(new DatePickerFragment.EventListener() {
+                    @Override
+                    public void onDateSelected(DatePickerFragment picker) {
+                        int y = picker.getYear();
+                        int m = picker.getMonth();
+                        int d = picker.getDay();
+                        String message = "[BEGIN] " + formatDate(y, m, d);
+
+                        mDateBegin.set(Calendar.YEAR, y);
+                        mDateBegin.set(Calendar.MONTH, m);
+                        mDateBegin.set(Calendar.DAY_OF_MONTH, d);
+
+                        layoutContents.getBeginDateButton().setText(message);
+                    }
+                });
+                pickerFragment.show(getActivity().getSupportFragmentManager(), null);
+            }
+        });
+
+        // Select begin time button
+//        final Button timeBeginButton = (Button) view.findViewById(R.id.time_begin_fectb);
+        layoutContents.getBeginTimeButton().setText(formatTime(
+                mDateBegin.get(Calendar.HOUR_OF_DAY),
+                mDateBegin.get(Calendar.MINUTE)));
+        layoutContents.getBeginTimeButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerFragment pickerFragment = TimePickerFragment.newInstance(
+                        mDateBegin.get(Calendar.HOUR_OF_DAY),
+                        mDateBegin.get(Calendar.MINUTE),
+                        true);
+                pickerFragment.setEventListener(new TimePickerFragment.EventListener() {
+                    @Override
+                    public void onTimeSelected(TimePickerFragment picker) {
+                        int h = picker.getHour();
+                        int m = picker.getMinute();
+                        String message = "[BEGIN] " + formatTime(h, m);
+
+                        mDateBegin.set(Calendar.HOUR_OF_DAY, h);
+                        mDateBegin.set(Calendar.MINUTE, m);
+                        layoutContents.getBeginTimeButton().setText(message);
+                    }
+                });
+                pickerFragment.show(getActivity().getSupportFragmentManager(), null);
+            }
+        });
+
+        // Select end date button
+        layoutContents.getEndDateButton().setText(formatDate(
+                mDateEnd.get(Calendar.YEAR),
+                mDateEnd.get(Calendar.MONTH),
+                mDateEnd.get(Calendar.DAY_OF_MONTH)));
+        layoutContents.getEndDateButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerFragment pickerFragment = DatePickerFragment.newInstance(
+                        mDateEnd.get(Calendar.YEAR),
+                        mDateEnd.get(Calendar.MONTH),
+                        mDateEnd.get(Calendar.DAY_OF_MONTH));
+                pickerFragment.setEventListener(new DatePickerFragment.EventListener() {
+                    @Override
+                    public void onDateSelected(DatePickerFragment picker) {
+                        int y = picker.getYear();
+                        int m = picker.getMonth();
+                        int d = picker.getDay();
+                        String message = "[END] " + formatDate(y, m, d);
+
+                        mDateEnd.set(Calendar.YEAR, y);
+                        mDateEnd.set(Calendar.MONTH, m);
+                        mDateEnd.set(Calendar.DAY_OF_MONTH, d);
+                        layoutContents.getEndDateButton().setText(message);
+                    }
+                });
+                pickerFragment.show(getActivity().getSupportFragmentManager(), null);
+            }
+        });
+
+        // Select end time button
+        layoutContents.getEndTimeButton().setText(formatTime(
+                mDateEnd.get(Calendar.HOUR_OF_DAY),
+                mDateEnd.get(Calendar.MINUTE)));
+        layoutContents.getEndTimeButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerFragment pickerFragment = TimePickerFragment.newInstance(
+                        mDateEnd.get(Calendar.HOUR_OF_DAY),
+                        mDateEnd.get(Calendar.MINUTE),
+                        true);
+                pickerFragment.setEventListener(new TimePickerFragment.EventListener() {
+                    @Override
+                    public void onTimeSelected(TimePickerFragment picker) {
+                        int h = picker.getHour();
+                        int m = picker.getMinute();
+                        String message = "[END] " + formatTime(h, m);
+
+                        mDateEnd.set(Calendar.HOUR_OF_DAY, h);
+                        mDateEnd.set(Calendar.MINUTE, m);
+                        layoutContents.getEndTimeButton().setText(message);
+                    }
+                });
+                pickerFragment.show(getActivity().getSupportFragmentManager(), null);
+            }
+        });
+    }
+
+    private void setupConfigTimeContents(@NonNull final ConfigTimeContents layoutContents) {
+        // Select begin time button
+        layoutContents.getBeginTimeButton().setText(formatTime(
+                mDateBegin.get(Calendar.HOUR_OF_DAY),
+                mDateBegin.get(Calendar.MINUTE)));
+        layoutContents.getBeginTimeButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerFragment pickerFragment = TimePickerFragment.newInstance(
+                        mDateBegin.get(Calendar.HOUR_OF_DAY),
+                        mDateBegin.get(Calendar.MINUTE),
+                        true);
+                pickerFragment.setEventListener(new TimePickerFragment.EventListener() {
+                    @Override
+                    public void onTimeSelected(TimePickerFragment picker) {
+                        int h = picker.getHour();
+                        int m = picker.getMinute();
+                        String message = "[BEGIN] " + formatTime(h, m);
+
+                        mDateBegin.set(Calendar.HOUR_OF_DAY, h);
+                        mDateBegin.set(Calendar.MINUTE, m);
+                        layoutContents.getBeginTimeButton().setText(message);
+                    }
+                });
+                pickerFragment.show(getActivity().getSupportFragmentManager(), null);
+            }
+        });
+
+        // Select end time button
+        layoutContents.getEndTimeButton().setText(formatTime(
+                mDateEnd.get(Calendar.HOUR_OF_DAY),
+                mDateEnd.get(Calendar.MINUTE)));
+        layoutContents.getEndTimeButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerFragment pickerFragment = TimePickerFragment.newInstance(
+                        mDateEnd.get(Calendar.HOUR_OF_DAY),
+                        mDateEnd.get(Calendar.MINUTE),
+                        true);
+                pickerFragment.setEventListener(new TimePickerFragment.EventListener() {
+                    @Override
+                    public void onTimeSelected(TimePickerFragment picker) {
+                        int h = picker.getHour();
+                        int m = picker.getMinute();
+                        String message = "[END] " + formatTime(h, m);
+
+                        mDateEnd.set(Calendar.HOUR_OF_DAY, h);
+                        mDateEnd.set(Calendar.MINUTE, m);
+                        layoutContents.getEndTimeButton().setText(message);
+                    }
+                });
+                pickerFragment.show(getActivity().getSupportFragmentManager(), null);
+            }
+        });
+    }
+
+    private void setupConfigTimeAndDayOfWeekContents(@NonNull final ConfigTimeAndDayOfWeekContents layoutContents) {
+        setupConfigTimeContents(layoutContents.getConfigTimeContents());
+        layoutContents.getDayOfWeekButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DowPickerFragment pickerFragment = DowPickerFragment.newInstance(mDayOfWeek);
+                pickerFragment.setEventListener(new DowPickerFragment.EventListener() {
+                    @Override
+                    public void onDayOfWeekSelected(DowPickerFragment picker) {
+                        mDayOfWeek = picker.getSelectedDayOfWeek();
+                        layoutContents.getDayOfWeekButton().setText(mDayOfWeek.toString());
+                    }
+                });
+                pickerFragment.show(getActivity().getSupportFragmentManager(), null);
+            }
+        });
+    }
+
+    private void switchConfigLayoutContents(@NonNull final TimeBlockFormer.Type key) {
+        mLayoutContentsSwitcher.switchLayout(key);
+        switch (key) {
+            case ONE_DAY:
+                setupConfigDateAndTimeContents((ConfigDateAndTimeContents) mLayoutContentsSwitcher.getCurrentLayout());
+                break;
+
+            case EVERYDAY:
+                setupConfigTimeContents((ConfigTimeContents) mLayoutContentsSwitcher.getCurrentLayout());
+                break;
+
+            case WEEKLY:
+                setupConfigTimeAndDayOfWeekContents((ConfigTimeAndDayOfWeekContents) mLayoutContentsSwitcher.getCurrentLayout());
+                break;
+
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    /**
+     * TODO; REMOVE THIS METHOD. THIS IS TEST CODE.
+     */
+    private String formatTime(int hour, int minute) {
+        String h = String.valueOf(hour);
+        String m = String.valueOf(minute);
+
+        if (h.length() == 1) {
+            h = "0" + h;
+        }
+
+        if (m.length() == 1) {
+            m = "0" + m;
+        }
+
+        return h + " : " + m;
+    }
+
+    /**
+     * TODO; REMOVE THIS METHOD. THIS IS TEST CODE.
+     */
+    private String formatDate(int year, int month, int day) {
+        String y = String.valueOf(year);
+        String m = String.valueOf(month);
+        String d = String.valueOf(day);
+
+        if (m.length() == 1) {
+            m = "0" + m;
+        }
+
+        if (d.length() == 1) {
+            d = "0" + d;
+        }
+
+        return y + "/" + m + "/" + d;
     }
 }

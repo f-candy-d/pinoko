@@ -96,6 +96,8 @@ public class MyCH {
                         + "note :: " + course.getNote() + "\n"
                         + "length :: " + String.valueOf(course.getLength()) + "\n"
                         + "category :: " + timeBlock.getCategory().toString() + "\n"
+                        + "type :: " + timeBlock.getType().toString() + "\n"
+                        + "day of week :: " + timeBlock.getDayOfWeek().toString() + "\n"
                         + "begin time :: " + timeBlock.getDatetimeBeginAsString() + "\n"
                         + "end time :: " + timeBlock.getDatetimeEndAsString();
                 mTextView.setText(data);

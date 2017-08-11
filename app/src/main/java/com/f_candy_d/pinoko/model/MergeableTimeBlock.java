@@ -300,7 +300,7 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(mDatetimeBegin);
         return String.valueOf(calendar.get(Calendar.YEAR)) + " / "
-                + DayOfWeek.from(calendar.get(Calendar.MONTH)).toString() + " / "
+                + DayOfWeek.from(calendar.get(Calendar.DAY_OF_WEEK)).toString() + " / "
                 + String.valueOf(calendar.get(Calendar.DATE)) + " / "
                 + String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)) + " : "
                 + String.valueOf(calendar.get(Calendar.MINUTE));
@@ -310,7 +310,7 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(mDatetimeEnd);
         return String.valueOf(calendar.get(Calendar.YEAR)) + " / "
-                + DayOfWeek.from(calendar.get(Calendar.MONTH)).toString() + " / "
+                + DayOfWeek.from(calendar.get(Calendar.DAY_OF_WEEK)).toString() + " / "
                 + String.valueOf(calendar.get(Calendar.DATE)) + " / "
                 + String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)) + " : "
                 + String.valueOf(calendar.get(Calendar.MINUTE));

@@ -51,17 +51,18 @@ public class SelectTimeBlockTypeDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final TimeBlockFormer.Type[] types = TimeBlockFormer.Type.values();
-        String[] typesAsString = new String[types.length];
-        for (int i = 0; i < types.length; ++i) {
-            typesAsString[i] = types[i].toString();
+        String[] typesAsString = new String[types.length - 1];
+        // Except NULL_TYPE
+        for (int i = 1; i < types.length; ++i) {
+            typesAsString[i - 1] = types[i].toString();
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Select a time block type")
-                .setSingleChoiceItems(typesAsString, mSelectedType.toInt(), new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(typesAsString, mSelectedType.toInt() - 1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mSelectedType = types[which];
+                        mSelectedType = types[which + 1];
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
