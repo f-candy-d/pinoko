@@ -19,7 +19,6 @@ public class EditEntryObjectFragment<T extends EntryObject> extends Fragment {
     protected static final String ARG_CONTENT = "content";
 
     private MessageListener<T> mMessageListener = null;
-    @Nullable private T mContent;
 
     public EditEntryObjectFragment() {}
 
@@ -32,14 +31,6 @@ public class EditEntryObjectFragment<T extends EntryObject> extends Fragment {
             throw new RuntimeException(context.toString()
             + " must implement EditCourseTimeBlockFragment.MessageListener");
         }
-    }
-
-    @Nullable protected T getContent() {
-        return mContent;
-    }
-
-    protected void setContent(T content) {
-        mContent = content;
     }
 
     protected MessageListener<T> getMessageListener() {

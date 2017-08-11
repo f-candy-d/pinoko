@@ -48,6 +48,7 @@ public class EditCourseTimeBlockFragment extends EditEntryObjectFragment<Mergeab
     private DayOfWeek mDayOfWeek;
 
     // Misc
+    @Nullable private MergeableTimeBlock<Course> mContent;
     private int mTimeTableId;
     private LayoutContentsSwitcher<TimeBlockFormer.Type> mLayoutContentsSwitcher;
 
@@ -75,8 +76,7 @@ public class EditCourseTimeBlockFragment extends EditEntryObjectFragment<Mergeab
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            final MergeableTimeBlock<Course> content = getArguments().getParcelable(ARG_CONTENT);
-            setContent(content);
+            mContent = getArguments().getParcelable(ARG_CONTENT);
             mTimeTableId = getArguments().getInt(ARG_TIME_TABLE_ID);
         }
     }
@@ -180,20 +180,19 @@ public class EditCourseTimeBlockFragment extends EditEntryObjectFragment<Mergeab
         if (!isCanceled) {
             FieldErrorCode[] errorCodes = isFieldValid();
             if (errorCodes.length == 0) {
-                if (getContent() == null) {
-//                    mContent = new MergeableTimeBlock<>();
-                    setContent(new MergeableTimeBlock<Course>());
+                if (mContent == null) {
+                    mContent = new MergeableTimeBlock<>();
                 }
 
-                getContent().setDatetimeBegin(mDateBegin.getTimeInMillis());
-                getContent().setDatetimeEnd(mDateEnd.getTimeInMillis());
-                getContent().setCategory(TimeBlockFormer.Category.COURSE);
-                getContent().setType(mType);
-                getContent().setDayOfWeek(mDayOfWeek);
-                getContent().setTargetId(mCourse.getId());
-                getContent().setContent(mCourse);
-                getContent().setTimeTableId(mTimeTableId);
-                getMessageListener().onFinishEditing(getContent(), false);
+                mContent.setDatetimeBegin(mDateBegin.getTimeInMillis());
+                mContent.setDatetimeEnd(mDateEnd.getTimeInMillis());
+                mContent.setCategory(TimeBlockFormer.Category.COURSE);
+                mContent.setType(mType);
+                mContent.setDayOfWeek(mDayOfWeek);
+                mContent.setTargetId(mCourse.getId());
+                mContent.setContent(mCourse);
+                mContent.setTimeTableId(mTimeTableId);
+                getMessageListener().onFinishEditing(mContent, false);
 
             } else {
                 // TODO; When the field is invalid...
@@ -201,7 +200,7 @@ public class EditCourseTimeBlockFragment extends EditEntryObjectFragment<Mergeab
             }
 
         } else {
-            getMessageListener().onFinishEditing(getContent(), true);
+            getMessageListener().onFinishEditing(mContent, true);
         }
     }
 
