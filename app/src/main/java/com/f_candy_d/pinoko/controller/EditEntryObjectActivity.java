@@ -2,6 +2,7 @@ package com.f_candy_d.pinoko.controller;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -66,14 +67,19 @@ public class EditEntryObjectActivity extends AppCompatActivity
         switch (mViewType) {
             case EDIT_COURSE_TIME_BLOCK:
                 if (mContent != null) {
-                    MergeableTimeBlock timeBlock = (MergeableTimeBlock) mContent;
+                    if (mContent instanceof MergeableTimeBlock) {
+                        // Open as edit mode
+                        MergeableTimeBlock timeBlock = (MergeableTimeBlock) mContent;
                         fragment = EditCourseTimeBlockFragment
                                 .newInstance(timeBlock.getTimeTableId(), timeBlock);
+                    } else {
+                        throwClassCastException(MergeableTimeBlock.class, mContent.getClass());
+                    }
 
                 } else {
+                    // Open as create mode
                     fragment = EditCourseTimeBlockFragment.newInstance(mTimeTableId, null);
                 }
-
                 break;
         }
 
@@ -86,6 +92,12 @@ public class EditEntryObjectActivity extends AppCompatActivity
     private void finishEditing(@NonNull final Intent result, final boolean isCanceled) {
         setResult((isCanceled) ? RESULT_CANCELED : RESULT_OK, result);
         finish();
+    }
+
+    private void throwClassCastException(@NonNull final Class<?> required, @NonNull final Class<?> passed) {
+        throw new ClassCastException(
+                "Required type is " + required.getName() + " , but "
+                        + passed.getClass().getName() + " was passed");
     }
 
     /**
