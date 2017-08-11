@@ -5,24 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Date [begin]"
-            android:id="@+id/date_begin_ccdt"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Time [begin]"
-            android:id="@+id/time_begin_ccdt"/>
-    </LinearLayout>
+        android:text="Date"
+        android:id="@+id/date_ccdt"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,7 +21,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Date [end]"
-            android:id="@+id/date_end_ccdt"/>
+            android:id="@+id/time_begin_ccdt"/>
 
         <Button
             android:layout_width="0dp"

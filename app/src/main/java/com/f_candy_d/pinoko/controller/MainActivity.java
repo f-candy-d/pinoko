@@ -296,15 +296,6 @@ public class MainActivity extends AppCompatActivity
         today.add(Calendar.HOUR, 2);
         long e2 = today.getTimeInMillis();
 
-        TimeBlockFormer timeBlock = TimeBlockFormer.createWithEntry();
-        timeBlock.setType(TimeBlockFormer.Type.EVERYDAY)
-                .setCategory(TimeBlockFormer.Category.COURSE)
-                .setTargetID(1)
-                .setDatetimeBegin(b1)
-                .setDatetimeEnd(e1)
-                .setTimeTableID(4)
-                .setDayOfWeek(DayOfWeek.WEDNESDAY);
-
         TimeBlockFormer timeBlock2 = TimeBlockFormer.createWithEntry();
         timeBlock2.setType(TimeBlockFormer.Type.ONE_DAY)
                 .setCategory(TimeBlockFormer.Category.EVENT)
@@ -347,27 +338,14 @@ public class MainActivity extends AppCompatActivity
         entries.add(course);
         entries.add(location);
         entries.add(instructor);
-        entries.add(timeBlock);
         entries.add(timeBlock2);
         entries.add(assignment);
         entries.add(event);
         entries.add(notification);
         entries.add(attendance);
 
-        Log.d("mylog", "BEFORE SAVE ############################");
-        Log.d("mylog", timeBlock.getEntry().toString());
-        Log.d("mylog", "BEFORE SAVE ############################");
-        Log.d("mylog", timeBlock2.getEntry().toString());
-
         DBDataManager dbDataManager = new DBDataManager(this, DBDataManager.Mode.WRITE_TRUNCATE);
-        long[] longs = dbDataManager.insert(entries);
-        Log.d("mylog", "--------------------------------------------------------");
-        Log.d("mylog", "#### Save Results");
-        for (long id : longs) {
-            Log.d("mylog", "saved -> " + String.valueOf(id));
-        }
-        Log.d("mylog", "--------------------------------------------------------");
-
+        dbDataManager.insert(entries);
         dbDataManager.close();
     }
 
@@ -706,7 +684,6 @@ public class MainActivity extends AppCompatActivity
             // Reflect new data to the screen
             ((DayScheduleCardAdapter) mCurrentFragment.getAdapter()).insertNewTimeBlock(timeBlock);
         }
-//        (WeeklyScheduleCardAdapter)((CardListFragment) mPagerAdapter.getItem(FRAGMENT_WEEKLY_SCHEDULE)).getAdapter()
     }
 
     private long saveNewData(@NonNull final Savable newData) {

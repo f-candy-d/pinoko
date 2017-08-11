@@ -16,8 +16,7 @@ import com.f_candy_d.pinoko.R;
 public class ConfigDateAndTimeContents extends LayoutContents {
 
     // UI
-    private Button mBeginDateButton;
-    private Button mEndDateButton;
+    private Button mDateButton;
     private Button mBeginTimeButton;
     private Button mEndTimeButton;
 
@@ -34,18 +33,13 @@ public class ConfigDateAndTimeContents extends LayoutContents {
 
     @Override
     protected void initUI(@NonNull View view) {
-        mBeginDateButton = (Button) view.findViewById(R.id.date_begin_ccdt);
-        mEndDateButton = (Button) view.findViewById(R.id.date_end_ccdt);
+        mDateButton = (Button) view.findViewById(R.id.date_ccdt);
         mBeginTimeButton = (Button) view.findViewById(R.id.time_begin_ccdt);
         mEndTimeButton = (Button) view.findViewById(R.id.time_end_ccdt);
     }
 
-    public Button getBeginDateButton() {
-        return mBeginDateButton;
-    }
-
-    public Button getEndDateButton() {
-        return mEndDateButton;
+    public Button getDateButton() {
+        return mDateButton;
     }
 
     public Button getBeginTimeButton() {
@@ -58,8 +52,7 @@ public class ConfigDateAndTimeContents extends LayoutContents {
 
     @Override
     protected void onDeinflated() {
-        mBeginDateButton = null;
-        mEndDateButton = null;
+        mDateButton = null;
         mBeginTimeButton = null;
         mEndTimeButton = null;
     }
