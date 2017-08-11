@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.v4.content.Loader;
 import android.support.v4.util.LongSparseArray;
 
 import com.f_candy_d.pinoko.utils.DBContract;
@@ -11,6 +12,7 @@ import com.f_candy_d.pinoko.utils.DBDataManager;
 import com.f_candy_d.pinoko.utils.EntryHelper;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by daichi on 17/08/08.
@@ -53,15 +55,16 @@ public class Event extends EntryObject {
 
         dest.writeInt(mLocations.size());
         if (0 < mLocations.size()) {
-            Location[] locations = new Location[mLocations.size()];
+            ArrayList<Location> locations = new ArrayList<>(mLocations.size());
             for (int i = 0; i < mLocations.size(); ++i) {
-                locations[i] = mLocations.valueAt(i);
+                locations.add(mLocations.valueAt(i));
             }
 
-            dest.writeParcelableArray(locations, flags);
+            dest.writeList(locations);
         }
     }
 
+    @SuppressWarnings("unchecked")
     public Event(final Parcel in) {
         mId = in.readLong();
         mName = in.readString();
@@ -69,7 +72,7 @@ public class Event extends EntryObject {
 
         final int size = in.readInt();
         if (0 < size) {
-            Location[] locations = (Location[]) in.readParcelableArray(Location.class.getClassLoader());
+            ArrayList<Location> locations = in.readArrayList(this.getClass().getClassLoader());
             for (Location location : locations) {
                 mLocations.put(location.getId(), location);
             }
@@ -86,7 +89,11 @@ public class Event extends EntryObject {
         EntryHelper.setEventId(entry, mId);
         EntryHelper.setEventName(entry, mName);
         EntryHelper.setEventNote(entry, mNote);
-        EntryHelper.setEventLocationId(entry, mLocations.keyAt(0));
+        if (mLocations.size() != 0) {
+            EntryHelper.setEventLocationId(entry, mLocations.keyAt(0));
+        } else {
+            EntryHelper.setEventLocationId(entry, DBContract.NULL_ID);
+        }
 
         return entry;
     }
@@ -101,10 +108,9 @@ public class Event extends EntryObject {
         }
         // TODO; Deal with multiple location & instructor ids sometime soon...
         long id = EntryHelper.getEventLocationId(entry, DBContract.NULL_ID);
-        if (id == DBContract.NULL_ID) {
-            throwExceptionForExpectedAttributeIsMissing(DBContract.EventEntry.ATTR_LOCATION_ID);
+        if (id != DBContract.NULL_ID) {
+            mLocations.put(id, null);
         }
-        mLocations.put(id, null);
 
         mNote = EntryHelper.getEventNote(entry, null);
     }
@@ -113,7 +119,7 @@ public class Event extends EntryObject {
      * Class methods
      */
 
-    public Event(final Entry entry) {}
+    public Event() {}
 
     public Event(final Entry entry, final Context context) {
         if (entry != null) {
@@ -173,4 +179,32 @@ public class Event extends EntryObject {
         mNote = note;
     }
 
+    public void addLocation(@NonNull final Location location) {
+        mLocations.put(location.getId(), location);
+    }
+
+    // TODO; Test
+    public Location getLocation() {
+        return (mLocations.size() != 0) ? mLocations.valueAt(0) : new Location();
+    }
+
+    public void addLocations(@NonNull final Collection<Location> locations) {
+        for (Location location : locations) {
+            mLocations.put(location.getId(), location);
+        }
+    }
+
+    public void setLocations(@NonNull final Collection<Location> locations) {
+        mLocations.clear();
+        addLocations(locations);
+    }
+
+    public ArrayList<Location> getLocations() {
+        ArrayList<Location> locations = new ArrayList<>(mLocations.size());
+        for (int i = 0; i < mLocations.size(); ++i) {
+            locations.add(mLocations.valueAt(i));
+        }
+
+        return locations;
+    }
 }

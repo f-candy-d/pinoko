@@ -26,6 +26,7 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.f_candy_d.pinoko.DayOfWeek;
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Course;
+import com.f_candy_d.pinoko.model.Event;
 import com.f_candy_d.pinoko.model.MergeableTimeBlock;
 import com.f_candy_d.pinoko.model.DayTimeTable;
 import com.f_candy_d.pinoko.utils.AssignmentFormer;
@@ -298,30 +299,20 @@ public class MainActivity extends AppCompatActivity
         location.setName("location")
                 .setNote("location note");
 
+        LocationFormer location2 = LocationFormer.createWithEntry();
+        location2.setName("location 2")
+                .setNote("location note 2");
+
+        LocationFormer location3 = LocationFormer.createWithEntry();
+        location3.setName("location 3")
+                .setNote("location note 3");
+
         InstructorFormer instructor = InstructorFormer.createWithEntry();
         instructor.setName("instructor")
                 .setLab("lab")
                 .setMail("mail")
                 .setPhoneNumber("phoneNumber")
                 .setNote("instructor note");
-
-        Calendar today = Calendar.getInstance();
-        long b1 = today.getTimeInMillis();
-        today.add(Calendar.HOUR, 2);
-        long e1 = today.getTimeInMillis();
-        today.add(Calendar.HOUR, 3);
-        long b2 = today.getTimeInMillis();
-        today.add(Calendar.HOUR, 2);
-        long e2 = today.getTimeInMillis();
-
-        TimeBlockFormer timeBlock2 = TimeBlockFormer.createWithEntry();
-        timeBlock2.setType(TimeBlockFormer.Type.ONE_DAY)
-                .setCategory(TimeBlockFormer.Category.EVENT)
-                .setTargetID(1)
-                .setDatetimeBegin(b2)
-                .setDatetimeEnd(e2)
-                .setTimeTableID(mTimeTableId)
-                .setDayOfWeek(DayOfWeek.WEDNESDAY);
 
         AssignmentFormer assignment = AssignmentFormer.createWithEntry();
         assignment.setName("assignment")
@@ -356,15 +347,22 @@ public class MainActivity extends AppCompatActivity
         entries.add(course);
         entries.add(location);
         entries.add(instructor);
-        entries.add(timeBlock2);
         entries.add(assignment);
         entries.add(event);
         entries.add(notification);
         entries.add(attendance);
+        entries.add(location2);
+        entries.add(location3);
 
         DBDataManager dbDataManager = new DBDataManager(this, DBDataManager.Mode.WRITE_TRUNCATE);
-        dbDataManager.insert(entries);
+        long[] ids = dbDataManager.insert(entries);
         dbDataManager.close();
+
+        Log.d("mylog", "###########################################");
+        for (long id : ids) {
+            Log.d("mylog", "saved result -> " + String.valueOf(id));
+        }
+        Log.d("mylog", "###########################################");
     }
 
     private void loadTest() {
@@ -684,6 +682,15 @@ public class MainActivity extends AppCompatActivity
                                     EditEntryObjectActivity.ViewType.EDIT_COURSE_TIME_BLOCK);
                             intent.setClass(MainActivity.this, EditEntryObjectActivity.class);
                             startActivityForResult(intent, REQUEST_CODE_MAKE_NEW_COURSE_TIME_BLOCK);
+
+                        } else if (action == FabAction.ADD_NEW_EVENT_TIME_BLOCK) {
+                            // Switch activities
+                            Intent intent = EditEntryObjectActivity.createIntentWithArg(
+                                    mTimeTableId,
+                                    null,
+                                    EditEntryObjectActivity.ViewType.EDIT_EVENT_TIME_BLOCK);
+                            intent.setClass(MainActivity.this, EditEntryObjectActivity.class);
+                            startActivityForResult(intent, REQUEST_CODE_MAKE_NEW_EVENT_TIME_BLOCK);
                         }
                     }
                 });
@@ -699,20 +706,30 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
+            case REQUEST_CODE_MAKE_NEW_EVENT_TIME_BLOCK:
             case REQUEST_CODE_MAKE_NEW_COURSE_TIME_BLOCK:
                 if (resultCode == RESULT_OK) {
-                    final MergeableTimeBlock<Course> timeBlock
+                    final MergeableTimeBlock<?> timeBlock
                             = data.getExtras().getParcelable(EditEntryObjectActivity.RESULT_ENTRY_OBJECT);
-                    onNewCourseTimeBlockCreated(timeBlock);
-                    break;
+                    onNewTimeBlockCreated(timeBlock);
                 }
+                break;
         }
     }
 
-    private void onNewCourseTimeBlockCreated(MergeableTimeBlock<Course> timeBlock) {
+    private void onNewTimeBlockCreated(MergeableTimeBlock<?> timeBlock) {
         // Save to the DB
-        final long id = saveNewData(new TimeBlockFormer(timeBlock.toEntry()));
+        long id = saveNewData(new TimeBlockFormer(timeBlock.toEntry()));
         timeBlock.setId(id);
+
+        // Save an event object if it has
+        if (timeBlock.getBindType() == Event.class) {
+            final Event event = MergeableTimeBlock.getCastedContent(timeBlock, Event.class);
+            if (event != null) {
+                id = saveNewData(new EventFormer(event.toEntry()));
+                event.setId(id);
+            }
+        }
 
         if (mCurrentFragment.getFragmentId() == FRAGMENT_ONE_DAY_SCHEDULE) {
             // Reflect new data to the screen

@@ -96,8 +96,7 @@ public class DBDataManager {
         }
 
         if (entry.isSavable()) {
-            final long id = mDatabase.insert(entry.getTableName(), null, entry.toContentValues(false));
-            return id;
+            return mDatabase.insert(entry.getTableName(), null, entry.toContentValues(false));
         }
 
         return DBContract.NULL_ID;

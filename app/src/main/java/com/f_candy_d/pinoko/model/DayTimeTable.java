@@ -70,10 +70,14 @@ public class DayTimeTable {
     }
 
     private void mergeAllBlocksIfPossible() {
+        MergeableTimeBlock<?> iBlock;
+        MergeableTimeBlock<?> jBlock;
+
         for (int i = mTimeBlocks.size() - 1; 0 <= i; --i) {
+            iBlock = mTimeBlocks.get(i);
             for (int j = i - 1; 0 <= j; --j) {
-                // Consider this warning...
-                if (mTimeBlocks.get(j).mergeWith(mTimeBlocks.get(i)) == null) {
+                jBlock = mTimeBlocks.get(j);
+                if (jBlock.mergeWith(iBlock) == null) {
                     mTimeBlocks.remove(i);
                     break;
                 }

@@ -84,6 +84,7 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
         }
     }
 
+    @SuppressWarnings("unchecked")
     public MergeableTimeBlock(final Parcel in) {
         mId = in.readLong();
         mTargetId = in.readLong();
@@ -159,7 +160,12 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
         }
     }
 
-    public MergeableTimeBlock<T> mergeWith(@NonNull final MergeableTimeBlock<T> timeBlock) {
+    @SuppressWarnings("unchecked")
+    public MergeableTimeBlock<?> mergeWith(@NonNull final MergeableTimeBlock<?> timeBlock) {
+        if (mBindType != timeBlock.getBindType()) {
+            return timeBlock;
+        }
+
         final long beginTime = timeBlock.getDatetimeBegin();
         final long endTime = timeBlock.getDatetimeEnd();
 
@@ -179,13 +185,13 @@ public class MergeableTimeBlock<T extends EntryObject> extends EntryObject imple
             for (int i = 0; i < mMergedBlocks.size() + 1; ++i) {
 
                 if (i == mMergedBlocks.size()) {
-                    mMergedBlocks.add(timeBlock);
+                    mMergedBlocks.add((MergeableTimeBlock<T>) timeBlock);
                     sortMergedBlocks();
                     // Update
                     mDatetimeEnd = endTime;
 
                 } else if (beginTime < mMergedBlocks.get(i).getDatetimeBegin()) {
-                    mMergedBlocks.add(i, timeBlock);
+                    mMergedBlocks.add(i, (MergeableTimeBlock) timeBlock);
                     // Update
                     if (i == 0) {
                         mDatetimeBegin = beginTime;

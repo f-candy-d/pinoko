@@ -11,12 +11,16 @@ import android.util.Log;
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.EntryObject;
+import com.f_candy_d.pinoko.model.Event;
 import com.f_candy_d.pinoko.model.MergeableTimeBlock;
 import com.f_candy_d.pinoko.utils.ThrowExceptionHelper;
 import com.f_candy_d.pinoko.view.EditCourseTimeBlockFragment;
+import com.f_candy_d.pinoko.view.EditEntryObjectFragment;
+import com.f_candy_d.pinoko.view.EditEventTimeBlockFragment;
 
 public class EditEntryObjectActivity extends AppCompatActivity
-        implements EditCourseTimeBlockFragment.MessageListener<MergeableTimeBlock<Course>> {
+        implements
+        EditCourseTimeBlockFragment.MessageListener<MergeableTimeBlock<?>> {
 
     public enum ViewType {
         EDIT_COURSE_TIME_BLOCK,
@@ -62,17 +66,19 @@ public class EditEntryObjectActivity extends AppCompatActivity
         launchFragment();
     }
 
+    @SuppressWarnings("unchecked")
     private void launchFragment() {
         Fragment fragment = null;
 
         switch (mViewType) {
             case EDIT_COURSE_TIME_BLOCK:
                 if (mContent != null) {
-                    if (mContent instanceof MergeableTimeBlock) {
+                    MergeableTimeBlock<?> timeBlock;
+                    if (mContent instanceof MergeableTimeBlock
+                            && (timeBlock = (MergeableTimeBlock<?>) mContent).getBindType() == Course.class) {
                         // Open as edit mode
-                        MergeableTimeBlock timeBlock = (MergeableTimeBlock) mContent;
                         fragment = EditCourseTimeBlockFragment
-                                .newInstance(timeBlock.getTimeTableId(), timeBlock);
+                                .newInstance(timeBlock.getTimeTableId(), (MergeableTimeBlock<Course>) timeBlock);
                     } else {
                         ThrowExceptionHelper
                                 .throwClassCastException(MergeableTimeBlock.class, mContent.getClass());
@@ -81,6 +87,25 @@ public class EditEntryObjectActivity extends AppCompatActivity
                 } else {
                     // Open as create mode
                     fragment = EditCourseTimeBlockFragment.newInstance(mTimeTableId, null);
+                }
+                break;
+
+            case EDIT_EVENT_TIME_BLOCK:
+                if (mContent != null) {
+                    MergeableTimeBlock<?> timeBlock;
+                    if (mContent instanceof MergeableTimeBlock
+                            && (timeBlock = (MergeableTimeBlock<?>) mContent).getBindType() == Event.class) {
+                        // Open as edit mode
+                        fragment = EditEventTimeBlockFragment
+                                .newInstance(timeBlock.getTimeTableId(), (MergeableTimeBlock<Event>) timeBlock);
+                    } else {
+                        ThrowExceptionHelper
+                                .throwClassCastException(MergeableTimeBlock.class, mContent.getClass());
+                    }
+
+                } else {
+                    // Open as create mode
+                    fragment = EditEventTimeBlockFragment.newInstance(mTimeTableId, null);
                 }
                 break;
         }
@@ -97,10 +122,10 @@ public class EditEntryObjectActivity extends AppCompatActivity
     }
 
     /**
-     * region; EditCourseTimeBlockFragment.MessageListener<MergeableTimeBlock<Course>> implementation
+     * region; EditCourseTimeBlockFragment.MessageListener<MergeableTimeBlock> implementation
      */
     @Override
-    public void onFinishEditing(MergeableTimeBlock<Course> content, boolean isCanceled) {
+    public void onFinishEditing(MergeableTimeBlock content, boolean isCanceled) {
         Intent intent = new Intent();
         intent.putExtra(RESULT_ENTRY_OBJECT, content);
         finishEditing(intent, isCanceled);

@@ -36,4 +36,10 @@ public class EditEntryObjectFragment<T extends EntryObject> extends Fragment {
     protected MessageListener<T> getMessageListener() {
         return mMessageListener;
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mMessageListener = null;
+    }
 }

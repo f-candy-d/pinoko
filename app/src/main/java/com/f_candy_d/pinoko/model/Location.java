@@ -82,6 +82,8 @@ public class Location extends EntryObject {
      * Class methods
      */
 
+    public Location() {}
+
     public Location(@NonNull final Entry entry) {
         construct(entry);
     }
@@ -108,5 +110,21 @@ public class Location extends EntryObject {
 
     public void setNote(String note) {
         mNote = note;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof Location)) {
+            return false;
+        }
+
+        final Location other = (Location) obj;
+
+        return  (mId == other.mId &&
+                ((mName != null && mName.equals(other.mName)) || (mName == null && other.mName == null)) &&
+                ((mNote != null && mNote.equals(other.mNote)) || (mNote == null && other.mNote == null)));
     }
 }

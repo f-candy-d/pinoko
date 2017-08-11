@@ -90,6 +90,7 @@ public class MyCH {
                         + "note :: " + course.getNote() + "\n"
                         + "length :: " + String.valueOf(course.getLength()) + "\n"
                         + "category :: " + timeBlock.getCategory().toString() + "\n"
+                        + "tb id :: " + String.valueOf(timeBlock.getId()) + "\n"
                         + "type :: " + timeBlock.getType().toString() + "\n"
                         + "day of week :: " + timeBlock.getDayOfWeek().toString() + "\n"
                         + "begin time :: " + timeBlock.getDatetimeBeginAsString() + "\n"
@@ -125,13 +126,19 @@ public class MyCH {
                 String data = "id :: " + String.valueOf(event.getId()) + "\n"
                         + "name :: " + event.getName() + "\n"
                         + "note :: " + event.getNote() + "\n"
+                        + "location :: " + event.getLocation().getName() + "\n"
+                        + "tb id :: " + String.valueOf(timeBlock.getId()) + "\n"
                         + "category :: " + timeBlock.getCategory().toString() + "\n"
                         + "begin time :: " + timeBlock.getDatetimeBeginAsString() + "\n"
+                        + "type :: " + timeBlock.getType().toString() + "\n"
+                        + "day of week :: " + timeBlock.getDayOfWeek().toString() + "\n"
                         + "end time :: " + timeBlock.getDatetimeEndAsString();
                 mTextView.setText(data);
             } else {
                 String data = "category :: " + timeBlock.getCategory().toString() + "\n"
                         + "begin time :: " + timeBlock.getDatetimeBeginAsString() + "\n"
+                        + "type :: " + timeBlock.getType().toString() + "\n"
+                        + "day of week :: " + timeBlock.getDayOfWeek().toString() + "\n"
                         + "end time :: " + timeBlock.getDatetimeEndAsString();
                 mTextView.setText(data);
             }

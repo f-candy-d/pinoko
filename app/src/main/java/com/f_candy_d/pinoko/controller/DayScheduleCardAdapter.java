@@ -95,7 +95,7 @@ public class DayScheduleCardAdapter extends CardAdapter {
                     .throwClassCastException(MergeableTimeBlock.class, content.getClass());
         }
 
-        MergeableTimeBlock timeBlock = (MergeableTimeBlock) content;
+        MergeableTimeBlock<?> timeBlock = (MergeableTimeBlock<?>) content;
         int index = mDayTimeTable.getTimeBlocks().indexOf(timeBlock);
         // Check whether the object is stored or not
         if (index == -1) {
