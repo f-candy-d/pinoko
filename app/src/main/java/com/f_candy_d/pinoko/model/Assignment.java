@@ -106,10 +106,21 @@ public class Assignment extends EntryObject {
      * region; Class methods
      */
 
-    public Assignment() {}
+    public Assignment() {
+        init();
+    }
 
     public Assignment(@NonNull Entry entry) {
         construct(entry);
+    }
+
+    private void init() {
+        mId = DBContract.NULL_ID;
+        mTimeBlockId = DBContract.NULL_ID;
+        mDeadline = 0L;
+        mIsDone = false;
+        mName = null;
+        mNote = null;
     }
 
     public long getId() {

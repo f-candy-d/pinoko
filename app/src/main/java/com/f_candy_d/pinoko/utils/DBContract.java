@@ -51,7 +51,7 @@ public class DBContract {
                 .put(AssignmentEntry.ATTR_NOTE, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT)
                 .put(AssignmentEntry.ATTR_IS_DONE, JSQLValueTypeMap.JavaValueType.BOOLEAN, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
                 .put(AssignmentEntry.ATTR_DEADLINE, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
-                .put(AssignmentEntry.ATTR_TIME_BLOCK_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
+                .put(AssignmentEntry.ATTR_TIME_BLOCK_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER)
                 // Event Entry
                 .put(EventEntry.ATTR_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_PK)
                 .put(EventEntry.ATTR_NAME, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT_NOT_NULL)

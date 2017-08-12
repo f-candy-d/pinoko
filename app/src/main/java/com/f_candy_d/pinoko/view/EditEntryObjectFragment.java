@@ -12,13 +12,13 @@ import com.f_candy_d.pinoko.model.EntryObject;
 
 public class EditEntryObjectFragment<T extends EntryObject> extends Fragment {
 
-    public interface MessageListener<T extends EntryObject> {
-        void onFinishEditing(final T content, final boolean isCanceled);
+    public interface MessageListener {
+        void onFinishEditing(final EntryObject content, final boolean isCanceled);
     }
 
     protected static final String ARG_CONTENT = "content";
 
-    private MessageListener<T> mMessageListener = null;
+    private MessageListener mMessageListener = null;
 
     public EditEntryObjectFragment() {}
 
@@ -26,14 +26,14 @@ public class EditEntryObjectFragment<T extends EntryObject> extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof EditEntryObjectFragment.MessageListener) {
-            mMessageListener = (EditEntryObjectFragment.MessageListener<T>) context;
+            mMessageListener = (EditEntryObjectFragment.MessageListener) context;
         } else {
             throw new RuntimeException(context.toString()
             + " must implement EditCourseTimeBlockFragment.MessageListener");
         }
     }
 
-    protected MessageListener<T> getMessageListener() {
+    protected MessageListener getMessageListener() {
         return mMessageListener;
     }
 

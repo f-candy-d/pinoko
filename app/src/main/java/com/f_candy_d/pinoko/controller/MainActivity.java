@@ -26,7 +26,6 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.f_candy_d.pinoko.DayOfWeek;
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Assignment;
-import com.f_candy_d.pinoko.model.Course;
 import com.f_candy_d.pinoko.model.Event;
 import com.f_candy_d.pinoko.model.MergeableTimeBlock;
 import com.f_candy_d.pinoko.model.DayTimeTable;
@@ -50,7 +49,6 @@ import com.f_candy_d.pinoko.view.CardListFragment;
 import com.f_candy_d.pinoko.view.SingleChoiceItemPickerFragment;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -71,6 +69,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final int REQUEST_CODE_MAKE_NEW_COURSE_TIME_BLOCK = 1111;
     private static final int REQUEST_CODE_MAKE_NEW_EVENT_TIME_BLOCK = 2222;
+    private static final int REQUEST_CODE_MAKE_NEW_ASSIGNMENT = 3333;
 
     // UI
     private AHBottomNavigation mBottomNavigation;
@@ -156,19 +155,9 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
+        if (id == R.id.nav_courses) {
+            switchToListupCourseDataScreen();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -719,6 +708,15 @@ public class MainActivity extends AppCompatActivity
                 picker.show(this.getSupportFragmentManager(), null);
 
                 break;
+
+
+            case FRAGMENT_ASSIGNMENTS:
+                Intent intent = EditEntryObjectActivity.createIntentWithArg(
+                        mTimeTableId,
+                        null,
+                        EditEntryObjectActivity.ViewType.EDIT_ASSIGNMENT);
+                intent.setClass(MainActivity.this, EditEntryObjectActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_MAKE_NEW_ASSIGNMENT);
         }
     }
 
@@ -730,9 +728,19 @@ public class MainActivity extends AppCompatActivity
             case REQUEST_CODE_MAKE_NEW_EVENT_TIME_BLOCK:
             case REQUEST_CODE_MAKE_NEW_COURSE_TIME_BLOCK:
                 if (resultCode == RESULT_OK) {
-                    final MergeableTimeBlock<?> timeBlock
-                            = data.getExtras().getParcelable(EditEntryObjectActivity.RESULT_ENTRY_OBJECT);
+                    final MergeableTimeBlock<?> timeBlock =
+                            data.getExtras().getParcelable(EditEntryObjectActivity.RESULT_ENTRY_OBJECT);
                     onNewTimeBlockCreated(timeBlock);
+                }
+                break;
+
+            case REQUEST_CODE_MAKE_NEW_ASSIGNMENT:
+                if (resultCode == RESULT_OK) {
+                    final Assignment assignment =
+                            data.getExtras().getParcelable(EditEntryObjectActivity.RESULT_ENTRY_OBJECT);
+                    if (assignment != null) {
+                        onNewAssignmentCreated(assignment);
+                    }
                 }
                 break;
         }
@@ -752,10 +760,17 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        if (mCurrentFragment.getFragmentId() == FRAGMENT_ONE_DAY_SCHEDULE) {
-            // Reflect new data to the screen
-            mCurrentFragment.getAdapter().insertData(timeBlock);
-        }
+        // Reflect new data to the screen
+        ((CardListFragment) mPagerAdapter.getItem(FRAGMENT_ONE_DAY_SCHEDULE))
+                .getAdapter().insertData(timeBlock);
+    }
+
+    private void onNewAssignmentCreated(@NonNull Assignment assignment) {
+        long id = saveNewData(new AssignmentFormer(assignment.toEntry()));
+        assignment.setId(id);
+
+        ((CardListFragment) mPagerAdapter.getItem(FRAGMENT_ASSIGNMENTS))
+                .getAdapter().insertData(assignment);
     }
 
     private long saveNewData(@NonNull final Savable newData) {
@@ -768,5 +783,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         return DBContract.NULL_ID;
+    }
+
+    private void switchToListupCourseDataScreen() {
+        Intent intent = new Intent(this, ListupDataActivity.class);
+        startActivity(intent);
     }
 }

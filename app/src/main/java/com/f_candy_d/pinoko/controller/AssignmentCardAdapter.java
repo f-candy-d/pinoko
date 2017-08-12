@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.f_candy_d.pinoko.R;
 import com.f_candy_d.pinoko.model.Assignment;
 import com.f_candy_d.pinoko.model.EntryObject;
+import com.f_candy_d.pinoko.utils.ThrowExceptionHelper;
 import com.f_candy_d.pinoko.view.MyCH;
 
 import java.util.ArrayList;
@@ -37,7 +38,13 @@ public class AssignmentCardAdapter extends CardAdapter {
 
     @Override
     public void insertData(@NonNull EntryObject content) {
+        if (content instanceof Assignment) {
+            mAssignments.add((Assignment) content);
+            notifyItemInserted(mAssignments.size() - 1);
 
+        } else {
+            ThrowExceptionHelper.throwClassCastException(Assignment.class, EntryObject.class);
+        }
     }
 
     @Override

@@ -21,6 +21,11 @@
         </activity>
         <activity android:name=".controller.EditEntryObjectActivity">
         </activity>
+        <activity
+            android:name=".controller.ListupDataActivity"
+            android:label="@string/title_activity_listup_data"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
