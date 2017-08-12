@@ -28,8 +28,7 @@ public class CourseFormer extends EntryFormer {
 
     @Override
     public boolean isSavable() {
-        return (getName() != null &&
-                0 <= getLength());
+        return (getName() != null);
     }
 
     @Override
@@ -41,7 +40,6 @@ public class CourseFormer extends EntryFormer {
         contentValues.put(DBContract.CourseEntry.ATTR_NAME, getName());
         contentValues.put(DBContract.CourseEntry.ATTR_LOCATION_ID, getLocationId());
         contentValues.put(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID, getInstructorId());
-        contentValues.put(DBContract.CourseEntry.ATTR_LENGTH, getLength());
         contentValues.put(DBContract.CourseEntry.ATTR_NOTE, getNote());
 
         return contentValues;
@@ -76,9 +74,6 @@ public class CourseFormer extends EntryFormer {
         if (!has(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID)) {
             setInstructorId(DBContract.NULL_ID);
         }
-        if (!has(DBContract.CourseEntry.ATTR_LENGTH)) {
-            setLength(getEntry().getDefaultIntValue());
-        }
         if (!has(DBContract.CourseEntry.ATTR_NOTE)) {
             setNote(getEntry().getDefaultStringValue());
         }
@@ -109,11 +104,6 @@ public class CourseFormer extends EntryFormer {
         return this;
     }
 
-    public CourseFormer setLength(final int length) {
-        EntryHelper.setCourseLength(getEntry(), length);
-        return this;
-    }
-
     public CourseFormer setNote(final String note) {
         EntryHelper.setCourseNote(getEntry(), note);
         return this;
@@ -133,10 +123,6 @@ public class CourseFormer extends EntryFormer {
 
     public long getInstructorId() {
         return EntryHelper.getCourseInstructorId(getEntry(), DBContract.NULL_ID);
-    }
-
-    public int getLength() {
-        return EntryHelper.getCourseLength(getEntry(), 0);
     }
 
     public String getNote() {

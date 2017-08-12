@@ -33,8 +33,8 @@ public class WeeklyScheduleCardAdapter extends CardAdapter {
 
     @Override
     public MyCH.BaseCardHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mini_course_card, parent, false);
-        return new MyCH.MiniCourseCardHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mini_course_time_block_card, parent, false);
+        return new MyCH.MiniCourseTimeBlockCardHolder(view);
     }
 
     @Override

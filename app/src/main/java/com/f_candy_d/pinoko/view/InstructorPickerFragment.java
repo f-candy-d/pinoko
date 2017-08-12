@@ -10,37 +10,37 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 
 import com.f_candy_d.pinoko.model.Entry;
+import com.f_candy_d.pinoko.model.Instructor;
 import com.f_candy_d.pinoko.model.Location;
 import com.f_candy_d.pinoko.utils.DBContract;
 import com.f_candy_d.pinoko.utils.DBDataManager;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 /**
  * Created by daichi on 8/12/17.
  */
 
-public class LocationPickerFragment extends DialogFragment {
+public class InstructorPickerFragment extends DialogFragment {
+
 
     public interface EventListener {
-        void onLocationsSelected(final LocationPickerFragment picker);
+        void onInstructorsSelected(final InstructorPickerFragment picker);
     }
 
     private static final String ARG_DEFAULT_SELECTIONS = "default_selections";
 
     private EventListener mEventListener = null;
-    private ArrayList<Location> mLocations;
-    private ArrayList<Location> mSelected;
-    private ArrayList<Location> mDefaultSelections;
+    private ArrayList<Instructor> mInstructors;
+    private ArrayList<Instructor> mSelected;
+    private ArrayList<Instructor> mDefaultSelections;
 
-    public static LocationPickerFragment newInstance() {
+    public static InstructorPickerFragment newInstance() {
         return newInstance(null);
     }
 
-    public static LocationPickerFragment newInstance(final ArrayList<Location> defaultSelections) {
-        LocationPickerFragment fragment = new LocationPickerFragment();
+    public static InstructorPickerFragment newInstance(final ArrayList<Instructor> defaultSelections) {
+        InstructorPickerFragment fragment = new InstructorPickerFragment();
         if (defaultSelections != null) {
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(ARG_DEFAULT_SELECTIONS, defaultSelections);
@@ -60,7 +60,7 @@ public class LocationPickerFragment extends DialogFragment {
         if (mDefaultSelections == null) {
             mDefaultSelections = new ArrayList<>(0);
         }
-        mLocations = new ArrayList<>();
+        mInstructors = new ArrayList<>();
         mSelected = new ArrayList<>();
         mSelected.addAll(mDefaultSelections);
         init();
@@ -69,22 +69,22 @@ public class LocationPickerFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        String[] itemNames = new String[mLocations.size()];
-        boolean[] selections = new boolean[mLocations.size()];
-        for (int i = 0; i < mLocations.size(); ++i) {
-            itemNames[i] = mLocations.get(i).getName();
-            selections[i] = mDefaultSelections.contains(mLocations.get(i));
+        String[] itemNames = new String[mInstructors.size()];
+        boolean[] selections = new boolean[mInstructors.size()];
+        for (int i = 0; i < mInstructors.size(); ++i) {
+            itemNames[i] = mInstructors.get(i).getName();
+            selections[i] = mDefaultSelections.contains(mInstructors.get(i));
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Select Locations")
+        builder.setTitle("Select Instructors")
                 .setMultiChoiceItems(itemNames, selections, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
-                            mSelected.add(mLocations.get(which));
+                            mSelected.add(mInstructors.get(which));
                         } else {
-                            mSelected.remove(mLocations.get(which));
+                            mSelected.remove(mInstructors.get(which));
                         }
                     }
                 })
@@ -93,7 +93,7 @@ public class LocationPickerFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (mEventListener != null) {
-                            mEventListener.onLocationsSelected(LocationPickerFragment.this);
+                            mEventListener.onInstructorsSelected(InstructorPickerFragment.this);
                         }
                     }
                 });
@@ -102,7 +102,7 @@ public class LocationPickerFragment extends DialogFragment {
     }
 
     @NonNull
-    public ArrayList<Location> getSelectedLocations() {
+    public ArrayList<Instructor> getSelectedLocations() {
         return mSelected;
     }
 
@@ -113,9 +113,9 @@ public class LocationPickerFragment extends DialogFragment {
     private void init() {
         DBDataManager dataManager = new DBDataManager(getActivity(), DBDataManager.Mode.READ);
         if (dataManager.isOpen()) {
-            ArrayList<Entry> results = dataManager.selectAllOf(DBContract.LocationEntry.TABLE_NAME);
+            ArrayList<Entry> results = dataManager.selectAllOf(DBContract.InstructorEntry.TABLE_NAME);
             for (Entry entry : results) {
-                mLocations.add(new Location(entry));
+                mInstructors.add(new Instructor(entry));
             }
         }
     }

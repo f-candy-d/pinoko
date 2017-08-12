@@ -148,4 +148,24 @@ public class Instructor extends EntryObject {
     public void setNote(String note) {
         mNote = note;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (!(obj instanceof Instructor)) {
+            return false;
+        }
+
+        final Instructor other = (Instructor) obj;
+
+        return (mId == other.mId &&
+                ((mName != null && mName.equals(other.mName)) || (mName == null && other.mName == null)) &&
+                ((mNote != null && mNote.equals(other.mNote)) || (mNote == null && other.mNote == null)) &&
+                ((mMail != null && mMail.equals(other.mMail)) || (mMail == null && other.mMail == null)) &&
+                ((mLab != null && mLab.equals(other.mLab)) || (mLab == null && other.mLab == null)) &&
+                ((mPhoneNumber != null && mPhoneNumber.equals(other.mPhoneNumber)) || (mPhoneNumber == null && other.mPhoneNumber == null)));
+    }
 }

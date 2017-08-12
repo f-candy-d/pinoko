@@ -23,7 +23,6 @@ public class DBContract {
                 .put(CourseEntry.ATTR_NAME, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT_NOT_NULL)
                 .put(CourseEntry.ATTR_LOCATION_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER)
                 .put(CourseEntry.ATTR_INSTRUCTOR_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER)
-                .put(CourseEntry.ATTR_LENGTH, JSQLValueTypeMap.JavaValueType.INT, JSQLValueTypeMap.SqlValueType.INTEGER_NOT_NULL)
                 .put(CourseEntry.ATTR_NOTE, JSQLValueTypeMap.JavaValueType.STRING, JSQLValueTypeMap.SqlValueType.TEXT)
                 // Location Entry
                 .put(LocationEntry.ATTR_ID, JSQLValueTypeMap.JavaValueType.LONG, JSQLValueTypeMap.SqlValueType.INTEGER_PK)
@@ -122,7 +121,6 @@ public class DBContract {
         public static final String ATTR_NAME            = PREFIX + "Name";
         public static final String ATTR_LOCATION_ID     = PREFIX + LocationEntry.ATTR_ID;
         public static final String ATTR_INSTRUCTOR_ID   = PREFIX + InstructorEntry.ATTR_ID;
-        public static final String ATTR_LENGTH          = PREFIX + "Length";
         public static final String ATTR_NOTE            = PREFIX + "Note";
 
         public static String[] getColumnNames() {
@@ -131,7 +129,6 @@ public class DBContract {
                     ATTR_NAME,
                     ATTR_LOCATION_ID,
                     ATTR_INSTRUCTOR_ID,
-                    ATTR_LENGTH,
                     ATTR_NOTE
             };
         }

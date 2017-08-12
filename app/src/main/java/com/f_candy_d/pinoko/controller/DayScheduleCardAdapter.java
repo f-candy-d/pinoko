@@ -47,8 +47,8 @@ public class DayScheduleCardAdapter extends CardAdapter {
     public MyCH.BaseCardHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if (viewType == TimeBlockFormer.Category.COURSE.toInt()) {
-            View view = inflater.inflate(R.layout.course_card, parent, false);
-            return new MyCH.CourseCardHolder(view);
+            View view = inflater.inflate(R.layout.course_time_block_card, parent, false);
+            return new MyCH.CourseTimeBlockCardHolder(view);
 
         } else if (viewType == TimeBlockFormer.Category.EVENT.toInt()) {
             View view = inflater.inflate(R.layout.event_card, parent, false);
@@ -61,10 +61,10 @@ public class DayScheduleCardAdapter extends CardAdapter {
     public void onBindViewHolder(MyCH.BaseCardHolder holder, int position) {
         final int viewType = getItemViewType(position);
         if (viewType == TimeBlockFormer.Category.COURSE.toInt()) {
-            MyCH.CourseCardHolder courseCardHolder = (MyCH.CourseCardHolder) holder;
+            MyCH.CourseTimeBlockCardHolder courseTimeBlockCardHolder = (MyCH.CourseTimeBlockCardHolder) holder;
             if (mDayTimeTable.getTimeBlocks().get(position).hasContent()) {
                 if (mDayTimeTable.getTimeBlocks().get(position).getContent() instanceof Course) {
-                    courseCardHolder.bind(position, null, mDayTimeTable.getTimeBlocks().get(position));
+                    courseTimeBlockCardHolder.bind(position, null, mDayTimeTable.getTimeBlocks().get(position));
                 }
             }
 

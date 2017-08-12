@@ -45,7 +45,6 @@ public class EntryFactory {
         course.setID(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_ID)));
         course.setLocationId(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_LOCATION_ID)));
         course.setInstructorId(cursor.getLong(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID)));
-        course.setLength(cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.CourseEntry.ATTR_LENGTH)));
 
         return course.getEntry();
     }

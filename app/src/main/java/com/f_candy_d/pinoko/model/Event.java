@@ -23,7 +23,7 @@ public class Event extends EntryObject {
     private long mId;
     private String mName;
     private String mNote;
-    private LongSparseArray<Location> mLocations = new LongSparseArray<>();
+    private LongSparseArray<Location> mLocations;
 
     /**
      * region; Parcelable implementation
@@ -66,6 +66,8 @@ public class Event extends EntryObject {
 
     @SuppressWarnings("unchecked")
     public Event(final Parcel in) {
+        init();
+
         mId = in.readLong();
         mName = in.readString();
         mNote = in.readString();
@@ -119,15 +121,25 @@ public class Event extends EntryObject {
      * Class methods
      */
 
-    public Event() {}
+    public Event() {
+        this(null, null);
+    }
 
     public Event(final Entry entry, final Context context) {
+        init();
         if (entry != null) {
             construct(entry);
             if (context != null) {
                 complementData(context);
             }
         }
+    }
+
+    private void init() {
+        mId = DBContract.NULL_ID;
+        mLocations = new LongSparseArray<>();
+        mName = null;
+        mNote = null;
     }
 
     public void complementData(@NonNull final Context context) {
@@ -139,16 +151,18 @@ public class Event extends EntryObject {
                 locIds[i] = mLocations.keyAt(i);
             }
 
-            ArrayList<Entry> results = dataManager.selectWhereIdIsIn(
-                    DBContract.LocationEntry.TABLE_NAME,
-                    locIds,
-                    DBContract.LocationEntry.TABLE_NAME);
+            if (locIds.length != 0) {
+                ArrayList<Entry> results = dataManager.selectWhereIdIsIn(
+                        DBContract.LocationEntry.TABLE_NAME,
+                        locIds,
+                        DBContract.LocationEntry.TABLE_NAME);
 
-            mLocations.clear();
-            Location location;
-            for (Entry entry : results) {
-                location = new Location(entry);
-                mLocations.put(location.getId(), location);
+                mLocations.clear();
+                Location location;
+                for (Entry entry : results) {
+                    location = new Location(entry);
+                    mLocations.put(location.getId(), location);
+                }
             }
 
             dataManager.close();

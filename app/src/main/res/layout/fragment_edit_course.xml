@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="16dp"
+              android:orientation="vertical"
+              tools:context="com.f_candy_d.pinoko.view.EditCourseTimeBlockFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="EDIT COURSE"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"/>
+
+    <EditText
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name..."
+        android:id="@+id/input_course_name_box_fec"/>
+
+    <EditText
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Note..."
+        android:id="@+id/input_course_note_box_fec"/>
+
+    <Button
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="INSTRUCTOR IS NOT SELECTERD"
+        android:id="@+id/select_instructors_button_fec"/>
+
+    <Button
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="INSTRUCTOR IS NOT SELECTERD"
+        android:id="@+id/select_locations_button_fec"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="64dp">
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:layout_marginTop="20dp"
+            android:id="@+id/cancel_button_fec"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:layout_marginTop="20dp"
+            android:id="@+id/ok_button_fec"/>
+    </LinearLayout>
+
+</LinearLayout>

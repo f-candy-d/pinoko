@@ -1,5 +1,6 @@
 package com.f_candy_d.pinoko.controller;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.f_candy_d.pinoko.model.Event;
 import com.f_candy_d.pinoko.model.MergeableTimeBlock;
 import com.f_candy_d.pinoko.utils.ThrowExceptionHelper;
 import com.f_candy_d.pinoko.view.EditAssignmentFragment;
+import com.f_candy_d.pinoko.view.EditCourseFragment;
 import com.f_candy_d.pinoko.view.EditCourseTimeBlockFragment;
 import com.f_candy_d.pinoko.view.EditEntryObjectFragment;
 import com.f_candy_d.pinoko.view.EditEventTimeBlockFragment;
@@ -44,10 +46,17 @@ public class EditEntryObjectActivity extends AppCompatActivity
     private ViewType mViewType;
     private int mTimeTableId;
 
+    public static Intent createIntentWithArg(final EntryObject entryObject,
+                                             @NonNull final ViewType viewType,
+                                             @NonNull final Context from) {
+        return createIntentWithArg(FAILED_TIMETABLE_ID, entryObject, viewType, from);
+    }
+
     public static Intent createIntentWithArg(final int timeTableId,
                                              final EntryObject entryObject,
-                                             @NonNull final ViewType viewType) {
-        Intent intent = new Intent();
+                                             @NonNull final ViewType viewType,
+                                             @NonNull final Context from) {
+        Intent intent = new Intent(from, EditEntryObjectActivity.class);
         intent.putExtra(EXTRA_TIMETABLE_ID, timeTableId);
         intent.putExtra(EXTRA_ENTRY_OBJECT, entryObject);
         intent.putExtra(EXTRA_VIEW_TYPE, viewType);
@@ -74,6 +83,10 @@ public class EditEntryObjectActivity extends AppCompatActivity
 
         switch (mViewType) {
             case EDIT_COURSE_TIME_BLOCK:
+                if (mTimeTableId == FAILED_TIMETABLE_ID) {
+                    ThrowExceptionHelper.throwMissingRequiredParameterException("time table id");
+                }
+
                 if (mContent != null) {
                     MergeableTimeBlock<?> timeBlock;
                     if (mContent instanceof MergeableTimeBlock
@@ -94,6 +107,10 @@ public class EditEntryObjectActivity extends AppCompatActivity
 
 
             case EDIT_EVENT_TIME_BLOCK:
+                if (mTimeTableId == FAILED_TIMETABLE_ID) {
+                    ThrowExceptionHelper.throwMissingRequiredParameterException("time table id");
+                }
+
                 if (mContent != null) {
                     MergeableTimeBlock<?> timeBlock;
                     if (mContent instanceof MergeableTimeBlock
@@ -113,6 +130,10 @@ public class EditEntryObjectActivity extends AppCompatActivity
                 break;
 
             case EDIT_ASSIGNMENT:
+                if (mTimeTableId == FAILED_TIMETABLE_ID) {
+                    ThrowExceptionHelper.throwMissingRequiredParameterException("time table id");
+                }
+
                 if (mContent != null) {
                     if (mContent instanceof Assignment) {
                         fragment = EditAssignmentFragment.newInstance(mTimeTableId, (Assignment) mContent);
@@ -123,6 +144,20 @@ public class EditEntryObjectActivity extends AppCompatActivity
                 } else {
                     fragment = EditAssignmentFragment.newInstance(mTimeTableId, null);
                 }
+                break;
+
+            case EDIT_COURSE:
+                if (mContent != null) {
+                    if (mContent instanceof Course) {
+                        fragment = EditCourseFragment.newInstance((Course) mContent);
+                    } else {
+                        ThrowExceptionHelper.throwClassCastException(Course.class, mContent.getClass());
+                    }
+
+                } else {
+                    fragment = EditCourseFragment.newInstance(null);
+                }
+                break;
         }
 
         if (fragment != null) {

@@ -57,26 +57,26 @@ public class MyCH {
     }
 
     /**
-     * Mini course card view holder
+     * Mini course time block card view holder
      */
-    public static class MiniCourseCardHolder extends BaseCardHolder {
+    public static class MiniCourseTimeBlockCardHolder extends BaseCardHolder {
 
-        public MiniCourseCardHolder(@NonNull final View view) {
+        public MiniCourseTimeBlockCardHolder(@NonNull final View view) {
             super(view);
         }
     }
 
     /**
-     * Course card view holder
+     * Course time block card view holder
      */
-    public static class CourseCardHolder extends BaseCardHolder {
+    public static class CourseTimeBlockCardHolder extends BaseCardHolder {
 
         private TextView mTextView;
 
-        public CourseCardHolder(@NonNull final View view) {
+        public CourseTimeBlockCardHolder(@NonNull final View view) {
             super(view);
 
-            mTextView = (TextView) view.findViewById(R.id.meta_data_cc);
+            mTextView = (TextView) view.findViewById(R.id.meta_data_ctbc);
         }
 
         public void bind(int position,
@@ -89,7 +89,6 @@ public class MyCH {
                 String data = "id :: " + String.valueOf(course.getId()) + "\n"
                         + "name :: " + course.getName() + "\n"
                         + "note :: " + course.getNote() + "\n"
-                        + "length :: " + String.valueOf(course.getLength()) + "\n"
                         + "category :: " + timeBlock.getCategory().toString() + "\n"
                         + "tb id :: " + String.valueOf(timeBlock.getId()) + "\n"
                         + "type :: " + timeBlock.getType().toString() + "\n"
@@ -168,6 +167,28 @@ public class MyCH {
                     + "deadline :: " + assignment.getDeadlineAsString()+ "\n"
                     + "is done :: " + String.valueOf(assignment.isDone());
 
+            mTextView.setText(data);
+        }
+    }
+
+    /**
+     * Course card view holder
+     */
+    public static class CourseCardHolder extends BaseCardHolder {
+        private TextView mTextView;
+
+        public CourseCardHolder(@NonNull final View view) {
+            super(view);
+            mTextView = (TextView) view.findViewById(R.id.meta_data_cc);
+        }
+
+        public void bind(int position,
+                         OnCardClickListener clickListener,
+                         @NonNull final Course course) {
+            super.bind(position, clickListener, course);
+            String data = "id :: " + String.valueOf(course.getId()) + "\n"
+                    + "name :: " + course.getName() + "\n"
+                    + "note :: " + course.getNote() + "\n";
             mTextView.setText(data);
         }
     }

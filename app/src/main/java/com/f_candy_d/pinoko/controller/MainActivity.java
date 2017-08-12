@@ -282,7 +282,6 @@ public class MainActivity extends AppCompatActivity
         course.setName("course")
                 .setLocationId(1)
                 .setInstructorId(1)
-                .setLength(6)
                 .setNote("course note");
 
         LocationFormer location = LocationFormer.createWithEntry();
@@ -478,7 +477,6 @@ public class MainActivity extends AppCompatActivity
 
             EntryHelper.setCourseName(entry, "updated name");
             EntryHelper.setCourseNote(entry, "updated note");
-            EntryHelper.setCourseLength(entry, 10000);
 
             dataManager.update(new CourseFormer(entry));
             Log.d("mylog", "#### " + entry.getAffiliation());
@@ -689,8 +687,8 @@ public class MainActivity extends AppCompatActivity
                             Intent intent = EditEntryObjectActivity.createIntentWithArg(
                                     mTimeTableId,
                                     null,
-                                    EditEntryObjectActivity.ViewType.EDIT_COURSE_TIME_BLOCK);
-                            intent.setClass(MainActivity.this, EditEntryObjectActivity.class);
+                                    EditEntryObjectActivity.ViewType.EDIT_COURSE_TIME_BLOCK,
+                                    MainActivity.this);
                             startActivityForResult(intent, REQUEST_CODE_MAKE_NEW_COURSE_TIME_BLOCK);
 
                         } else if (action == FabAction.ADD_NEW_EVENT_TIME_BLOCK) {
@@ -698,8 +696,8 @@ public class MainActivity extends AppCompatActivity
                             Intent intent = EditEntryObjectActivity.createIntentWithArg(
                                     mTimeTableId,
                                     null,
-                                    EditEntryObjectActivity.ViewType.EDIT_EVENT_TIME_BLOCK);
-                            intent.setClass(MainActivity.this, EditEntryObjectActivity.class);
+                                    EditEntryObjectActivity.ViewType.EDIT_EVENT_TIME_BLOCK,
+                                    MainActivity.this);
                             startActivityForResult(intent, REQUEST_CODE_MAKE_NEW_EVENT_TIME_BLOCK);
                         }
                     }
@@ -714,8 +712,8 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = EditEntryObjectActivity.createIntentWithArg(
                         mTimeTableId,
                         null,
-                        EditEntryObjectActivity.ViewType.EDIT_ASSIGNMENT);
-                intent.setClass(MainActivity.this, EditEntryObjectActivity.class);
+                        EditEntryObjectActivity.ViewType.EDIT_ASSIGNMENT,
+                        MainActivity.this);
                 startActivityForResult(intent, REQUEST_CODE_MAKE_NEW_ASSIGNMENT);
         }
     }
@@ -787,6 +785,7 @@ public class MainActivity extends AppCompatActivity
 
     private void switchToListupCourseDataScreen() {
         Intent intent = new Intent(this, ListupDataActivity.class);
+        intent.putExtra(ListupDataActivity.EXTRA_VIEW_TYPE, ListupDataActivity.VIEW_TYPE_LIST_UP_COURSES);
         startActivity(intent);
     }
 }

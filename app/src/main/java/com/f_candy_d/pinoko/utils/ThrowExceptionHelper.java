@@ -17,8 +17,13 @@ public class ThrowExceptionHelper {
                         + passed.getClass().getName() + " was passed");
     }
 
-    public static void throwAtemptToAccessToEmptyArray() {
+    public static void throwAtemptToAccessToEmptyArrayException() {
         throw new IllegalStateException(
                 "Attempt to access to a null or empty array");
+    }
+
+    public static void throwMissingRequiredParameterException(final String missingParam) {
+        throw new IllegalArgumentException(
+                "Some required parameter is missing -> " + missingParam);
     }
 }

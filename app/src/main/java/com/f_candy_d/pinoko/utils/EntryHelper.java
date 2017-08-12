@@ -64,18 +64,6 @@ public class EntryHelper {
         entry.set(DBContract.CourseEntry.ATTR_INSTRUCTOR_ID, instId);
     }
 
-    public static int getCourseLength(final Entry entry) {
-        return entry.getInt(DBContract.CourseEntry.ATTR_LENGTH);
-    }
-
-    public static int getCourseLength(final Entry entry, final int def) {
-        return entry.getInt(DBContract.CourseEntry.ATTR_LENGTH, def);
-    }
-
-    public static void setCourseLength(final Entry entry, final int length) {
-        entry.set(DBContract.CourseEntry.ATTR_LENGTH, length);
-    }
-
     public static String getCourseNote(final Entry entry) {
         return entry.getString(DBContract.CourseEntry.ATTR_NOTE);
     }
